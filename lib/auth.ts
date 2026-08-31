@@ -15,6 +15,7 @@ import {
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
+  secret: process.env.NEXTAUTH_SECRET || 'super-secret-key-n3-master-ai-production-2024',
   session: {
     strategy: 'jwt',
   },
@@ -22,6 +23,9 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
     newUser: '/register',
   },
+
+
+
   providers: [
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
       ? [
