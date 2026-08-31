@@ -1,0 +1,881 @@
+STT,Từ Vựng (Kanji),Cách Đọc (Hiragana),Hán Việt,Ý Nghĩa Tiếng Việt,English Meaning,Ví Dụ (Example)
+1,男性,だんせい,NAM TÍNH,"Nam giới, đàn ông",man,理想の男性と結婚する。
+2,女性,じょせい,NỮ TÍNH,"Nữ giới, phụ nữ",woman,あの女性はだれですか。
+3,高齢,こうれい,CAO LINH,"Tuổi cao, cao tuổi","old age, advanced age",祖母は高齢だが、まだとても元気だ。
+4,年上,としうえ,NIÊN THƯỢNG,Lớn tuổi hơn,elder,彼女は私より三つ年上だ。
+5,目上,めうえ,MỤC THƯỢNG,"Cấp trên, bề trên",superior,目上の人には敬語で話したほうがいい。
+6,先輩,せんぱい,TIỀN BỐI,"Tiền bối, người đi trước",senior,田中さんと私は同じ年だが、職場では彼のほうが先輩だ。
+7,後輩,こうはい,HẬU BỐI,"Hậu bối, người đi sau",junior,後輩に仕事を教える。
+8,上司,じょうし,THƯỢNG TI,"Cấp trên, sếp",boss,上司に相談してから決定する。
+9,相手,あいて,TƯƠNG THỦ,"Đối phương, đối thủ","other person, opponent",相手の目を見て話す。今度の試合の相手は強そうだ。
+10,知り合い,しりあい,TRI HỢP,Người quen,acquaintance,知り合いに息子的就職を頼む。
+11,友人,ゆうじん,HỮU NHÂN,Bạn bè,friend,学生時代の友人です。
+12,仲,なか,TRỌNG,Mối quan hệ,relations,私は山本さんと仲がいい。
+13,生年月日,せいねんがっぴ,SANH NIÊN NGUYỆT NHẬT,Ngày tháng năm sinh,date of birth,書類に生年月日を記入する。
+14,誕生,たんじょう,ĐẢN SANH,"Sự ra đời, sinh ra",birth,新しい命の誕生を祝う。
+15,年,とし,NIÊN,"Năm, tuổi tác","year, age",年の初めに1年の計画を立てる。父は年より若く見える。
+16,出身,しゅっしん,XUẤT THÂN,"Xuất thân, quê quán","origin, homeland",ご出身はどちらですか。東京です。
+17,故郷,こきょう,CỐ HƯƠNG,Quê hương,hometown,仕事が忙しくて、もう何年も故郷に帰っていない。
+18,成長,せいちょう,THÀNH TRƯỜNG,"Trưởng thành, phát triển",growth,子どもの成長を喜ぶ。経済が大きく成長した。
+19,成人,せいじん,THÀNH NHÂN,Người trưởng thành,adult,日本では二十歳以上の人を成人という。
+20,合格,ごうかく,HỢP CÁCH,"Đỗ, trúng tuyển","passing, acceptance",大学の入学試験に合格する。
+21,進学,しんがく,TIẾN HỌC,Học lên (cấp cao hơn),going to a higher school,大学院に進学する。
+22,退学,たいがく,THOÁI HỌC,"Thôi học, bỏ học",dropping out,病気で大学を退学した。
+23,就職,しゅうしょく,TỰU CHỨC,"Xin việc, đi làm",getting employed,旅行会社に就職する。
+24,退職,たいしょく,THOÁI CHỨC,"Nghỉ việc, từ chức","resignation, retirement",母の介護のため、退職を決めた。
+25,失業,しつぎょう,THẤT NGHIỆP,Thất nghiệp,unemployment,会社が倒産して失業した。
+26,残業,ざんぎょう,TÀN NGHIỆP,"Làm thêm giờ, tăng ca",overtime work,残業が多くて疲れた。
+27,生活,せいかつ,SANH HOẠT,"Sinh hoạt, cuộc sống",life,健康的な生活を送る。外国で生活するのは楽しい。
+28,通勤,つうきん,THÔNG CẦN,Đi làm (hằng ngày),commuting,私は毎日1時間かけて通勤している。
+29,学歴,がくれき,HỌC LỊCH,"Bằng cấp, học vấn",educational background,学歴が高くても、実力があるかどうかはわからない。
+30,給料,きゅうりょう,CẤP LIỆU,Tiền lương,"salary, pay",会社から給料をもらう。
+31,面接,めんせつ,DIỆN TIẾP,Phỏng vấn,interview,きょう、会社の人との面接がある。
+32,休憩,きゅうけい,HƯU KHẾ,Nghỉ giải lao,break,ではここで、10分間の休憩です。
+33,観光,かんこう,QUAN QUANG,"Tham quan, du lịch","tourism, sightseeing",先週、京都を観光してまわった。
+34,帰国,きこく,QUY QUỐC,Về nước,returning to one's country,今度の正月には帰国するつもりだ。
+35,帰省,きせい,QUY TỈNH,Về quê,returning to one's hometown,お盆にはふるさとに帰省する日本人が多い。
+36,帰宅,きたく,QUY TRẠCH,Về nhà,going home,毎日忙しくて帰宅が遅い。
+37,参加,さんか,THAM GIA,Tham gia,participation,ボランティア活動に参加する。
+38,出席,しゅっせき,XUẤT TỊCH,"Có mặt, tham dự",attendance,ミーティングに出席する。
+39,欠席,けっせき,KHIẾM TỊCH,"Vắng mặt, nghỉ",absence,授業を欠席する。
+40,遅刻,ちこく,TRÌ KHẮC,"Đến muộn, trễ",arriving late,寝坊して授業に遅刻する。
+41,化粧,けしょう,HÓA TRANG,Trang điểm,makeup,あなたは毎日、お化粧に何分ぐらいかけていますか。
+42,計算,けいさん,KẾ TOÁN,Tính toán,calculation,旅行にいくらかかるか計算する。
+43,計画,けいかく,KẾ HỌA,Kế hoạch,plan,来年の計画を立てる。
+44,成功,せいこう,THÀNH CÔNG,Thành công,success,実験に成功する。
+45,失敗,しっぱい,THẤT BẠI,Thất bại,failure,実験の失敗で、計画は中止になった。
+46,準備,じゅんび,CHUẨN BỊ,Chuẩn bị,preparation,引っ越しの準備が終わった。
+47,整理,せいり,CHỈNH LÝ,"Chỉnh lý, thu dọn","organizing, arrangement",資料の整理。机の上を整理する。
+48,注文,ちゅうもん,CHÚ VĂN,"Đặt hàng, gọi món, yêu cầu","order, request",喫茶店でコーヒーを注文する。
+49,貯金,ちょきん,TRỮ KIM,"Tiết kiệm tiền, tiền gửi tiết kiệm","savings, depositing",銀行にボーナスを貯金する。
+50,徹夜,てつや,TRIỆT DẠ,Thức trắng đêm,staying up all night,徹夜で勉強する。
+51,引っ越し,ひっこし,DẪN VIỆT,Chuyển nhà,move,東京から横浜へ引っ越しする。
+52,身長,しんちょう,THÂN TRƯỜNG,Chiều cao cơ thể,body height,身長を測る。兄は身長が高い。
+53,体重,たいじゅう,THỂ TRỌNG,"Cân nặng, trọng lượng",body weight,体重を測る。父の体重は60キロだ。
+54,けが,けが,,"Vết thương, bị thương",injury,転んで足にけがをした。
+55,会,かい,HỘI,"Buổi tiệc, hội họp","party, meeting",忘年会を開く。
+56,趣味,しゅみ,THÚ VỊ,"Sở thích, gu thẩm mỹ","hobby, interest",趣味は読書です。
+57,興味,きょうみ,HƯNG VỊ,"Hứng thú, quan tâm",interest,私は歴史に興味がある。
+58,思い出,おもいで,TƯ XUẤT,"Kỷ niệm, hồi ức",memory,子どものころの思い出。
+59,冗談,じょうだん,NHŨNG ĐÀM,"Chuyện đùa, nói đùa",joke,冗談を言ったら、みんなが本気にした。
+60,目的,もくてき,MỤC ĐÍCH,Mục đích,purpose,日本に来た目的は大学への入学だ。
+61,約束,やくそく,ƯỚC THÚC,"Lời hứa, hẹn ước","promise, appointment",彼と結婚の約束をした。約束の時間を守る。
+62,おしゃべり,おしゃべり,,"Nói chuyện, thích nói chuyện","chatting, talkative",授業中に隣の人とおしゃべりしていて怒られた。
+63,遠慮,えんりょ,VIỄN LỰ,"Khách khí, ngại ngần, kiêng dè","reserve, refraining",遠慮しないで食べてください。
+64,我慢,がまん,NGÃ MẠN,"Chịu đựng, nhẫn nại","endurance, patience",痛くてもがまんする。
+65,迷惑,めいわく,MÊ HOẶC,"Phiền hà, quấy rầy","nuisance, trouble",人に迷惑をかけてはいけない。
+66,希望,きぼう,HY VỌNG,"Hy vọng, nguyện vọng","hope, wish",最後まで希望を捨ててはいけない。
+67,夢,ゆめ,MỘNG,"Giấc mơ, ước mơ",dream,きのう、こわい夢を見た。将来の夢は何ですか。
+68,賛成,さんせい,TÁN THÀNH,"Tán thành, đồng ý","agreement, support",私はその提案に賛成だ。
+69,反対,はんたい,PHẢN ĐỐI,"Phản đối, ngược lại","opposite, opposition",彼の意見には反対だ。プラスの反対はマイナスだ。
+70,想像,そうぞう,TƯỞNG TƯỢNG,Tưởng tượng,imagination,想像と現実は違う。100年後の未来を想像する。
+71,努力,どりょく,NỖ LỰC,"Nỗ lực, cố gắng",effort,一生懸命、努力をする。
+72,太陽,たいよう,THÁI DƯƠNG,Mặt trời,sun,太陽が昇って、暖かくなった。
+73,地球,ちきゅう,ĐỊA CẦU,Trái đất,earth,地球の環境が悪化している。
+74,温度,おんど,ÔN ĐỘ,Nhiệt độ,temperature,温度を測る。温度が上がる。
+75,湿度,しつど,THẤP ĐỘ,Độ ẩm,humidity,今年の夏は特に湿度が高い。
+76,湿気,しっけ,THẤP KHÍ,"Hơi ẩm, sự ẩm ướt","moisture, humidity",日本の夏は湿気が多い。
+77,梅雨,つゆ,MAI VŨ,Mùa mưa (đầu hè Nhật),rainy season,6月から7月は梅雨の時期だ。
+78,かび,かび,,Nấm mốc,mold,梅雨の時期はかびがはえやすい。
+79,暖房,だんぼう,NOÃN PHÒNG,"Hệ thống sưởi, lò sưởi","heater, heating",寒いので暖房をつける。
+80,皮,かわ,BÌ,"Da, vỏ ngoài","skin, hide, peel",りんごの皮をむいて食べる。
+81,缶,かん,PHỮU,"Lon, hộp kim loại",can,おかしを缶に入れて保存する。
+82,画面,がめん,HỌA DIỆN,Màn hình,screen,パソコンの画面をずっと見ていると、目が疲れる。
+83,番組,ばんぐみ,PHIÊN TỔ,Chương trình (truyền hình/radio),TV/radio program,テレビの番組を見る。
+84,記事,きじ,KÝ SỰ,"Bài báo, bài viết",article,この記事によると、日本に住む外国人が増えているそうだ。
+85,近所,きんじょ,CẬN SỞ,"Hàng xóm, vùng lân cận",neighborhood,近所の人とは仲良くしたほうがいい。
+86,警察,けいさつ,CẢNH SÁT,Cảnh sát,police,自転車を盗まれたので、警察に届けた。
+87,犯人,はんにん,PHẠM NHÂN,"Thủ phạm, tội phạm",criminal,警察が事件の犯人をつかまえる。
+88,小銭,こぜに,TIỂU TIỀN,Tiền lẻ,small change,バスに乗ってから小銭がないことに気がついた。
+89,ごちそう,ごちそう,,"Bữa tiệc / Chiêu đãi, khao","feast, treating to a meal",家族みんなでごちそうを食べて祝った。
+90,作者,さくしゃ,TÁC GIẢ,Tác giả,"writer, artist",「ハムレット」の作者はシェイクスピアです。
+91,作品,さくひん,TÁC PHẨM,Tác phẩm,work of art/literature,学生の作品をロビーに展示する。
+92,制服,せいふく,CHẾ PHỤC,Đồng phục,uniform,日本の中学校には制服のある学校が多い。
+93,洗剤,せんざい,TẨY TỄ,"Chất tẩy rửa, xà phòng",detergent,洗剤で食器を洗う。
+94,底,そこ,ĐỂ,"Đáy, tận cùng",bottom,くつの底に穴があく。海の底にもぐる。
+95,地下,ちか,ĐỊA HẠ,"Dưới lòng đất, tầng hầm","underground, basement",大都市は地下の開発が進んでいる。
+96,寺,てら,TỰ,Chùa,temple,寺にお参りする。
+97,道路,どうろ,ĐẠO LỘ,"Đường bộ, con đường",road,道路が込む。高速道路を走る。
+98,坂,さか,PHẢN,"Con dốc, dốc","hill, slope",急な坂を上る。
+99,煙,けむり,YÊN,Khói,smoke,火事のときは、煙に注意して逃げてください。
+100,灰,はい,HÔI,"Tro, tàn thuốc",ash,たばこの灰。紙が燃えて灰になる。
+101,判,はん,PHÁN,Con dấu,"seal, stamp",書類に判を押す。
+102,名刺,めいし,DANH THÍCH,"Danh thiếp, namecard","calling card, business card",パーティーで会った人に名刺を配った。
+103,免許,めんきょ,MIỄN HỨA,"Giấy phép, bằng cấp",license,レストランを開くには、調理師の免許が必要だ。
+104,多く,おおく,ĐA,"Nhiều, phần lớn","many, much",オリンピックには多くの国が参加した。
+105,前半,ぜんはん,TIỀN BÁN,"Nửa đầu, hiệp một",first half,映画の前半はたいくつだったが、後半はおもしろかった。
+106,後半,こうはん,HẬU BÁN,"Nửa sau, hiệp hai",second half,試合の後半に逆転した。
+107,最高,さいこう,TỐI CAO,"Cao nhất, tuyệt nhất","highest, best",最高気温を記録した。宝くじが当たって最高の気分だ。
+108,最低,さいてい,TỐI ĐÊ,"Thấp nhất, tồi tệ nhất","lowest, worst",クラスで最低の点をとってしまった。
+109,最初,さいしょ,TỐI SƠ,"Đầu tiên, trước hết","first, beginning",最初にひらがなを、次にカタカナを勉強した。
+110,最後,さいご,TỐI HẬU,Cuối cùng,"last, end",あとから来た人は列の最後に並んでください。
+111,自動,じどう,TỰ ĐỘNG,Tự động,"automation, automatic",このドアは自動だから、手で開けなくてもいい。
+112,種類,しゅるい,CHỦNG LOẠI,"Chủng loại, thể loại","type, kind",公園にはいろいろな種類の花がある。
+113,性格,せいかく,TÍNH CÁCH,"Tính cách, tính tình","personality, character",あの人は性格がいいので、みんなに好かれている。
+114,性質,せいしつ,TÍNH CHẤT,"Tính chất, bản chất","property, disposition",この布は燃えにくい性質を持っている。
+115,順番,じゅんばん,THUẬN PHIÊN,"Thứ tự, lần lượt","order, sequence",発表の順番を決める。
+116,番,ばん,PHIÊN,"Lượt, trông coi","turn, watching",次は私の番だ。荷物の番をする。
+117,方法,ほうほう,PHƯƠNG PHÁP,"Phương pháp, cách thức","method, way",いい方法を探す。いろいろな方法を試す。
+118,製品,せいひん,CHẾ PHẨM,"Sản phẩm, hàng hóa",product,完成した製品を検査する。
+119,値上がり,ねあがり,TRỊ THƯỢNG,Tăng giá,price rise,石油が値上がりする。
+120,生,なま,SANH,"Tươi sống, nguyên chất","raw, fresh",生の魚。肉を生で食べる。
+121,渇く,かわく,KHÁT,Khát (khát nước),become thirsty,のどが渇いた。
+122,嗅ぐ,かぐ,KHỨU,Ngửi,smell,においを嗅ぐ。
+123,叩く,たたく,KHẤU,"Đập, vỗ, gõ, vỗ tay","spank, tap, knock, clap",ドアをたたく。手をたたいた。
+124,殴る,なぐる,ẨU,"Đấm, đánh","punch, hit",教師が生徒を殴って問題になった。
+125,ける,ける,,Đá,kick,ボールをける。
+126,抱く,だく,BÃO,"Ôm, ẵm","hold, hug",子どもを両手でしっかりと抱く。
+127,倒れる,たおれる,ĐẢO,"(Tự) Ngã, đổ, gục ngã","fall over, collapse",台風で木が倒れた。父は働きすぎて倒れてしまった。
+128,倒す,たおす,ĐẢO,"(Tha) Đánh đổ, làm ngã, đánh bại","knock over, defeat",花びんを倒して割ってしまった。
+129,起きる/起こる,おきる/おこる,KHỞI,"(Tự) Thức dậy, xảy ra","wake up, occur",きょうは8時に起きた。教室で事件が起きた。
+130,起こす,おこす,KHỞI,"(Tha) Đánh thức, dựng dậy, gây ra","wake up, cause",朝起こしても起きない。事故を起こす。
+131,尋ねる,たずねる,TẦM,"Hỏi, dò hỏi","ask, inquire",交番で警官に市役所までの道を尋ねた。
+132,呼ぶ,よぶ,HÔ,"Gọi, kêu, thu hút","call, summon",名前を呼ばれたら返事をする。タクシーを呼ぶ。
+133,叫ぶ,さけぶ,KHIẾU,"Hét, la hét","yell, shout",大声で叫んだ。「助けてー」と叫ぶ声。
+134,黙る,だまる,MẶC,"Im lặng, làm thinh",be silent,だれも答えないで黙っている。
+135,飼う,かう,TỰ,Nuôi (thú cưng),keep a pet,何かペットを飼いたいと思っている。
+136,数える,かぞえる,SỔ,Đếm,count,数を数える。
+137,乾く,かわく,CAN,"(Tự) Khô, ráo nước",dry,外に干した洗たく物はすぐに乾いた。
+138,乾かす,かわかす,CAN,"(Tha) Làm khô, sấy khô",dry something,ドライヤーでぬれた髪を乾かした。
+139,畳む,たたむ,ĐIỆP,"Gấp, xếp",fold,洗たく物をたたむ。かさをたたむ。
+140,誘う,さそう,DỤ,"Rủ, mời",invite,友だちを誘って映画を見に行った。
+141,おごる,おごる,,"Khao, đãi",treat to a meal,きのうは後輩に焼き肉をおごった。
+142,預かる,あずかる,DỰ,"Trông nom, giữ hộ","look after, take care of",旅行に行く友だちから犬を預かる。
+143,預ける,あずける,DỰ,"Gửi gắm, gửi giữ","deposit, entrust",銀行にお金を預けると利子がつく。
+144,決まる,きまる,QUYẾT,(Tự) Được quyết định,be decided,帰国の日が決まった。
+145,決める,きめる,QUYẾT,(Tha) Quyết định,decide,進学か就職か、早く決めたほうがいい。
+146,写る,うつる,TẢ,"(Tự) Được chụp, chiếu","be photographed, reflected",このカメラは暗いところでもよく写る。
+147,写す,うつす,TẢ,"(Tha) Chụp ảnh, chép lại","take a photo, copy",黒板の字をノートに写した。
+148,思い出す,おもいだす,TƯ XUẤT,"Nhớ lại, hồi tưởng","remember, recall",高校の入学式を思い出す。
+149,教わる,おそわる,GIÁO,"Học được, được dạy","learn, be taught",料理の作り方は母から教わりました。
+150,申し込む,もうしこむ,THÂN NHẬP,"Đăng ký, cầu hôn","apply, propose",パーティーに参加を申し込む。
+151,断る,ことわる,ĐOẠN,"Từ chối, xin phép","decline, refuse",頼まれた仕事を断った。
+152,見つかる,みつかる,KIẾN,"(Tự) Được tìm thấy, bị bắt gặp","be found, be caught",指輪がソファーの下で見つかった。
+153,見つける,みつける,KIẾN,"(Tha) Tìm thấy, tìm ra",find,指輪をソファーの下で見つけた。
+154,捕まる,つかまる,BỔ,"(Tự) Bị bắt, bám chặt vào","be arrested, hold on to",犯人が警察に捕まった。つり革につかまる。
+155,捕まえる,つかまえる,BỔ,"(Tha) Bắt, tóm","arrest, catch",警察が泥棒を捕まえた。川で魚を捕まえる。
+156,乗る,のる,THỪA,"(Tự) Lên xe, cưỡi","ride, get on",毎朝、電車に乗って学校に通っている。
+157,乗せる,のせる,THỪA,"(Tha) Chở, cho lên xe","give a ride, put on",子どもを車に乗せて送って行った。
+158,降りる/下りる,おりる,GIÁNG/HẠ,"(Tự) Xuống (xe, lầu), nhận (chỉ thị/visa)","get off, go down",電車を降りる。階段を下りる。許可が下りた。
+159,降ろす/下ろす,おろす,GIÁNG/HẠ,"(Tha) Cho xuống xe, hạ xuống, rút tiền","drop off, lower, withdraw",銀行の前で降ろしてください。お金をおろす。
+160,直る,なおる,TRỰC,"(Tự) Được sửa, hồi phục (tính nết)","be fixed, repaired",こわれたパソコンが直った。くせが直らない。
+161,直す,なおす,TRỰC,"(Tha) Sửa chữa, chỉnh, dịch","fix, correct, translate",こわれた時計を直す。日本語を英語に直す。
+162,治る,なおる,TRỊ,"(Tự) Khỏi bệnh, lành vết thương","get better, heal",頭痛が治らない。けがが治る。
+163,治す,なおす,TRỊ,(Tha) Chữa trị,"cure, heal",よく休んで早くかぜを治してください。
+164,亡くなる,なくなる,VONG,"(Tự) Mất, qua đời","die, pass away",社長が90歳で亡くなった。
+165,亡くす,なくす,VONG,(Tha) Mất (người thân),lose someone,彼は子どものとき父親を亡くした。
+166,生まれる,うまれる,SANH,"(Tự) Được sinh ra, ra đời",be born,先月子どもが生まれた。
+167,産む/生む,うむ,SẢN/SANH,"(Tha) Sinh, đẻ, tạo ra","give birth, create",妻が女の子を産んだ。新記録を生んだ。
+168,出会う,であう,XUẤT HỢP,"Tình cờ gặp, chạm mặt",meet by chance,駅で偶然大学時代の友人と出会った。
+169,訪ねる,たずねる,PHỎNG,"Thăm, ghé chơi",visit,友人の家を訪ねた。
+170,付き合う,つきあう,PHÓ HỢP,"Giao tiếp, hẹn hò, đi cùng","associate with, date",彼らは付き合って5年目に結婚した。
+171,効く,きく,HIỆU,"(Tự) Có hiệu quả, có tác dụng",be effective,この薬は頭痛によく効く。
+172,はやる,はやる,,"(Tự) Thịnh hành, lây lan","be popular, spread",この冬は赤い色がはやっている。インフルエンザがはやる。
+173,経つ,たつ,KINH,(Tự) Trôi qua (thời gian),"elapse, pass",日本へ来てから10年が経った。
+174,間に合う,まニアう,GIAN HỢP,(Tự) Kịp giờ,make it on time,走ってなんとか授業に間に合った。
+175,間に合わせる,まにあわせる,GIAN HỢP,(Tha) Làm cho kịp,finish on time,レポートを締め切りに間に合わせた。
+176,通う,かよう,THÔNG,"(Tự) Đi lại thường xuyên, thấu hiểu","commute, understand",毎週ピアノのレッスンに通っている。心が通う。
+177,込む,こむ,NHẬP,"(Tự) Đông đúc, đông người",be crowded,電車が込む。道が込む。
+178,すれ違う,すれちがう,VI,"(Tự) Đi lướt qua nhau, lệch nhau",pass each other,上り列車と下り列車がすれ違った。
+179,掛かる,かかる,QUẢI,"(Tự) Tốn (thời gian, tiền), bị treo/phủ","take time/cost, be covered",この調査には費用がかかる。音楽がかかる。
+180,掛ける,かける,QUẢI,"(Tha) Phủ, treo, nhân lên, tiêu tốn","cover, take time, multiply",料理にしょうゆをかける。時間をかけて煮る。
+181,動く,うごく,ĐỘNG,"(Tự) Hoạt động, cử động","move, work",スイッチを入れても機械が動かない。
+182,動かす,うごかす,ĐỘNG,"(Tha) Làm chuyển động, vận hành","move, operate",ひどいけがをして体を動かすこともできない。
+183,離れる,はなれる,LY,"(Tự) Cách xa, rời xa","be away from, separated",ふるさとを離れてもう10年になる。
+184,離す,はなす,LY,"(Tha) Tách ra, buông ra","move apart, let go",机を離して並べる。手を離さない。
+185,ぶつかる,ぶつかる,,"(Tự) Va chạm, bất đồng, trùng lịch","collide, disagree",自転車にぶつかってけがをした。意見がぶつかる。
+186,ぶつける,ぶつける,,"(Tha) Đâm vào, tông vào","crash into, hit",車を電柱にぶつけてしまった。
+187,こぼれる,こぼれる,,"(Tự) Tràn ra, chảy ra (nước mắt)","be spilled, overflow",お茶がこぼれてしまった。涙がこぼれた。
+188,こぼす,こぼす,,"(Tha) Làm đổ, làm tràn, rơi lệ","spill, shed tears",コップを倒して水をこぼしてしまった。
+189,ふく,ふく,,"Lau, chùi",wipe,汗をふく。テーブルの上をふく。
+190,片付く,かたづく,PHIẾN PHÓ,"(Tự) Được dọn dẹp, được giải quyết","be tidied, be settled",大掃除をして部屋がかたづいた。問題がかたづいた。
+191,片付ける,かたづける,PHIẾN PHÓ,"(Tha) Dọn dẹp, hoàn tất","tidy up, settle",机の上をかたづける。仕事をかたづける。
+192,包む,つつむ,BAO,"Bọc, gói",wrap,プレゼントをきれいな紙で包む。
+193,張る,はる,TRƯƠNG,"Dán, căng ra","put up, stick",壁にポスターを張る。切手を張る。
+194,無くなる,なくなる,VÔ,"(Tự) Bị mất, hết đi","be lost, disappear",部屋のかぎがなくなってしまった。自信がなくなる。
+195,無くす,なくす,VÔ,"(Tha) Làm mất, đánh mất",lose something,パスポートをなくして困っている。
+196,足りる,たりる,TÚC,(Tự) Đủ,"be sufficient, enough",生活するのに全然足りない。時間が足りなかった。
+197,残る,のこる,TÀN,"(Tự) Còn lại, sót lại","remain, be left over",料理がたくさん残ってしまった。
+198,残す,のこす,TÀN,"(Tha) Để lại, chừa lại",leave behind,ごはんを残してしまった。財産を残す。
+199,腐る,くさる,HỦ,"(Tự) Thiu, thối, mục nát","rot, spoil",腐ったものを食べておなかを壊した。
+200,むける,むける,,"(Tự) Bị tróc, lột ra",peel off,日焼けをして背中の皮がむけた。
+201,むく,むく,,"(Tha) Gọt vỏ, lột vỏ",peel,果物の皮をむく。
+202,滑る,すべる,HOẠT,"(Tự) Trượt, trơn trượt","skate, slip",雨の日は道がすべりやすい。
+203,積もる,つもる,TÍCH,"(Tự) Tích tụ, chất đống (tuyết/bụi)","accumulate, pile up",きのう降った雪が積もっている。
+204,積む,つむ,TÍCH,"(Tha) Chồng lên, tích lũy, chất hàng","pile, load, accumulate",車に荷物を積む。経験を積む。
+205,空く,あく,KHÔNG,"(Tự) Trống rỗng, thủng, rảnh rỗi","be vacant, open",くつしたに穴が空いた。席が空く。土曜日なら空いている。
+206,空ける,あける,KHÔNG,"(Tha) Đục lỗ, để trống, chừa thời gian","open a hole, vacate",かべに穴を空ける。席を空ける。
+207,下がる,さがる,HẠ,"(Tự) Hạ xuống, lùi lại","go down, step back",熱が下がる。白線の内側に下がる。
+208,下げる,さげる,HẠ,"(Tha) Hạ thấp, dọn đĩa","lower, take away",値段を下げる。お皿をお下げする。
+209,冷える,ひえる,LÃNH,"(Tự) Lạnh đi, nguội lạnh","be chilled, cool down",手足が冷えてしまった。ジュースが冷える。
+210,冷やす,ひやす,LÃNH,"(Tha) Làm lạnh, bình tĩnh lại","chill, cool down",果物を冷やす。頭を冷やす。
+211,冷める,さめる,LÃNH,"(Tự) Nguội đi, mất hứng","get cold, lose passion",この料理は冷めるとおいしくない。気持ちが冷める。
+212,冷ます,さます,LÃNH,(Tha) Làm nguội,let cool,お風呂のお湯を少し冷ましてから入ろう。
+213,燃える,もえる,NHIÊN,"(Tự) Cháy, bốc cháy","burn, be passionate",火が燃える。希望に燃えて大学に入った。
+214,燃やす,もやす,NHIÊN,"(Tha) Đốt cháy, nung nấu",burn something,紙を燃やす。ファイトを燃やす。
+215,沸く,わく,PHÍ,"(Tự) Sôi lên, sôi sục (khán phòng)","boil, be excited",湯がわく。会場がわいた。
+216,沸かす,わかす,PHÍ,"(Tha) Đun sôi, hâm nóng","boil, make exciting",湯をわかす。会場をわかした。
+217,鳴る,なる,MINH,"(Tự) Kêu, vang lên","ring, sound, rumble",雷が鳴っている。携帯電話が鳴る。
+218,鳴らす,ならす,MINH,"(Tha) Bấm còi, làm kêu",sound a buzzer/horn,ブザーを鳴らす。
+219,役立つ/役に立つ,やくだつ/やくにたつ,DỊCH LẬP,"(Tự) Có ích, có tác dụng","be useful, helpful",インターネットの情報は勉強に役立つ。
+220,役立てる/役に立てる,やくだてる/やくにたてる,DỊCH LẬP,"(Tha) Ứng dụng, tận dụng",put to use,インターネットの情報を仕事に役立てる。
+221,飾り,かざり,SỨC,Đồ trang trí,decoration,クリスマスの飾りを買った。
+222,遊び,あそび,DU,"Trò chơi, vui chơi","play, game",かくれんぼは子どもの遊びだ。
+223,集まり,あつまり,TẬP,"Cuộc tập hợp, tụ họp",gathering,マンションの住人の集まりがある。
+224,教え,おしえ,GIÁO,"Lời dạy, giáo huấn",teachings,母の教えを今でも思い出す。
+225,踊り,おどり,DŨNG,"Điệu nhảy, khiêu vũ",dance,留学生が各国の踊りを踊った。
+226,思い,おもい,TƯ,"Tình cảm, suy nghĩ","thoughts, feelings",あの人に私の思いが届いた。
+227,考え,かんがえ,KHẢO,"Ý nghĩ, ý tưởng","thought, idea",私にいい考えがある。
+228,片づけ,かたづけ,PHIẾN PHÓ,Sự dọn dẹp,"tidying, cleanup",私は片づけが苦手だ。
+229,手伝い,てつだい,THỦ TRUYỀN,Sự giúp đỡ,"help, assistance",引っ越しの手伝いをする。
+230,働き,はたらき,ĐỘNG,"Chức năng, công lao","function, action",血液の働きの一つは体に栄養を運ぶことだ。
+231,決まり,きまり,QUYẾT,"Quy định, quy tắc","rule, regulation",学校で新しい決まりが作られた。
+232,騒ぎ,さわぎ,TAO,"Sự ồn ào, náo động","commotion, noise",駅前で騒ぎがあった。
+233,知らせ,しらせ,TRI,"Tin tức, thông báo","news, notification",父が入院したという知らせがあった。
+234,頼み,たのみ,LẠI,"Lời nhờ vả, yêu cầu",request,あなたに頼みがあるんです。
+235,疲れ,つかれ,BÌ,Sự mệt mỏi,fatigue,仕事で疲れがたまっている。
+236,違い,ちがい,VI,Sự khác nhau,difference,この二つの違いがわからない。
+237,始め,はじめ,THỦY,"Khởi đầu, ban đầu",beginning,本を始めから終わりまで全部読んだ。
+238,続き,つづき,TỤC,Phần tiếp theo,continuation,早く本の続きが読みたい。
+239,暮れ,くれ,MỘ,"Cuối năm, xế bóng",end of year,年の暮れは忙しい。
+240,行き,いき/ゆき,HÀNH,"Lượt đi, đi về hướng","going, bound for",行きは新幹線、帰りは飛行機だった。
+241,帰り,かえり,QUY,"Lượt về, đường về","return, coming back",会社の行き帰りにコンビニに寄る。
+242,急ぎ,いそぎ,CẤP,"Sự khẩn cấp, gấp rút",urgency,急ぎの仕事が入った。
+243,遅れ,おくれ,TRÌ,"Sự chậm trễ, muộn màng",delay,電車に3分の遅れが出た。
+244,貸し,かし,THẢI,"Sự cho vay, ơn nghĩa","loan, credit",あの人には10万円の貸しがある。
+245,借り,かり,TÁ,"Khoản nợ, vay mượn","debt, borrowing",借りは返さなければならない。
+246,勝ち,かち,THẮNG,Chiến thắng,"victory, win",きょうの試合はAチームの勝ちだった。
+247,負け,まけ,PHỤ,"Thua trận, thất bại","defeat, loss",負けが続いていやになった。
+248,迎え,むかえ,NGHÊNH,Sự đón tiếp,"pick-up, welcome",迎えの車がなかなか来ない。
+249,始まり,はじまり,THỦY,Sự bắt đầu,beginning,映画の始まりに間に合わなかった。
+250,終わり,おわり,CHUNG,Sự kết thúc,"end, finish",夏休みはもうすぐ終わりだ。
+251,戻り,もどり,LỆ,"Sự quay lại, trở về",return,きょうの戻りは3時ごろになります。
+252,別れ,わかれ,BIỆT,"Sự chia tay, ly biệt","parting, farewell",日本では3月は別れの季節だ。
+253,喜び,よろこび,HỈ,"Niềm vui, hạnh phúc","joy, delight",優勝できて、喜びでいっぱいだ。
+254,楽しみ,たのしみ,LẠC,"Niềm vui thích, mong chờ","pleasure, anticipation",来週のパーティーが楽しみだ。
+255,笑い,わらい,TIẾU,Tiếng cười,"laughter, smile",歌手の冗談で会場に笑いが起きた。
+256,驚き,おどろき,KINH,Sự kinh ngạc,"surprise, astonishment",この大きな家が100万円とは驚きだ。
+257,怒り,いかり,NỘ,"Cơn giận, sự tức giận","anger, wrath",殺人のニュースに怒りを感じた。
+258,悲しみ,かなしみ,BI,"Nỗi buồn, đau thương","sadness, grief",愛犬を亡くした悲しみが消えない。
+259,幸せな,しあわせな,HẠNH,Hạnh phúc,happy,幸せな人生を過ごす。
+260,得意な,とくいな,ĐẮC Ý,"Giỏi, đắc ý, sở trường","good at, proud",彼女は料理が得意だ。
+261,苦手な,にがてな,KHỔ THỦ,"Kém, không giỏi, sợ/ngại","weak at, uncomfortable with",私は数学が苦手だ。
+262,熱心な,ねっしんな,NHIỆT TÂM,"Nhiệt tình, hăng hái","enthusiastic, eager",彼女は子どもの教育に熱心だ。
+263,夢中な,むちゅうな,MỘNG TRUNG,"Say mê, mê mẩn","absorbed, crazy about",子どものころ漫画に夢中になった。
+264,退屈な,たいくつな,THOÁI KHUẤT,"Nhàm chán, buồn tẻ","boring, tedious",きょうは何もすることがなくて退屈だ。
+265,健康な,けんこうな,KIỆN KHANG,"Khỏe mạnh, lành mạnh",healthy,心も体も健康な子どもを育てたい。
+266,苦しい,くるしい,KHỔ,"Đau đớn, khổ cực, khó thở","painful, hard",息が苦しい。苦しい時代を生きてきた。
+267,平気な,へいきな,BÌNH KHÍ,"Bình thản, dửng dưng","calm, unfazed",彼女は悪口を言われても平気な顔をしている。
+268,悔しい,くやしい,HỐI,"Tiếc nuối, cay cú","frustrating, regrettable",1点差で試合に負けて悔しい思いをした。
+269,うらやましい,うらやましい,,"Ghen tị, thèm muốn","envious, jealous",才能の豊かな人がうらやましい。
+270,かゆい,かゆい,,Ngứa,itchy,蚊に刺されて首がかゆい。
+271,おとなしい,おとなしい,,"Hiền lành, trầm, nhã nhặn","quiet, gentle",うちの犬はおとなしい。
+272,我慢強い,がまんづよい,NGÃ MẠN CƯỜNG,"Kiên trì, nhẫn nại","persevering, patient",がまん強い性格。
+273,正直な,しょうじきな,CHÍNH TRỰC,"Chính trực, thật thà",honest,彼は正直な人だからうそをつけない。
+274,けちな,けちな,,"Keo kiệt, bủn xỉn","stingy, cheap",あの人はとてもけちだ。
+275,わがままな,わがままな,,"Ích kỷ, bướng bỉnh",selfish,わがままな行動。彼女はわがままだ。
+276,積極的な,せっきょくてきな,TÍCH CỰC ĐÍCH,"Tích cực, chủ động","active, positive",日本語を身につけるため積極的に話す。
+277,消極的な,しょうきょくてきな,TIÊU CỰC ĐÍCH,"Tiêu cực, thụ động","passive, reluctant",首相は教育問題に消極的だ。
+278,満足な,まんぞくな,MÃN TÚC,"Hài lòng, thỏa mãn, đầy đủ","satisfied, adequate",今の生活に十分満足している。
+279,不満な,ふまんな,BẤT MÃN,"Bất mãn, không hài lòng",dissatisfied,この仕事に不満な点はない。
+280,不安な,ふあんな,BẤT AN,"Lo lắng, bất an","anxious, uneasy",悪い病気ではないかと不安だ。
+281,大変な,たいへんな,ĐẠI BIẾN,"Vất vả, khủng khiếp","tough, awful, terrible",きのうは宿題が多くて大変だった。
+282,無理な,むりな,VÔ LÝ,"Vô lý, quá sức, ép buộc","impossible, unreasonable",三日で論文を書くのはとても無理だ。
+283,不注意な,ふちゅういな,BẤT CHÚ Ý,"Bất cẩn, sơ suất",careless,不注意なミスが多くなる。
+284,楽な,らくな,LẠC,"Dễ chịu, thoải mái, nhàn hạ","easy, comfortable",もう少し楽な暮らしがしたい。
+285,面倒な,めんどうな,DIỆN ĐẢO,"Phiền hà, rắc rối",troublesome,入会には面倒な手続きはいりません。
+286,失礼な,しつれいな,THẤT LỄ,"Thất lễ, bất lịch sự","rude, impolite",あいさつもしないなんて失礼な人だ。
+287,当然な,とうぜんな,ĐƯƠNG NHIÊN,"Đương nhiên, dĩ nhiên","natural, reasonable",お金を借りたら返すのが当然だ。
+288,意外な,いがいな,Ý NGOẠI,"Bất ngờ, ngoài dự kiến","unexpected, surprising",彼が結婚しているとは意外だった。
+289,結構な,けっこうな,KẾT CẤU,"Tốt, được, đủ rồi","fine, good, enough",お味はいかがですか。大変けっこうです。
+290,派手な,はでな,PHÁI THỦ,"Lòe loẹt, sặc sỡ, nổi bật","flashy, showy",この服は派手すぎる。
+291,地味な,じみな,ĐẠI VỊ,"Giản dị, mộc mạc, chìm","plain, conservative",あの人は若いのに地味な服ばかり着る。
+292,おしゃれな,おしゃれな,,"Hợp thời trang, sành điệu","stylish, fashionable",彼女はとてもおしゃれだ。
+293,変な,へんな,BIẾN,"Lạ lùng, kỳ quặc","strange, weird",変なメールが届いたのですぐ消した。
+294,不思議な,ふしぎな,BẤT TƯ NGHỊ,"Kỳ diệu, lạ lùng","mysterious, strange",この村には不思議な話が伝わっている。
+295,ましな,ましな,,"Tốt hơn, còn hơn","better, preferable",何もしないよりはやったほうがましだ。
+296,むだな,むだな,VÔ ĐÀ,"Lãng phí, vô ích","wasteful, useless",必要ないものを買ってむだ遣いをした。
+297,自由な,じゆうな,TỰ DO,Tự do,free,自由な時間があまりない。
+298,不自由な,ふじゆうな,BẤT TỰ DO,"Tàn tật, bất tiện","disabled, inconvenient",目や足が不自由な人。不自由な生活。
+299,暖まる/温まる,あたたまる,NOÃN/ÔN,(Tự) Trở nên ấm áp,become warm,お風呂に入ると体が暖まる。
+300,暖める/温める,あたためる,NOÃN/ÔN,"(Tha) Làm ấm, hâm nóng","warm, heat up",スープを温める。
+301,高まる,たかまる,CAO,"(Tự) Tăng cao, dâng cao","rise, increase",政治への関心が高まっている。
+302,高める,たかめる,CAO,(Tha) Nâng cao,"raise, enhance",コミュニケーション能力を高める。
+303,強まる,つよまる,CƯỜNG,(Tự) Mạnh lên,strengthen,雨や風が強まる。
+304,強める,つよめる,CƯỜNG,"(Tha) Làm mạnh thêm, tăng (lửa)","strengthen, intensify",火を強める。自信を強める。
+305,弱まる,よわまる,NHƯỢC,(Tự) Yếu đi,weaken,風の勢力が弱まる。
+306,弱める,よわめる,NHƯỢC,"(Tha) Làm yếu đi, vặn nhỏ (lửa)","weaken, reduce",火を弱めて煮込む。
+307,広まる,ひろまる,QUẢNG,"(Tự) Lan truyền, mở rộng (trừu tượng)",spread,うわさが会社中に広まった。
+308,広める,ひろめる,QUẢNG,"(Tha) Truyền bá, phổ biến","propagate, popularize",西洋文化を日本に広めた。
+309,深まる,ふかまる,THÂM,"(Tự) Sâu sắc thêm, sâu đậm",deepen,二人の愛情が深まった。秋が深まる。
+310,深める,ふかめる,THÂM,"(Tha) Làm sâu sắc thêm, thắt chặt","deepen, cultivate",交流を深め、相互理解を深める。
+311,世話,せわ,THẾ THOẠI,"Sự chăm sóc, giúp đỡ","care, support",ペットの世話をする。お世話になりました。
+312,家庭,かてい,GIA ĐÌNH,"Gia đình, nhà","home, household",あたたかい家庭を持ちたい。
+313,協力,きょうりょく,HIỆP LỰC,"Hợp tác, hiệp lực",cooperation,家族で協力して祖母の介護をした。
+314,感謝,かんしゃ,CẢM TẠ,"Cảm ơn, cảm tạ","gratitude, thank",先輩にとても感謝している。
+315,お礼,おれい,LỄ,"Sự cảm ơn, quà cảm ơn","thanks, token of gratitude",お世話になった方にお礼をする。
+316,お詫び,おわび,SÁ,"Lời xin lỗi, tạ lỗi",apology,迷惑をかけた人におわびをする。
+317,おじぎ,おじぎ,,Cúi chào,bow,お客様にていねいにおじぎをする。
+318,握手,あくしゅ,ÁC THỦ,Bắt tay,handshake,歌手と握手した。
+319,いじわる,いじわる,Ý ĐỊA ÁC,"Xấu tính, trêu chọc","spite, mean",好きだからつい意地悪してしまう。
+320,いたずら,いたずら,,"Nghịch ngợm, trò quậy phá","prank, mischief",いたずらをして先生に怒られた。
+321,節約,せつやく,TIẾT ƯỚC,Tiết kiệm,"saving, economizing",生活費を節約する。電気を節約する。
+322,経営,けいえい,KINH DOANH,"Kinh doanh, quản trị",management,父はスーパーを経営している。
+323,反省,はんせい,PHẢN TỈNH,"Kiểm điểm, tự suy ngẫm","reflection, remorse",1日の反省を日記に書く。
+324,実行,じっこう,THỰC HÀNH,"Thực hành, thực hiện",implementation,作戦を実行する。計画を実行する。
+325,進歩,しんぽ,TIẾN BỘ,Tiến bộ,progress,科学技術が進歩する。
+326,変化,へんか,BIẾN HÓA,"Biến đổi, thay đổi","change, variation",社会が大きく変化する。
+327,発達,はったつ,PHÁT ĐẠT,"Phát triển (thể chất, văn minh)",development,体や心が発達する。文明が発達する。
+328,体力,たいりょく,THỂ LỰC,"Thể lực, sức lực",physical strength,若者の体力が低下している。
+329,出場,しゅつじょう,XUẤT TRƯỜNG,Tham gia thi đấu/trình diễn,participation,オリンピックに出場する。
+330,活躍,かつやく,HOẠT DƯỢC,"Hoạt động tích cực, tỏa sáng","activity, great efforts",運動会で大活躍した。
+331,競争,きょうそう,CẠNH TRANH,"Cạnh tranh, thi đua",competition,どちらがいい成績を取るか友だちと競争した。
+332,応援,おうえん,ỨNG VIỆN,"Cổ vũ, hỗ trợ","cheering, support",自分の学校のチームを応援する。
+333,拍手,はくしゅ,PHÁCH THỦ,Vỗ tay,applause,ステージの歌手に拍手を送る。
+334,人気,にんき,NHÂN KHÍ,"Được yêu thích, nổi tiếng",popularity,彼はクラスで一番人気がある。
+335,うわさ,うわさ,,"Lời đồn, tin đồn",rumor,消費税が上がるといううわさがある。
+336,情報,じょうほう,TÌNH BÁO,Thông tin,information,テレビからいろいろな情報を得る。
+337,交換,こうかん,GIAO HOÁN,"Trao đổi, thay thế","exchange, replacement",名刺や意見を交換する。電池を交換する。
+338,流行,りゅうこう,LƯU HÀNH,"Trào lưu, thịnh hành, lan tràn","fashion, fad, epidemic",若者の間で流行している。インフルエンザの流行。
+339,宣伝,せんでん,TUYÊN TRUYỀN,"Quảng bá, tuyên truyền","publicity, advertising",新商品をテレビで宣伝する。
+340,広告,こうこく,QUẢNG CÁO,Quảng cáo,advertisement,新聞に新製品の広告が載っていた。
+341,注目,ちゅうもく,CHÚ MỤC,"Chú ý, quan sát, theo dõi",attention,有名歌手の結婚が注目を集めている。
+342,通訳,つうやく,THÔNG DỊCH,"Thông dịch, phiên dịch viên","interpretation, interpreter",英語を日本語に通訳する。
+343,翻訳,ほんやく,PHIÊN DỊCH,"Biên dịch, dịch sách",translation,小説を英語に翻訳する。
+344,伝言,でんごん,TRUYỀN NGÔN,"Tin nhắn, lời nhắn",message,留守番電話に伝言を残す。
+345,報告,ほうこく,BÁO CÁO,Báo cáo,report,学校に試合の結果を報告する。
+346,録画,ろくが,LỤC HỌA,"Ghi hình, thu video",video recording,テレビ番組をビデオに録画する。
+347,混雑,こんざつ,HỖN TẠP,"Tắc nghẽn, đông đúc","crowding, congestion",デパートは大勢の人で混雑している。
+348,渋滞,じゅうたい,SÁP TRỆ,"Kẹt xe, tắc đường",traffic jam,道路が渋滞していて会議に遅刻した。
+349,衝突,しょうとつ,XUNG ĐỘT,"Va chạm, đâm xe, xung đột ý kiến","collision, clash",バスがトラックと衝突した。意見の衝突。
+350,被害,ひがい,BỊ HẠI,Thiệt hại,"damage, harm",台風で大きな被害が出る。
+351,事故,じこ,SỰ CỐ,"Sự cố, tai nạn",accident,警察が事故の原因を調べている。
+352,事件,じけん,SỰ KIỆN,"Vụ án, sự việc rắc rối","incident, case",近所で事件があった。
+353,故障,こしょう,CỐ CHƯỚNG,"Hỏng hóc, sự cố máy móc","breakdown, trouble",洗たく機が故障した。
+354,修理,しゅうり,TU LÝ,Sửa chữa,repair,パソコンを修理に出した。
+355,停電,ていでん,ĐÌNH ĐIỆN,"Mất điện, cúp điện","blackout, power outage",雷が落ちて停電した。
+356,調子,ちょうし,ĐIỀU TỬ,"Tình trạng, phong độ, giọng điệu","condition, tone",体の調子がいい。調子に乗る。
+357,緊張,きんちょう,KHẨN TRƯƠNG,"Căng thẳng, hồi hộp","nervousness, tension",面接では緊張してうまく話せなかった。
+358,自信,じしん,TỰ TÍN,Tự tin,confidence,体力に自信がある。もっと自信を持つ。
+359,自慢,じまん,TỰ MÃN,"Tự hào, khoe khoang","pride, boast",自慢の料理を作る。
+360,感心,かんしん,CẢM TÂM,"Ngưỡng mộ, khâm phục, đáng khen",admiration,チンさんの進歩の速さに感心した。
+361,感動,かんどう,CẢM ĐỘNG,"Cảm động, xúc động",being moved/touched,パラリンピックを見て感動した。
+362,興奮,こうふん,HƯNG PHẤN,"Hưng phấn, phấn khích",excitement,観客たちは興奮して大声を出した。
+363,感想,かんそう,CẢM TƯỞNG,"Cảm tưởng, nhận xét","impression, thought",映画の感想を述べる。
+364,予想,よそう,DỰ TƯỞNG,Dự đoán,"forecast, prediction",選挙の結果を予想する。
+365,専門,せんもん,CHUYÊN MÔN,Chuyên môn,"specialty, major",私の専門は言語学です。
+366,研究,けんきゅう,NGHIÊN CỨU,Nghiên cứu,"research, study",大学で日本の政治を研究している。
+367,調査,ちょうさ,ĐIỀU TRA,"Điều tra, khảo sát","investigation, survey",学生の希望を調査する。
+368,原因,げんいん,NGUYÊN NHÂN,Nguyên nhân,cause,事故の原因を調べる。
+369,結果,けっか,KẾT QUẢ,Kết quả,result,努力した結果、できるようになった。
+370,解決,かいけつ,GIẢI QUYẾT,Giải quyết,"solution, resolution",トラブルを解決する。問題が解決した。
+371,確認,かくにん,XÁC NHẬN,"Xác nhận, kiểm tra lại",confirmation,間違いがないか確認する。
+372,利用,りよう,LỢI DỤNG,"Sử dụng, tận dụng, lợi dụng","use, utilization",通学に電車を利用する。
+373,理解,りかい,LÝ GIẢI,"Hiểu, thấu hiểu",understanding,内容を深く理解する。
+374,発見,はっけん,PHÁT KIẾN,"Phát hiện, tìm ra",discovery,新しい種類の動物を発見した。
+375,発明,はつめい,PHÁT MINH,Phát minh,invention,ベルは電話を発明した。
+376,関係,かんけい,QUAN HỆ,"Quan hệ, liên quan","relationship, relation",先輩と後輩の関係。私には関係がない。
+377,団体,だんたい,ĐOÀN THỂ,"Đoàn thể, tập thể","group, organization",博物館で団体のチケットを買う。
+378,選挙,せんきょ,TUYỂN CỬ,Bầu cử,election,選挙で市長を選ぶ。
+379,税金,ぜいきん,THUẾ KIM,"Thuế, tiền thuế",tax,年度末に税金を払う。
+380,責任,せきにん,TRÁCH NHIỆM,Trách nhiệm,responsibility,倒産の責任をとって辞めた。
+381,書類,しょるい,THƯ LOẠI,"Giấy tờ, tài liệu","documents, papers",留学の手続きに必要な書類。
+382,題名,だいめい,ĐỀ DANH,"Nhan đề, tiêu đề",title,作品に題名をつける。
+383,条件,じょうけん,ĐIỀU KIỆN,Điều kiện,"condition, terms",採用の条件を確認する。
+384,締め切り,しめきり,ĐẾ THIẾT,"Hạn chót, deadline",deadline,レポートの締め切りは30日です。
+385,期間,きかん,KỲ GIAN,"Thời kỳ, khoảng thời gian","period, term",工事期間は12月1日から3日までです。
+386,倍,ばい,BỘI,"Gấp bội, lần (gấp đôi...)","times, double",太陽の大きさは地球の約100倍だ。
+387,くじ,くじ,,"Xổ số, bốc thăm","lottery, raffle",くじを引いたらテレビが当たった。
+388,近道,ちかみち,CẬN ĐẠO,Đường tắt,shortcut,遅刻しそうなので近道を通る。
+389,中心,ちゅうしん,TRUNG TÂM,Trung tâm,center,街の中心。仕事中心の生活。
+390,辺り,あたり,BIÊN,"Vùng lân cận, khoảng chừng","neighborhood, around",この辺りは昔は林だった。
+391,周り/回り,まわり,CHU/HỒI,"Xung quanh, chu vi","surroundings, circumference",池の周りを歩く。周りの人と仲良くする。
+392,穴,あな,HUYỆT,"Cái hố, lỗ thủng",hole,地面に穴を掘る。壁に穴をあける。
+393,列,れつ,LIỆT,"Hàng, dãy","line, row",入り口の前に長い列ができていた。
+394,幅,はば,PHÚC,"Chiều rộng, phạm vi","width, range",道の幅が広い。交際のはばが広い。
+395,範囲,はんい,PHẠM VI,Phạm vi,"scope, range",試験の範囲。趣味の範囲が広い。
+396,内容,ないよう,NỘI DUNG,Nội dung,content,このレポートは内容がよい。
+397,中身,なかみ,TRUNG THÂN,"Bên trong, ruột, bản chất","contents, interior",箱を開けて中身を見る。
+398,特徴,とくちょう,ĐẶC TRƯNG,"Đặc trưng, nét nổi bật","feature, characteristic",彼女は特徴のある顔をしている。
+399,普通,ふつう,PHỔ THÔNG,"Bình thường, thông thường","ordinary, normal",普通は会社員は昼間に働く。
+400,当たり前,あたりまえ,ĐƯƠNG TIỀN,"Hiển nhiên, đương nhiên","natural, obvious",そんなことをされたら怒るのが当たり前だ。
+401,偽,にせ,NGỤY,"Hàng giả, giả mạo","fake, imitation",にせの銀行員にだまされた。
+402,別,べつ,BIỆT,"Khác nhau, riêng biệt","different, separate",恋愛と結婚は別だ。別に連絡する。
+403,国籍,こくせき,QUỐC TỊCH,Quốc tịch,nationality,アメリカに住んでいるが国籍は日本だ。
+404,東洋,とうよう,ĐÔNG DƯƠNG,Phương Đông,"the East, Orient",東洋の文化と西洋の文化を比べる。
+405,西洋,せいよう,TÂY DƯƠNG,Phương Tây,"the West, Occident",西洋料理を習う。
+406,国際,こくさい,QUỐC TẾ,Quốc tế,international,トラブルが国際問題に発展した。
+407,自然,しぜん,TỰ NHIÊN,"Tự nhiên, thiên nhiên","nature, natural",自然の中で過ごす。自然な態度。
+408,景色,けしき,CẢNH SẮC,"Cảnh sắc, phong cảnh","scenery, landscape",山からの景色がすばらしかった。
+409,宗教,しゅうきょう,TÔN GIÁO,Tôn giáo,religion,世界にはいろいろな宗教がある。
+410,愛,あい,ÁI,"Tình yêu, yêu thương",love,家族を愛している。神への愛。
+411,届く,とどく,GIỚI,"(Tự) Tới nơi, với tới","be delivered, reach",父から手紙が届いた。本棚に手が届かない。
+412,届ける,とどける,GIỚI,"(Tha) Gửi đến, báo cáo","deliver, notify",隣に旅行のおみやげを届けた。
+413,かく,かく,,"Gãi, toát mồ hôi, ngáy, xấu hổ","scratch, sweat, snore",頭をかく。汗をかく。恥をかく。
+414,つかむ,つかむ,,"Nắm bắt, tóm lấy, chớp thời cơ","grab, grasp",腕をつかまれた。チャンスをつかむ。
+415,握る,にぎる,ÁC,"Nắm chặt, nắm tay","grip, squeeze",母親の手を強く握った。
+416,押さえる,おさえる,ÁP,"Giữ chặt, ấn đè, bịt","hold down, press",おなかを押さえて座っている。
+417,近づく,ちかづく,CẬN,"(Tự) Đến gần, cận kề","approach, draw near",目的地に近づいてきた。春休みが近づく。
+418,近づける,ちかづける,CẬN,"(Tha) Đưa lại gần, kéo gần",bring closer,車を道のわきに近づける。
+419,合う,あう,HỢP,"(Tự) Vừa vặn, hợp nhau, khớp","match, fit, suit",意見が合う。このスーツに合うネクタイ。
+420,合わせる,あわせる,HỢP,"(Tha) Hợp nhất, chỉnh cho khớp","combine, adjust",みんなで力を合わせる。時計の時間を合わせる。
+421,当たる,あたる,ĐƯƠNG,"(Tự) Trúng, va trúng, đúng (dự đoán)","hit, be right, win",ボールが当たる。宝くじが当たる。
+422,当てる,あてる,ĐƯƠNG,"(Tha) Đánh trúng, đoán trúng, áp vào","hit, guess right, apply",クイズの答えを当てる。ひたいに手を当てる。
+423,比べる,くらべる,TỶ,So sánh,compare,東京と大阪の面積を比べる。
+424,似合う,にあう,TỰ HỢP,"(Tự) Hợp, xứng đôi","look good on, suit",彼女は着物がよく似合う。
+425,似る,にる,TỰ,"(Tự) Giống, tương tự","resemble, look like",彼女は母親によく似ている。
+426,似せる,にせる,TỰ,"(Tha) Bắt chước, nhái theo","imitate, copy",アイドルに髪型を似せる。
+427,分かれる,わかれる,PHÂN,"(Tự) Chia ra, rẽ nhánh, bất đồng","be divided, split",トイレは男性用と女性用に分かれている。
+428,分ける,わける,PHÂN,"(Tha) Chia, phân chia, rẽ lối","divide, split",財産を子どもに分ける。人ごみを分けて進む。
+429,足す,たす,TÚC,"Cộng vào, thêm vào",add,味が薄いので塩を足した。4たす6は10だ。
+430,引く,ひく,DẪN,"Kéo, trừ, tra cứu, dắt","pull, subtract, consult",カーテンを引く。10ひく2は8。辞書を引く。
+431,増える,ふえる,TĂNG,(Tự) Tăng lên,increase,貯金が増える。体重が増える。
+432,増やす,ふやす,TĂNG,(Tha) Làm tăng thêm,"increase, add to",貯金を増やす。
+433,減る,へる,GIẢM,(Tự) Giảm đi,decrease,人口が減る。
+434,減らす,へらす,GIẢM,"(Tha) Cắt giảm, giảm bớt","reduce, decrease",体重を減らす。
+435,変わる,かわる,BIẾN,"(Tự) Thay đổi, đổi thay",change,季節が変わる。信号が赤に変わった。
+436,変える,かえる,BIẾN,"(Tha) Đổi, biến đổi","change, alter",髪型を変える。人生を変える。
+437,替わる/代わる/換わる,かわる,THẾ/ĐẠI/HOÁN,"(Tự) Thay thế, đổi chỗ","be replaced, substitute",4月に店長がかわった。
+438,替える/代える/換える,かえる,THẾ/ĐẠI/HOÁN,"(Tha) Đổi chác, thay thế","replace, exchange",千円札を百円玉にかえてもらった。
+439,返る,かえる,PHẢN,"(Tự) Trở về, được trả lại","return, come back",友だちに貸したお金が返ってきた。
+440,返す,かえす,PHẢN,(Tha) Trả lại,return something,図書館に本を返す。
+441,譲る,ゆずる,NHƯỢNG,"Nhường nhịn, chuyển nhượng","give up, yield, transfer",電車でお年寄りに席をゆずる。
+442,助かる,たすかる,TRỢ,"(Tự) Thoát nạn, may mắn, đỡ quá","survive, be helped",飛行機が落ちたが3人が助かった。コピーしてくれて助かる。
+443,助ける,たすける,TRỢ,"(Tha) Cứu giúp, giúp đỡ","save, help",川に落ちた子どもを助けた。
+444,いじめる,いじめる,,"Bắt nạt, trêu chọc","bully, tease",弟をいじめる。
+445,だます,だます,,"Lừa gạt, lừa dối","deceive, cheat",独身だとだまして付き合っていた。
+446,盗む,ぬすむ,ĐẠO,"Ăn cắp, trộm",steal,泥棒にお金をぬすまれた。
+447,刺さる,ささる,THÍCH,"(Tự) Đâm vào, găm vào","be stuck, prick",指にとげが刺さって痛い。
+448,刺す,さす,THÍCH,"(Tha) Đâm, chích, châm","stab, pierce, sting",指にとげを刺してしまった。蜂に刺される。
+449,殺す,ころす,SÁT,"Giết, tiêu diệt",kill,ゴキブリをスリッパでたたいて殺した。
+450,隠れる,かくれる,ẨN,"(Tự) Trốn, ẩn nấp, khuất","hide, conceal oneself",犯人は空き家に隠れていた。月が雲に隠れる。
+451,隠す,かくす,ẨN,"(Tha) Giấu, che giấu","hide, conceal",お金を引き出しの奥に隠した。
+452,埋まる,うまる,MAI,"(Tự) Bị chôn vùi, lấp đầy","be buried, filled",山がくずれて家が埋まってしまった。
+453,埋める,うめる,MAI,"(Tha) Chôn, lấp kín","bury, fill",穴を掘ってごみを埋めた。
+454,囲む,かこむ,VI,"Bao quanh, vây quanh","surround, enclose",テーブルを囲んで座る。日本は海に囲まれている。
+455,詰まる,つまる,CẬT,"(Tự) Nhồi nhét đầy, nghẹt (mũi/ống)","be packed, clogged",かばんに荷物がつまっている。鼻がつまる。
+456,詰める,つめる,CẬT,"(Tha) Nhét vào, rút ngắn (khoảng cách)","pack, stuff, shorten",かばんに荷物をつめる。前の車との距離をつめる。
+457,開く,ひらく,KHAI,"(Tự/Tha) Mở (cửa, sách, hoa, cuộc họp)","open, bloom, hold",花が開く。本を開く。会議を開く。
+458,閉じる,とじる,BẾ,"(Tự/Tha) Đóng (mắt, sách, cửa)","close, shut",本を閉じる。目を閉じる。店を閉じる。
+459,飛ぶ,とぶ,PHI,"(Tự) Bay, bắn tóe, bay biến (dữ liệu)","fly, splash, jump",鳥が空を飛ぶ。パソコンのデータが飛んだ。
+460,飛ばす,とばす,PHI,"(Tha) Phóng bay, bắn bay, nhảy cóc (dòng)","let fly, blow off, skip",紙飛行機を飛ばす。1行飛ばして読んだ。
+461,振る,ふる,CHẤN,"Vẫy, rắc, từ chối (bồ đá)","wave, sprinkle, reject",手を振る。肉に塩を振る。彼女に告白したがふられた。
+462,めくる,めくる,,"Lật, giở (trang sách, lịch)","turn over, flip",カレンダーのページをめくる。
+463,見かける,みかける,KIẾN QUẢI,"Tình cờ thấy, bắt gặp","happen to see, spot",街で昔の友だちを見かけた。
+464,確かめる,たしかめる,XÁC,"Xác nhận, làm rõ","check, make sure",相手に電話して確かめた。
+465,試す,ためす,THÍ,"Thử, thử nghiệm","try, test",洋服を試着してみる。自分の実力を試す。
+466,繰り返す,くりかえす,SÀO PHẢN,Lặp đi lặp lại,repeat,同じ失敗を繰り返してはいけません。
+467,訳す,やくす,DỊCH,Dịch thuật,translate,英語を日本語に訳す。
+468,行う,おこなう,HÀNH,"Tiến hành, tổ chức","carry out, perform",試験やイベントを行う。
+469,間違う,まちがう,GIAN VI,"(Tự/Tha) Sai, nhầm lẫn","be incorrect, mistake",この計算は間違っている。簡単な計算を間違えた。
+470,間違える,まちがえる,GIAN VI,"(Tha) Làm sai, nhầm lẫn với cái khác","make a mistake, confuse",塩とさとうを間違えて鍋に入れた。
+471,許す,ゆるす,HỨA,"Tha thứ, cho phép","forgive, permit",相手が謝ったので許してあげた。
+472,慣れる,なれる,QUÁN,"(Tự) Quen với, thuần phục",get used to,日本の生活に慣れた。
+473,慣らす,ならす,QUÁN,"(Tha) Khởi động, làm cho quen/thuần hóa","warm up, tame",体を慣らしてからプールに入る。
+474,立つ,たつ,LẬP,"(Tự) Đứng, dựng lên","stand, be built",名前を呼ばれたら立ってください。看板が立っている。
+475,立てる,たてる,LẬP,(Tha) Dựng đứng lên,stand something up,屋根の上にアンテナを立てる。
+476,建つ,たつ,KIẾN,(Tự) Được xây dựng,"be built, constructed",家の前にマンションが建った。
+477,建てる,たてる,KIẾN,(Tha) Xây dựng (nhà cửa),"build, construct",都心に家を建てる。
+478,育つ,そだつ,DỤC,"(Tự) Lớn lên, phát triển","grow up, be trained",子どもが元気に育つ。
+479,育てる,そだてる,DỤC,"(Tha) Nuôi nấng, trồng trọt, đào tạo","raise, cultivate, train",5人の子どもを育てた。人材を育てる。
+480,生える,はえる,SANH,"(Tự) Mọc (răng, tóc, rêu, mốc)","grow, sprout",ひげや歯が生える。かびが生える。
+481,生やす,はやす,SANH,"(Tha) Để mọc, nuôi (râu)",grow a beard,ひげを生やす。
+482,汚れる,よごれる,Ô,"(Tự) Bị bẩn, ô nhiễm","get dirty, contaminated",空気の汚れたところには住みたくない。
+483,汚す,よごす,Ô,"(Tha) Làm bẩn, làm dơ","make dirty, pollute",泥遊びをして服を汚した。
+484,壊れる,こわれる,HOẠI,"(Tự) Bị hỏng, đổ vỡ","break, be broken",家具が壊れる。時計が壊れた。
+485,壊す,こわす,HOẠI,"(Tha) Làm hỏng, phá hủy, hại (sức khỏe)","break, ruin",おもちゃを壊す。飲み過ぎて体を壊した。
+486,割れる,われる,CÁT,"(Tự) Bị vỡ, rạn nứt, chia rẽ","break, split",ガラスが割れる。みんなの意見が割れる。
+487,割る,わる,CÁT,"(Tha) Đập vỡ, chia rẽ, làm phép chia","break, divide",卵を割ってボウルに入れる。10割る5は2。
+488,折れる,おれる,CHIẾT,"(Tự) Bị gãy, gập lại","break, snap, be folded",強い風で枝が折れた。
+489,折る,おる,CHIẾT,"(Tha) Bẻ gãy, gập giấy","break, bend, fold",スキーで足の骨を折った。便箋を三つに折る。
+490,破れる,やぶれる,PHÁ,"(Tự) Bị rách, thủng, tan vỡ","be torn, broken",紙や布が破れる。
+491,破る,やぶる,PHÁ,"(Tha) Xé rách, phá vỡ (kỷ lục/lời hứa)","tear, break a promise/record",約束を破る。水泳の世界記録を破った。
+492,曲がる,まがる,KHÚC,"(Tự) Rẽ, quẹo, uốn cong","bend, turn",この角を右に曲がる。腰が曲がったおばあさん。
+493,曲げる,まげる,KHÚC,"(Tha) Uốn cong, bẻ cong","bend, curve",ひざや腰を曲げる。針金を曲げる。
+494,外れる,はずれる,NGOẠI,"(Tự) Tuột ra, bung ra, trật (dự đoán)","come off, miss",ボタンが外れる。宝くじが外れた。
+495,外す,はずす,NGOẠI,"(Tha) Tháo ra, mở ra, loại trừ","take off, remove",メガネを外す。メンバーから外す。
+496,揺れる,ゆれる,DAO,"(Tự) Rung lắc, đu đưa, dao động","shake, sway",地震で地面が大きく揺れた。気持ちが揺れる。
+497,揺らす,ゆらす,DAO,"(Tha) Rung lắc, đung đưa","shake, sway",ブランコを揺らして遊ばせた。
+498,流れる,ながれる,LƯU,"(Tự) Chảy, trôi dạt, lan truyền","flow, stream, spread",川が流れている。音楽が流れる。うわさが流れる。
+499,流す,ながす,LƯU,"(Tha) Xả nước, cho trôi, phát (nhạc)","flow, shed tears, play music",トイレの水を流す。涙を流す。音楽を流す。
+500,濡れる,ぬれる,NHU,(Tự) Bị ướt,get wet,雨に濡れて風邪をひいた。
+501,濡らす,ぬらす,NHU,(Tha) Làm ướt,"wet, make wet",水をこぼして服を濡らしてしまった。
+502,迷う,まよう,MÊ,"(Tự) Lạc đường, phân vân","get lost, hesitate",道に迷う。日本で就職するか迷っている。
+503,悩む,なやむ,NÃO,"(Tự) Trăn trở, buồn phiền, khổ tâm","be troubled, suffer",就職するか進学するか悩んでいる。腰痛で悩む。
+504,慌てる,あわてる,HOẢNG,"(Tự) Hoảng hốt, cuống cuồng","panic, hurry",遅れそうになって慌てて家を出た。
+505,覚める,さめる,GIÁC,"(Tự) Tỉnh giấc, tỉnh rượu","wake up, sober up",夜中に目が覚めた。酔いが覚める。
+506,覚ます,さます,GIÁC,"(Tha) Đánh thức, làm tỉnh táo","wake up, sober up",目を覚ますと10時だった。酔いを覚ます。
+507,眠る,ねむる,MIÊN,(Tự) Ngủ,sleep,緊張してよく眠れなかった。
+508,祈る,いのる,KỲ,"Cầu nguyện, cầu chúc","pray, wish",家族の健康を神に祈った。
+509,祝う,いわう,CHÚC,"Chúc mừng, ăn mừng","celebrate, congratulate",新年を祝って乾杯した。
+510,感じる,かんじる,CẢM,"Cảm thấy, cảm nhận","feel, sense",寒さを感じる。責任を感じている。
+511,クラスメート,クラスメート,,Bạn cùng lớp,classmate,クラスメートと仲よくする。
+512,グループ,グループ,,"Nhóm, đoàn",group,3人のグループで旅行をする。
+513,チーム,チーム,,"Đội, nhóm thi đấu",team,私たちのチームが勝った。チームを組む。
+514,プロフェッショナル/プロ,プロフェッショナル/プロ,,Chuyên nghiệp,"professional, pro",プロのサッカー選手になりたい。
+515,アマチュア/アマ,アマチュア/アマ,,Nghiệp dư,amateur,アマチュアの作品とは思えない。
+516,トレーニング,トレーニング,,"Tập luyện, rèn luyện",training,勝つためには毎日のトレーニングが必要だ。
+517,マッサージ,マッサージ,,"Mát-xa, xoa bóp",massage,肩をマッサージしてもらう。
+518,アドバイス,アドバイス,,"Lời khuyên, tư vấn",advice,後輩に仕事のやり方についてアドバイスをする。
+519,アイデア/アイディア,アイデア/アイディア,,"Ý tưởng, sáng kiến",idea,いいアイデアが浮かんだ。
+520,トップ,トップ,,"Đứng đầu, vị trí cao nhất","top, best",彼はクラスでトップの成績だ。
+521,スピード,スピード,,Tốc độ,speed,もう少しスピードを上げてください。
+522,ラッシュ,ラッシュ,,"Giờ cao điểm, dồn dập",rush hour,帰省ラッシュでチケットがとりにくい。
+523,バイク,バイク,,"Xe máy, xe mô tô","motorcycle, motorbike",バイクに乗って会社へ行く。
+524,ヘルメット,ヘルメット,,Mũ bảo hiểm,helmet,バイクに乗るときはヘルメットをかぶる。
+525,コンタクトレンズ/コンタクト,コンタクトレンズ/コンタクト,,Kính áp tròng,contact lens,コンタクトを入れる/はずす。
+526,ガラス,ガラス,,"Thủy tinh, kính",glass,窓ガラスをふいてきれいにする。
+527,プラスチック,プラスチック,,"Nhựa dẻo, plastic",plastic,プラスチック製品を生ごみの中に入れないでください。
+528,ベランダ,ベランダ,,"Ban công, hiên nhà","balcony, veranda",ベランダに洗たく物を干す。
+529,ペット,ペット,,Thú cưng,pet,アパートなのでペットが飼えない。
+530,ベンチ,ベンチ,,"Ghế dài, ghế công viên",bench,公園のベンチで休む。
+531,デザイン,デザイン,,Thiết kế,design,このドレスはデザインもいい。
+532,バーゲンセール/バーゲン,バーゲンセール/バーゲン,,"Bán hạ giá, giảm giá",bargain sale,デパートで今バーゲンセールをしている。
+533,パート,パート,,"Việc làm bán thời gian, part-time",part-time job,母は週三日、スーパーでパートをしている。
+534,コンビニエンスストア/コンビニ,コンビニエンスストア/コンビニ,,Cửa hàng tiện lợi,convenience store,コンビニに寄って雑誌を買った。
+535,レジ,レジ,,"Quầy thu ngân, máy tính tiền",cash register,スーパーでレジのアルバイトをしている。
+536,レシート,レシート,,"Hóa đơn, biên lai",receipt,レジでお金を払ってレシートを受け取る。
+537,インスタント,インスタント,,"Ăn liền, tức thì",instant,インスタント食品は便利だ。
+538,ファストフード,ファストフード,,Thức ăn nhanh,fast food,そばは江戸時代のファストフードだった。
+539,フルーツ,フルーツ,,"Trái cây, hoa quả",fruit,温かいところにはいろいろなフルーツがある。
+540,デザート,デザート,,Món tráng miệng,dessert,デザートにアイスクリームを食べる。
+541,インターネット,インターネット,,Mạng Internet,Internet,インターネットで環境問題について調べた。
+542,チャイム,チャイム,,"Chuông cửa, chuông báo","chime, bell",授業が始まるときチャイムが鳴る。
+543,アナウンス,アナウンス,,Thông báo phát thanh,announcement,電車の中でアナウンスを聞く。
+544,メッセージ,メッセージ,,"Tin nhắn, thông điệp",message,留守番電話にメッセージを残す。
+545,パンフレット,パンフレット,,"Tờ rơi, tờ quảng cáo gấp","pamphlet, brochure",旅行会社でパンフレットをもらってきた。
+546,カード,カード,,Thẻ (ngân hàng/điện thoại),card,クレジットカードで支払う。
+547,インタビュー,インタビュー,,Phỏng vấn (báo chí/truyền thông),interview,勝ったチームの選手にインタビューする。
+548,アンケート,アンケート,,"Phiếu khảo sát, thăm dò ý kiến","questionnaire, survey",アンケートにご協力ください。
+549,データ,データ,,"Dữ liệu, số liệu",data,研究のためにデータを集めている。
+550,パーセント,パーセント,,Phần trăm (%),percent,消費税が10パーセントになる。
+551,濃い,こい,NỒNG,"Đậm, đặc, sẫm màu","dark, strong, thick",色が濃い。濃いコーヒーが好きだ。
+552,薄い,うすい,BẠC,"Nhạt, mỏng, loãng","light, thin, weak",薄い本。味が薄い。
+553,酸っぱい,すっぱい,TOAN,Chua,sour,レモンは酸っぱい。
+554,臭い,くさい,XÚ,"Hôi thối, tanh tưởi","stinky, smelly",納豆はくさいから嫌いだ。
+555,おかしい,おかしい,,"Buồn cười, lạ lùng, bất thường","funny, strange",パソコンの調子がおかしい。おかしいことを言って笑わせる。
+556,かっこいい,かっこいい,,"Đẹp trai, ngầu, phong độ","cool, stylish",あの先輩はかっこいいので人気がある。
+557,うまい,うまい,,"Ngon, giỏi, suôn sẻ","delicious, skillful, good",母は料理がうまい。ビールの味がうまい。
+558,親しい,したしい,THÂN,"Thân thiết, gần gũi","intimate, close",私は田中さんと親しい。
+559,詳しい,くわしい,TƯỜNG,"Chi tiết, tường tận, am hiểu","detailed, knowledgeable",この地図はとても詳しい。彼女は映画に詳しい。
+560,細かい,こまかい,TẾ,"Nhỏ lẻ, chi tiết, tỉ mỉ","fine, small, detailed",新聞の字は細かくて読みにくい。細かいお金。
+561,浅い,あさい,THIỂN,"Nông cạn, chưa sâu",shallow,この川は浅いので子どもが泳いでも危なくない。
+562,固い/硬い,かたい,CỐ/NGẠNH,"Cứng, cứng rắn, chặt chẽ","hard, stiff, firm",このパンはとても固い。固い握手。体が硬い。
+563,ぬるい,ぬるい,ÔN,"Nguội, âm ấm",lukewarm,ぬるいコーヒーはおいしくない。
+564,まぶしい,まぶしい,,"Chói chang, rực rỡ","dazzling, bright",カーテンを開けたら太陽がまぶしかった。
+565,蒸し暑い,むしあつい,CHƯNG THỬ,"Nóng ẩm, oi bức","humid and hot, sultry",日本の夏は蒸し暑い。
+566,清潔な,せいけつな,THANH KHIẾT,"Sạch sẽ, thanh khiết","clean, hygienic",清潔な服を身につける。トイレを清潔にする。
+567,新鮮な,しんせんな,TÂN TIÊN,"Tươi mới, trong lành",fresh,新鮮な魚はおいしい。新鮮な空気を吸う。
+568,豊かな,ゆたかな,PHONG,"Phong phú, giàu có","rich, abundant",豊かな自然。才能が豊かな人。
+569,立派な,りっぱな,LẬP PHÁI,"Đàng hoàng, tráng lệ, đáng nể","fine, splendid, respectable",立派な建物。立派な大人になる。
+570,正確な,せいかくな,CHÍNH XÁC,Chính xác,"accurate, precise",正確な数はわからないが5000人ぐらいだ。
+571,確かな,たしかな,XÁC,"Chắc chắn, xác thực, đích xác","certain, reliable",確かな事実だけを伝える。
+572,重要な,じゅうような,TRỌNG YẾU,Quan trọng,"important, vital",きょうは重要な会議がある。
+573,必要な,ひつような,TẤT YẾU,Cần thiết,necessary,子どもに必要なのは親の温かい愛情だ。
+574,もったいない,もったいない,,"Lãng phí, uổng phí","wasteful, regrettable",まだ着られる服を捨てるのはもったいない。
+575,すごい,すごい,,"Kinh khủng, tuyệt vời","terrific, incredible, great",きのうの台風はすごかった。すごい拍手。
+576,ひどい,ひどい,,"Tồi tệ, thậm tệ, khủng khiếp","terrible, cruel, severe",大勢で一人をいじめるとはひどい。ひどい雨。
+577,激しい,はげしい,KÍCH,"Mãnh liệt, dữ dội","violent, intense",雨や風が激しい。変化が激しい。
+578,そっくりな,そっくりな,,"Giống hệt, y đúc","look-alike, identical",兄は父親に顔も声もそっくりだ。
+579,急な,きゅうな,CẤP,"Đột ngột, gấp gáp, dốc đứng","sudden, urgent, steep",急に歯が痛みだした。急な坂道。
+580,適当な,てきとうな,THÍCH ĐƯƠNG,"Phù hợp, thích hợp, qua loa","suitable, proper, careless",肉を適当な大きさに切る。適当に返事をする。
+581,特別な,とくべつな,ĐẶC BIỆT,Đặc biệt,"special, particular",彼女には音楽家としての特別な才能がある。
+582,完全な,かんぜんな,HOÀN TOÀN,"Hoàn toàn, trọn vẹn","complete, perfect",完全な勝利だった。準備は完全だった。
+583,盛んな,さかんな,THỊNH,"Thịnh vượng, sôi nổi, phổ biến","flourishing, active",私のふるさとは農業が盛んだ。盛んな拍手。
+584,さまざまな,さまざまな,DẠNG,"Nhiều loại, đa dạng","various, diverse",インターネットからさまざまな情報が得られる。
+585,可能な,かのうな,KHẢ NĂNG,"Khả thi, có thể",possible,今まで不可能だったことも可能になった。
+586,不可能な,ふかのうな,BẤT KHẢ NĂNG,"Không thể, bất khả thi",impossible,1か月でこの実験を終わらせるのは不可能だ。
+587,基本的な,きほんてきな,CƠ BẢN ĐÍCH,Cơ bản,"basic, fundamental",パソコンの基本的な使い方はマニュアルにある。
+588,国際的な,こくさいてきな,QUỐC TẾ ĐÍCH,Mang tính quốc tế,international,国際的なアニメフェスティバルが開かれた。
+589,ばらばらな,ばらばらな,,"Rời rạc, rải rác, chia rẽ","scattered, divided",みんなの意見がばらばらで結論が出ない。
+590,ぼろぼろな,ぼろぼろな,,"Rách nát, tơi tả, kiệt quệ","worn-out, ragged",ぼろぼろの服。身も心もぼろぼろになった。
+591,非常に,ひじょうに,PHI THƯỜNG,"Rất, vô cùng (văn viết)","very, extremely",これは非常に高価なものです。
+592,大変に,たいへんに,ĐẠI BIẾN,"Rất, vô cùng","terribly, greatly",夕方は電車が大変混むので疲れる。
+593,ほとんど,ほとんど,,"Hầu như, phần lớn","mostly, hardly",準備はほとんどできた。ほとんどわからない。
+594,大体,だいたい,ĐẠI THỂ,"Đại khái, khoảng chừng","mostly, about",きょうの試験は大体できた。
+595,かなり,かなり,,"Khá là, tương đối","fairly, quite",薬を飲んだらかなりよくなった。
+596,ずいぶん,ずいぶん,TÙY PHÂN,"Khá nhiều, đáng kể (vượt mong đợi)","considerably, remarkably",日本語がずいぶん上手になっていた。
+597,けっこう,けっこう,KẾT CẤU,"Khá là, tương đối","pretty, quite",日曜日なのにけっこうすいていた。
+598,大分,だいぶ/だいぶん,ĐẠI PHÂN,"Khá nhiều, phần lớn","mostly, fairly",病気はだいぶよくなった。
+599,もっと,もっと,,"Hơn nữa, thêm nữa",more,もっと大きな声で話してください。
+600,すっかり,すっかり,,"Hoàn toàn, sạch bách","completely, entirely",さくらの花はもうすっかり散ってしまった。
+601,いっぱい,いっぱい,NHẤT BÔI,"Đầy, tràn ngập, no nê","full, fully",会場には子どもたちがいっぱいいた。おなかがいっぱいだ。
+602,ぎりぎり,ぎりぎり,,"Sát nút, vừa vặn khít khao","barely, just in time",走れば9時の電車にぎりぎり間に合う。
+603,ぴったり,ぴったり,,"Vừa khít, chuẩn xác, chấm dứt hẳn","exactly, perfectly",7時ぴったりに目覚ましをセットした。スーツにぴったりだ。
+604,たいてい,たいてい,ĐẠI ĐỂ,"Thông thường, đại để","usually, mostly",日曜日はたいていうちにいます。
+605,同時に,どうじに,ĐỒNG THỜI,"Đồng thời, cùng lúc","simultaneously, at same time",ベルが鳴ると同時にドアが開いた。
+606,前もって,まえもって,TIỀN,"Trước, làm sẵn từ trước","in advance, beforehand",欠席する場合は前もってご連絡します。
+607,すぐに,すぐに,TRỰC,Ngay lập tức,"immediately, right away",チャイムを鳴らすとすぐにドアが開いた。
+608,もうすぐ,もうすぐ,,"Sắp sửa, chuẩn bị",soon,もうすぐ夏休みだ。
+609,突然,とつぜん,ĐỘT NHIÊN,"Đột nhiên, bất thình lình",suddenly,子どもが突然飛び出して来た。
+610,あっという間に,あっというまに,GIAN,"Trong chớp mắt, thoắt cái",in a flash,子どもの成長は早い。あっという間に小学生だ。
+611,いつの間にか,いつのまにか,GIAN,"Lúc nào không hay, không biết từ bao giờ",before one knows,いつの間にか外は暗くなっていた。
+612,しばらく,しばらく,TẠM,"Một lúc, một lát, một dạo",for a while,ただ今窓口が混んでいますので、しばらくお待ちください。
+613,ずっと,ずっと,,"Suốt, hơn hẳn, mãi","all the time, far more",バスより地下鉄で行くほうがずっと速い。
+614,相変わらず,あいかわらず,TƯƠNG BIẾN,"Như thường lệ, vẫn như xưa","as usual, unchanged",あの女優は年を取った今も相変わらずきれいだ。
+615,次々に/と,つぎつぎに/と,THỨ,"Lần lượt, liên tiếp",one after another,新しい商品が次々に発売されている。
+616,どんどん,どんどん,,"Nhanh chóng, dồn dập","steadily, rapidly",体調もよく仕事がどんどん進んだ。
+617,ますます,ますます,ÍCH,"Ngày càng, càng ngày càng",more and more,午後になると雨がますます強くなった。
+618,やっと,やっと,,Cuối cùng thì (sau nỗ lực/chờ đợi),"finally, at last",30分も待って、やっとバスが来た。
+619,とうとう,とうとう,,Cuối cùng thì (kết quả xấu/kết cục),"finally, after all",長い間使っていた洗濯機がとうとう壊れてしまった。
+620,ついに,ついに,CHUNG,Cuối cùng thì (trọng đại),"at long last, in the end",若いころの夢をついに実現することができた。
+621,もちろん,もちろん,VẬT LUẬN,"Tất nhiên, đương nhiên","of course, naturally",マンションを買った。もちろんローンでだ。
+622,やはり/やっぱり,やはり/やっぱり,DẠ PHIẾN,"Quả nhiên, rốt cuộc vẫn","as expected, still",やはりAチームが勝った。予想通りだった。
+623,きっと,きっと,,"Chắc chắn, nhất định","certainly, surely",田中さんはいつも遅刻するから今日もきっと遅れてくる。
+624,ぜひ,ぜひ,THỊ PHI,Nhất định (thể hiện nguyện vọng/lời mời),"by all means, certainly",日本へいらっしゃったらぜひ私の家に泊まってください。
+625,なるべく,なるべく,THÀNH,"Cố gắng hết sức, nếu có thể",as much as possible,なるべく辞書を見ないで読んでみてください。
+626,案外,あんがい,ÁN NGOẠI,"Không ngờ, ngoài dự tính","surprisingly, unexpectedly",きょうは曇っているが、案外暖かい。
+627,もしかすると/もしかしたら,もしかすると/もしかしたら,,"Có lẽ, biết đâu chừng","maybe, possibly",体調が悪いので、もしかしたらあした休むかもしれません。
+628,まさか,まさか,CHÂN,"Không đời nào, chẳng lẽ","no way, impossible",あの二人が離婚するなんてまさか。
+629,うっかり,うっかり,,"Lơ đễnh, vô ý","absent-mindedly, inadvertently",うっかりして砂糖と塩を間違えた。
+630,つい,つい,,"Lỡ, vô tình, buột miệng","involuntarily, unintentionally",禁煙しようと思うが食後につい吸ってしまう。
+631,思わず,おもわず,TƯ,"Bất giác, không kìm được","instinctively, reflexively",夜道で急に肩をたたかれ、思わず「ワーッ」と叫んだ。
+632,ほっと,ほっと,,Thở phào nhẹ nhõm,relieved,試験が終わってほっとした。
+633,いらいら,いらいら,,"Sốt ruột, bực bội","irritated, annoyed",急いでいるのにバスが来なくていらいらした。
+634,のんびり,のんびり,,"Thong thả, thảnh thơi","leisurely, relaxed",温泉へでも行ってのんびりしたい。
+635,実は,じつは,THỰC,"Thực ra là, sự thật là","to tell the truth, actually",きのう言ったことは、実はうそなんです。
+636,読書,どくしょ,ĐỘC THƯ,Đọc sách,reading,趣味は読書だ。休日に読書をする。
+637,演奏,えんそう,DIỄN TẤU,"Biểu diễn, trình diễn nhạc cụ",musical performance,楽器を演奏する。
+638,芸術,げいじゅつ,NGHỆ THUẬT,Nghệ thuật,art,美術、音楽、文学などは芸術の一種だ。
+639,検査,けんさ,KIỂM TRA,"Kiểm tra, xét nghiệm","inspection, medical exam",病院で脳の検査を受けた。
+640,血液,けつえき,HUYẾT DỊCH,"Máu, huyết dịch",blood,体の中を血液が流れている。
+641,治療,ちりょう,TRỊ LIỆU,"Điều trị, chữa trị",medical treatment,虫歯の治療を受けた。
+642,症状,しょうじょう,CHỨNG TRẠNG,Triệu chứng,symptom,かぜの症状は熱、せき、鼻水などだ。
+643,予防,よぼう,DỰ PHÒNG,"Dự phòng, phòng ngừa",prevention,かぜの予防。災害を予防する。
+644,栄養,えいよう,VINH DƯỠNG,Dinh dưỡng,nutrition,栄養のある食べ物。
+645,手術,しゅじゅつ,THỦ THUẬT,"Phẫu thuật, mổ","surgery, operation",胃の手術を受けた。
+646,死亡,しぼう,TỬ VONG,"Tử vong, chết","death, mortality",事故で3名死亡した。
+647,命,いのち,MỆNH,"Sinh mạng, tính mạng",life,命は大切にしなければならない。
+648,一生,いっしょう,NHẤT SANH,"Cả đời, suốt đời","whole life, lifetime",幸せな一生を送る。あなたのことは一生忘れません。
+649,誤解,ごかい,NGỘ GIẢI,Hiểu lầm,misunderstanding,問題の意味を誤解して答えを間違えた。
+650,後悔,こうかい,HẬU HỐI,Hối hận,"regret, remorse",若いころに勉強しなかったことを後悔している。
+651,わけ,わけ,DỊCH,"Lý do, nguyên cớ, ý nghĩa","reason, meaning",遅刻したわけを話す。彼の言うことはわけがわからない。
+652,態度,たいど,THÁI ĐỘ,Thái độ,"attitude, manner",授業中の態度が悪い。あいまいな態度をとる。
+653,癖,くせ,PHÍCH,"Thói quen, tật xấu","habit, quirk",困ったとき頭をかく癖がある。
+654,礼儀,れいぎ,LỄ NGHI,"Lễ nghi, phép lịch sự","etiquette, manners",目上の人への礼儀を知らない。
+655,文句,もんく,VĂN CÚ,"Phàn nàn, câu từ","complaint, phrase",給料に文句がある。小説の文句を引用する。
+656,表情,ひょうじょう,BIỂU TÌNH,"Nét mặt, biểu cảm",facial expression,あの人は表情が豊かだ。
+657,表面,ひょうめん,BIỂU DIỆN,"Bề mặt, mặt ngoài",surface,水の表面。ビルの表面にタイルが張ってある。
+658,禁煙,きんえん,CẤM YÊN,"Cấm hút thuốc, cai thuốc","no smoking, quitting smoking",この部屋は禁煙です。
+659,禁止,きんし,CẤM CHỈ,"Cấm đoán, nghiêm cấm","prohibition, ban",美術館の中では写真を撮ることは禁止されている。
+660,完成,かんせい,HOÀN THÀNH,Hoàn thành,completion,半年かけて論文を完成させた。
+661,課題,かだい,KHÓA ĐỀ,"Chủ đề, vấn đề cần giải quyết, bài tập","issue, task, assignment",現代の日本には多くの課題がある。
+662,例外,れいがい,LỆ NGOẠI,Ngoại lệ,exception,どんな規則にも例外がある。
+663,基本,きほん,CƠ BẢN,"Cơ bản, nền tảng","fundamental, basis",何の練習でも基本が大切だ。
+664,記録,きろく,KÝ LỤC,"Kỷ lục, ghi chép, biên bản",record,先週の会議の記録。世界新記録で優勝した。
+665,状態,じょうたい,TRẠNG THÁI,"Trạng thái, tình trạng","condition, state",いま経営の状態がよくない。
+666,出来事,できごと,XUẤT LAI SỰ,"Sự việc, biến cố xảy ra","happening, event",毎日の出来事をブログに書く。
+667,場面,ばめん,TRƯỜNG DIỆN,"Cảnh tượng, phân cảnh","scene, setting",トラックとバスが衝突した場面。
+668,機会,きかい,CƠ HỘI,"Cơ hội, dịp","opportunity, chance",彼女と二人で話す機会がない。
+669,距離,きょり,CỰ LY,"Cự ly, khoảng cách",distance,駅から学校まではかなり距離がある。
+670,提案,ていあん,ĐỀ ÁN,"Đề án, đề xuất","proposal, suggestion",会議で新しい計画を提案する。
+671,やり取り,やりとり,,Trao đổi qua lại,"exchange, interaction",友だちとメールをやり取りする。
+672,知識,ちしき,TRI THỨC,"Kiến thức, tri thức",knowledge,本を読んで知識を身につける。
+673,実力,じつりょく,THỰC LỰC,Thực lực,"true ability, competence",試合で実力を出す。
+674,手段,しゅだん,THỦ ĐOẠN,"Phương thức, thủ đoạn, biện pháp","means, measure",問題を解決するために必要な手段をとる。
+675,代表,だいひょう,ĐẠI BIỂU,"Đại biểu, đại diện, tiêu biểu",representative,クラスの代表として会議に参加する。富士山は日本を代表する山だ。
+676,影響,えいきょう,ẢNH HƯỞNG,Ảnh hưởng,"influence, effect",両親の影響で絵をかき始めた。
+677,効果,こうか,HIỆU QUẢ,"Hiệu quả, tác dụng","effect, result",この薬を飲んだらすぐに効果が出た。
+678,印象,いんしょう,ẤN TƯỢNG,Ấn tượng,impression,優しそうな人だという印象を受けた。
+679,印,しるし,ẤN,"Dấu hiệu, ký hiệu, biểu tượng","mark, sign, symbol",地図の目的地にしるしをつける。ハトは平和のしるしだ。
+680,合図,あいず,HỢP ĐỒ,"Ám hiệu, ra hiệu","signal, sign",友だちに目で合図する。
+681,共通,きょうつう,CỘNG THÔNG,"Điểm chung, thông dụng","common, shared",二人の共通の趣味は音楽だ。
+682,強調,きょうちょう,CƯỜNG ĐIỆU,Nhấn mạnh,emphasis,大事な点を強調して説明する。
+683,省略,しょうりゃく,TỈNH LƯỢC,"Giản lược, lược bỏ","abbreviation, omission",くわしい説明を省略して簡単に話す。
+684,挑戦,ちょうせん,KHIÊU CHIẾN,"Thử thách, thách thức",challenge,難しい課題に挑戦する。世界記録への挑戦。
+685,やる気,やるき,KHÍ,"Động lực, sự muốn làm","motivation, willingness",ほめられてやる気になる。
+686,勇気,ゆうき,DŨNG KHÍ,"Dũng khí, can đảm",courage,勇気を出してプロポーズする。
+687,資格,しかく,TƯ CÁCH,"Tư cách, bằng cấp, chứng chỉ",qualification,弁護士の資格を取る。
+688,申請,しんせい,THÂN THỈNH,"Đăng ký, xin (visa/hộ chiếu)",application,大使館でビザを申請する。
+689,本人,ほんにん,BẢN NHÂN,"Bản thân người đó, chính chủ",the person in question,通帳は貯金をする本人が作らなければならない。
+690,契約,けいやく,KHẾ ƯỚC,"Hợp đồng, giao kèo","contract, agreement",アパートを2年間借りる契約をした。
+691,証明,しょうめい,CHỨNG MINH,Chứng minh,"evidence, proof",身分を証明する書類。
+692,変更,へんこう,BIẾN CANH,"Thay đổi, sửa đổi","change, alteration",予定の変更を行う。
+693,保存,ほぞん,BẢO TỒN,"Lưu trữ, bảo quản","preservation, saving",パソコンにデータを保存する。
+694,保護,ほご,BẢO HỘ,"Bảo hộ, bảo vệ","protection, conservation",自然を保護する。迷い子の保護。
+695,環境,かんきょう,HOÀN CẢNH,Môi trường,environment,環境のいい郊外に住みたい。
+696,資源,しげん,TƯ NGUYÊN,Tài nguyên,resources,資源を有効に利用する。
+697,不足,ふそく,BẤT TÚC,"Thiếu thốn, không đủ","shortage, lack",野菜が不足した食事。運動不足。
+698,平均,へいきん,BÌNH QUÂN,Trung bình,average,テストの点を平均する。平均寿命。
+699,割合,わりあい,CÁT HỢP,"Tỷ lệ, tương đối","ratio, relatively",デパートの客は女性の割合が高い。試験は割合簡単だった。
+700,商売,しょうばい,THƯƠNG MẠI,"Buôn bán, kinh doanh","business, trade",父は衣料品の商売をしている。
+701,商品,しょうひん,THƯƠNG PHẨM,"Hàng hóa, sản phẩm","product, goods",店に商品を並べる。
+702,質,しつ,CHẤT,"Chất lượng, phẩm chất",quality,このメーカーの製品は質がいい。
+703,型,かた,HÌNH,"Khuôn, mẫu, loại, nhóm","model, type, pattern",新しい型のパソコンを買った。血液型。
+704,生産,せいさん,SANH SẢN,Sản xuất,production,工場でカメラを生産する。
+705,消費,しょうひ,TIÊU PHÍ,"Tiêu dùng, tiêu thụ",consumption,運動してカロリーを消費する。
+706,物価,ぶっか,VẬT GIÁ,"Vật giá, giá cả","prices, cost of living",東京は物価が高い。
+707,倒産,とうさん,ĐẢO SẢN,Phá sản,bankruptcy,会社が倒産する。
+708,携帯,けいたい,HUỀ ĐỚI,"Mang theo, điện thoại di động","carrying, mobile phone",身分証を携帯していなければならない。
+709,現代,げんだい,HIỆN ĐẠI,"Hiện đại, ngày nay","the present age, modern",現代は情報の時代だと言われている。
+710,世紀,せいき,THẾ KỶ,Thế kỷ,century,21世紀が始まった。
+711,文化,ぶんか,VĂN HÓA,Văn hóa,culture,日本の文化が発達する。
+712,都市,とし,ĐÔ THỊ,"Đô thị, thành phố","city, urban area",都市に人口が集中する。
+713,地方,ちほう,ĐỊA PHƯƠNG,"Địa phương, vùng quê","region, province",雨が多い地方。地方から都会へ出て働く。
+714,戦争,せんそう,CHIẾN TRANH,Chiến tranh,war,A国とB国の間で戦争が起きた。
+715,平和,へいわ,BÌNH HÒA,"Hòa bình, thanh bình","peace, peaceful",世界の平和を守る。平和な家庭。
+716,上る,のぼる,THƯỢNG,"Leo lên, đi lên, lên tới","go up, climb, reach",階段を上る。死者は5000人に上った。
+717,下る,くだる,HẠ,"Đi xuống, xuôi theo",go down,坂を下る。川を下る。
+718,進む,すすむ,TIẾN,"(Tự) Tiến lên, tiến bộ, nhanh (đồng hồ)","advance, proceed",前にお進みください。工事が進んでいる。時計が5分進んでいる。
+719,進める,すすめる,TIẾN,"(Tha) Thúc đẩy, tiến hành, vặn nhanh","advance, promote",会議の準備を進める。時計を10分進める。
+720,通る,とおる,THÔNG,"(Tự) Đi qua, thông qua, đỗ (kỳ thi)","pass through, be accepted",この道は車が通る。試験に通った。意見が通った。
+721,通す,とおす,THÔNG,"(Tha) Cho qua, xỏ qua, thông qua","let pass, thread",針に糸を通す。提案を会議で通す。
+722,越える/超える,こえる,VIỆT/SIÊU,"Vượt qua (núi/biên giới), vượt quá (số lượng)","cross, exceed, surpass",国境を越えた。平均点を超えた。
+723,過ぎる,すぎる,QUÁ,"(Tự) Đi qua, trôi qua, quá mức","pass by, elapse, exceed",列車が駅を過ぎた。約束の時間を過ぎる。
+724,過ごす,すごす,QUÁ,"(Tha) Trải qua, sống qua",spend time,大学時代を東京で過ごした。
+725,移る,うつる,DI,"(Tự) Di chuyển, lây lan","move, spread",前の席に移った。かぜがうつった。
+726,移す,うつす,DI,"(Tha) Chuyển đi, lây cho","move something, transmit",本社を東京に移した。かぜをうつされた。
+727,連れる,つれる,LIÊN,"Dắt theo, dẫn theo",bring someone,子どもを動物園へ連れて行った。
+728,寄る,よる,KÝ,"(Tự) Ghé vào, lệch về một bên","stop by, lean towards",窓のそばに寄る。帰りに本屋へ寄った。
+729,寄せる,よせる,KÝ,"(Tha) Ghé sát vào, tấp vào","bring near, pull over",車を道の左側に寄せて止めた。
+730,与える,あたえる,DỮ,"Ban tặng, gây ra, cung cấp","give, provide, cause",奨学金を与える。影響を与える。
+731,得る,える/うる,ĐẮC,"Được, thu được, đạt được","obtain, acquire, gain",知識を得る。許可を得る。
+732,向く,むく,HƯỚNG,"(Tự) Quay về hướng, phù hợp với","face, be suitable for",こちらを向いてください。彼女は先生に向いている。
+733,向ける,むける,HƯỚNG,"(Tha) Hướng về, nhắm tới","turn towards, aim at",顔を右に向ける。若者に向けて発売する。
+734,勧める,すすめる,KHUYẾN,"Khuyên bảo, mời chào","recommend, encourage",ウォーキングをしようと勧めた。お茶を勧める。
+735,薦める,すすめる,TIẾN,"Tiến cử, giới thiệu","recommend, nominate",先生にすすめられた本を買った。山田さんを推薦する。
+736,任せる,まかせる,NHIỆM,"Giao phó, ủy thác",entrust,責任の重い仕事を新人に任せた。
+737,守る,まもる,THỦ,"Bảo vệ, giữ gìn (lời hứa/luật)","protect, obey, keep",ルールを守る。環境を守る。
+738,争う,あらそう,TRANH,"Tranh giành, tranh cãi, thi đấu","fight, argue, compete",兄弟が争っている。トップを争う。
+739,望む,のぞむ,VỌNG,"Mong muốn, hy vọng","wish, desire, hope",卒業後は教師になることを望んでいる。
+740,信じる,しんじる,TÍN,"Tin tưởng, tin vào","believe, trust",がんばれば成功すると信じている。
+741,通じる,つうじる,THÔNG,"(Tự) Hiểu được, thông suốt, dẫn tới","be understood, lead to",日本語が通じる。この地下道は駅に通じている。
+742,飽きる,あきる,BÃO,"(Tự) Chán, ngấy","get tired of, lose interest",毎日食べると飽きてしまう。
+743,思いつく,おもいつく,TƯ,"Nghĩ ra, nảy ra ý tưởng","think of, come up with",いいアイデアを思いついた。
+744,思いやる,おもいやる,TƯ,"Quan tâm, thông cảm",be considerate of,子どもを思いやる気持ち。
+745,熱中する,ねっちゅうする,NHIỆT TRUNG,"Say mê, đắm chìm vào",be absorbed in,母はカラオケに熱中している。
+746,暮らす,くらす,MỘ,"Sinh sống, sống","live, make a living",一人で暮らす。この給料では暮らしていけない。
+747,巻く,まく,QUYỂN,"Cuốn, quấn, quàng","wrap, wind up",マフラーを首に巻く。包帯を巻く。
+748,結ぶ,むすぶ,KẾT,"Buộc, thắt, ký kết (hợp đồng)","tie, bind, connect, conclude",くつのひもを結ぶ。契約を結ぶ。
+749,済む,すむ,TẾ,"(Tự) Xong xuôi, chỉ cần... là đủ","be finished, manage with",仕事が済んだら帰る。300円ですんだ。
+750,済ませる/済ます,すませる/すます,TẾ,"(Tha) Kết thúc, giải quyết xong, làm tạm","finish, settle",支払いを済ませる。朝はパンで済ます。
+751,出来る,できる,XUẤT LAI,"(Tự) Hoàn thành, sinh ra, có thể","be made, be ready, can do",駅前にスーパーができた。料理ができた。
+752,切れる,きれる,THIẾT,"(Tự) Đứt, cắt ngọt, hết hạn, cạn kiệt","cut well, expire, run out",このはさみはよく切れる。賞味期限が切れた。電池が切れる。
+753,切らす,きらす,THIẾT,"(Tha) Dùng hết, làm cạn",run out of,しょうゆを切らしてしまった。名刺を切らす。
+754,伝わる,つたわる,TRUYỀN,"(Tự) Được truyền đạt, lan truyền","be transmitted, spread",うわさが伝わってきた。熱が伝わる。
+755,伝える,つたえる,TRUYỀN,"(Tha) Truyền đạt, truyền bá, dẫn (nhiệt)","tell, convey, teach",用事を伝える。キリスト教を日本に伝えた。
+756,続く,つづく,TỤC,"(Tự) Tiếp tục, kéo dài, nối tiếp","continue, go on",雨の日が続く。前の人に続いてお乗りください。
+757,続ける,つづける,TỤC,(Tha) Tiếp tục duy trì,"continue, keep up",もう3時間も会議を続けている。
+758,つながる,つながる,,"(Tự) Kết nối, liên kết, dẫn tới","be connected, lead to",本州と四国は橋でつながっている。電話がつながった。
+759,つなぐ,つなぐ,,"(Tha) Nối, kết nối, nắm (tay)","connect, join, hold hands",パソコンにプリンターをつなぐ。手をつないで歩く。
+760,つなげる,つなげる,,"(Tha) Kết nối, chắp nối tới thành công","connect, link to",このチャンスをぜひ成功につなげたい。
+761,伸びる,のびる,THÂN,"(Tự) Dài ra, lớn lên, tăng trưởng (doanh thu)","grow, lengthen, increase",髪が伸びる。売上が伸びる。
+762,伸ばす,のばす,THÂN,"(Tha) Kéo dài ra, duỗi thẳng, phát triển","lengthen, stretch",髪を伸ばす。アイロンをかけてしわを伸ばす。
+763,延びる,のびる,DUYÊN,"(Tự) Hoãn lại, kéo dài ra (thời gian)","be postponed, prolonged",レポートの締め切りが延びた。寿命が延びる。
+764,延ばす,のばす,DUYÊN,"(Tha) Trì hoãn, gia hạn","postpone, extend",帰国の日を延ばした。時間を延ばす。
+765,重なる,かさなる,TRỌNG,"(Tự) Chồng lên nhau, trùng nhau (lịch)","overlap, pile up, coincide",日曜日と祝日が重なると月曜が休みになる。
+766,重ねる,かさねる,TRỌNG,"(Tha) Chồng lên, lặp lại, tích lũy","stack, repeat, accumulate",皿を重ねて置く。練習を重ねる。
+767,広がる,ひろがる,QUẢNG,"(Tự) Mở rộng, lan rộng (không gian)","spread, widen",道幅が広がった。火事がどんどん広がっている。
+768,広げる,ひろげる,QUẢNG,"(Tha) Mở rộng, giương ra","widen, open, spread",店を広げたい。机の上に新聞を広げる。
+769,載る,のる,TẢI,"(Tự) Được chất lên, được đăng tải","be placed on, published",新聞に私の書いた記事が載った。
+770,載せる,のせる,TẢI,"(Tha) Chất lên, đăng tải bài viết","put on, publish",たなに荷物を載せる。文集に作品を載せる。
+771,そろう,そろう,,"(Tự) Tụ họp đầy đủ, đồng đều","gather, match, be uniform",全員がそろったら出発しよう。靴がそろっている。
+772,そろえる,そろえる,,"(Tha) Gom lại đủ, sắp xếp ngay ngắn","gather, arrange, match",メンバーをそろえた。脱いだくつをそろえる。
+773,まとまる,まとまる,,"(Tự) Được thu gom, thống nhất (ý kiến)","be collected, settled",クラスの意見がまとまった。
+774,まとめる,まとめる,,"(Tha) Gom lại, tổng hợp, đúc kết","gather, summarize",いらなくなったものをまとめて捨てる。考えをまとめる。
+775,付く,つく,PHÓ,"(Tự) Dính vào, kèm theo, tích lũy","stick to, accompany, gain",服に血がついた。知識が身につく。
+776,付ける,つける,PHÓ,"(Tha) Dán vào, kèm theo, chấm (nước sốt)","attach, apply, acquire",パンにジャムをつける。知識を身につけた。
+777,たまる,たまる,,"(Tự) Tích tụ, đọng lại, dồn ứ","accumulate, build up",お金がたまる。ストレスがたまる。
+778,ためる,ためる,,"(Tha) Tích góp, dồn lại","save, accumulate",お金をためる。宿題をためてしまった。
+779,交じる/混じる,まじる,GIAO/HỖN,"(Tự) Lẫn lộn, xen lẫn",be mingled with,男の子に交じってサッカーをする。不安が混じる。
+780,交ざる/混ざる,まざる,GIAO/HỖN,"(Tự) Được trộn đều, hòa trộn",be mixed together,男女が交ざってサッカーをした。材料が混ざる。
+781,交ぜる/混ぜる,まぜる,GIAO/HỖN,"(Tha) Trộn, khuấy, trộn lẫn","mix, blend",さとうを入れてよく混ぜてください。
+782,解ける/溶ける,とける,GIẢI/DUNG,"(Tự) Được giải đáp, tan chảy","be solved, melt, dissolve",問題が解けた。雪がとけた。洗剤が水に溶ける。
+783,解く/溶く/溶かす,とく/とかす,GIẢI/DUNG,"(Tha) Giải quyết, hòa tan, đánh trứng","solve, dissolve, melt",数学の問題を解く。バターを溶かす。卵をとく。
+784,含む,ふくむ,HÀM,"Chứa đựng, bao gồm","contain, include",レモンはビタミンCを多く含んでいる。
+785,含める,ふくめる,HÀM,Bao gồm cả...,include,私を含めて5人です。
+786,抜ける,ぬける,BẠT,"(Tự) Rụng (tóc), xì hơi, sót","fall out, be missing, leak",髪の毛が抜ける。書類のページが抜けている。
+787,抜く,ぬく,BẠT,"(Tha) Nhổ, rút, bỏ bữa, vượt qua","pull out, skip, overtake",虫歯を抜く。朝食を抜く。前の3人を抜いて1位になった。
+788,現れる,あらわれる,HIỆN,"(Tự) Xuất hiện, lộ ra","appear, show up",雲の間から月が現れた。犯人が現れた。
+789,現す,あらわす,HIỆN,"(Tha) Làm lộ ra, làm xuất hiện","show, make appear",富士山が姿を現した。
+790,表れる,あらわれる,BIỂU,"(Tự) Biểu hiện ra, thể hiện ra",show on face/feeling,彼の顔に喜びが表れていた。
+791,表す,あらわす,BIỂU,"(Tha) Biểu thị, thể hiện (tình cảm/ý nghĩa)","express, represent",気持ちを言葉で表す。地図の記号が表すもの。
+792,散る,ちる,TẢN,"(Tự) Rụng, tàn (hoa)","fall, scatter",風で桜の花が散ってしまった。
+793,散らす,ちらす,TẢN,"(Tha) Làm rụng, làm vương vãi","scatter, disperse",風が木の葉を散らした。
+794,明ける,あける,MINH,"(Tự) Hết (mùa mưa/năm), rạng sáng","dawn, end (season/year)",梅雨が明ける。年が明ける。夜が明ける。
+795,差す,さす,SAI,"Chiếu (nắng), giương (dù), nhỏ (thuốc)","shine, open umbrella, apply drops",日に光が差す。かさを差す。目薬を差す。
+796,パートナー,パートナー,,"Đối tác, bạn đời",partner,仕事のパートナー。人生のパートナー。
+797,リーダー,リーダー,,"Thủ lĩnh, nhóm trưởng",leader,グループのリーダーを決める。
+798,ボランティア,ボランティア,,"Tình nguyện viên, thiện nguyện",volunteer,ボランティア活動に参加する。
+799,コミュニケーション,コミュニケーション,,"Giao tiếp, truyền thông",communication,同僚とコミュニケーションをとる。
+800,ユーモア,ユーモア,,"Hài hước, khiếu hài hước",humor,ユーモアのある話。
+801,ショック,ショック,,"Cú sốc, bàng hoàng",shock,事故の知らせを聞いてショックを受けた。
+802,ストレス,ストレス,,"Căng thẳng, áp lực",stress,仕事でストレスがたまる。
+803,バランス,バランス,,"Cân bằng, sự thăng bằng",balance,栄養のバランスを考える。
+804,レベル,レベル,,"Cấp độ, trình độ",level,日本語のレベルが上がる。
+805,アップ,アップ,,"Tăng lên, nâng cao","up, increase",給料がアップする。イメージアップ。
+806,ダウン,ダウン,,"Giảm xuống, kiệt sức gục ngã","down, decrease",コストダウン。風邪でダウンする。
+807,プラス,プラス,,"Điểm cộng, tích cực, số dương","plus, positive",経験は将来プラスになる。プラスマイナス。
+808,マイナス,マイナス,,"Điểm trừ, tiêu cực, số âm","minus, negative",気温がマイナス5度になる。
+809,イメージ,イメージ,,"Hình ảnh, ấn tượng hình dung",image,会社のイメージが良い。
+810,コンテスト,コンテスト,,Cuộc thi,contest,スピーチコンテストに出場する。
+811,マスコミ,マスコミ,,Giới truyền thông đại chúng,mass media,マスコミで大きく報道された。
+812,プライバシー,プライバシー,,Quyền riêng tư,privacy,個人のプライバシーを守る。
+813,オフィス,オフィス,,Văn phòng làm việc,office,新しいオフィスに移転する。
+814,ルール,ルール,,"Quy tắc, luật lệ",rule,スポーツのルールを守る。
+815,マナー,マナー,,"Phép lịch sự, văn hóa ứng xử",manners,食事のマナーを守る。
+816,ミス,ミス,,"Lỗi lầm, sai sót","mistake, error",仕事でミスをしてしまった。
+817,スケジュール,スケジュール,,"Lịch trình, thời gian biểu",schedule,スケジュールがいっぱいで忙しい。
+818,タイトル,タイトル,,"Tiêu đề, đầu đề, danh hiệu",title,本のタイトルを決める。
+819,テーマ,テーマ,,"Chủ đề, đề tài","theme, topic",論文のテーマを選ぶ。
+820,ストーリー,ストーリー,,"Cốt truyện, câu chuyện",story,映画のストーリーがおもしろい。
+821,ヒット,ヒット,,"Đánh trúng, tác phẩm ăn khách","hit, success",新製品が大ヒットした。
+822,ブランド,ブランド,,"Thương hiệu, hàng hiệu",brand,有名ブランドのバッグを買う。
+823,レンタル,レンタル,,Sự thuê mướn,rental,DVDをレンタルする。
+824,リサイクル,リサイクル,,Tái chế,recycle,空き缶をリサイクルする。
+825,ラベル,ラベル,,Nhãn mác,label,ビンのラベルをはがす。
+826,タイプ,タイプ,,"Kiểu, loại, mẫu người",type,新しいタイプの携帯電話。好きなタイプの人。
+827,スタイル,スタイル,,"Phong cách, vóc dáng","style, figure",彼女はスタイルがいい。ライフスタイル。
+828,セット,セット,,"Bộ, cài đặt, phần ăn combo",set,朝食セットを注文する。目覚ましをセットする。
+829,ウイルス,ウイルス,,Vi-rút (sinh học / máy tính),virus,パソコンがウイルスに感染した。
+830,ロボット,ロボット,,"Người máy, robot",robot,工場でロボットが働く。
+831,エネルギー,エネルギー,,Năng lượng,energy,太陽光エネルギーを利用する。
+832,デジタル,デジタル,,"Kỹ thuật số, digital",digital,デジタルカメラを買う。
+833,マイク,マイク,,"Microphone, mic",microphone,マイクを持って話す。
+834,ブレーキ,ブレーキ,,"Phanh xe, thắng",brake,急ブレーキをかける。
+835,ペンキ,ペンキ,,Sơn,paint,壁にペンキを塗る。
+836,炊く,たく,XUY,Nấu (cơm),cook rice,ごはんを炊く。
+837,煮る,にる,CHỬ,"Ninh, hầm, kho","boil, stew",野菜や肉を煮る。
+838,炒める,いためる,SAO,Xào,stir-fry,フライパンで野菜を炒める。
+839,焼く,やく,THIÊU,"Nướng, rán","bake, grill, roast",魚や肉を焼く。
+840,揚げる,あげる,DƯƠNG,"Chiên ngập dầu, rán giòn",deep-fry,油でてんぷらを揚げる。
+841,蒸す,むす,CHƯNG,"Hấp, chưng cách thủy",steam,蒸し器でシュウマイを蒸す。
+842,ゆでる,ゆでる,,Luộc,boil in water,お湯で卵をゆでる。
+843,注ぐ,そそぐ/つぐ,CHÚ,"Rót, đổ vào",pour,コップにお茶を注ぐ。
+844,混ぜる,まぜる,HỖN,"Khuấy, trộn","mix, stir",ドレッシングをよく混ぜる。
+845,刻む,きざむ,KHẮC,"Băm nhỏ, thái nhỏ, khắc ghi","chop, mince, engrave",ねぎを細かく刻む。心に刻む。
+846,まあまあ,まあまあ,,"Tàm tạm, kha khá","so-so, passable",試験の成績はまあまあだった。
+847,ぼんやり,ぼんやり,,"Mờ ảo, lơ đãng, thẫn thờ","dimly, absent-mindedly",遠くに山がぼんやり見える。ぼんやりと過ごす。
+848,ふと,ふと,,"Bất chợt, tình cờ","accidentally, suddenly",ふと窓の外を見ると雪が降っていた。
+849,じかに,じかに,TRỰC,Trực tiếp,directly,床にじかに座る。本人にじかに聞く。
+850,一度に,いちどに,NHẤT ĐỘ,"Cùng một lúc, một lượt",all at once,一度にたくさんのことを頼まれて困った。
+851,一斉に,いっせいに,NHẤT TỀ,"Đồng loạt, cùng một lúc","all together, in unison",選手たちが一斉にスタートした。
+852,共に,ともに,CỘNG,"Cùng với, đồng thời với","together with, along with",家族と共に暮らす。科学の発展と共に生活が便利になった。
+853,相互に,そうごに,TƯƠNG HỖ,"Lẫn nhau, qua lại",mutually,相互に理解を深める。
+854,一人一人,ひとりひとり,NHẤT NHÂN NHẤT NHÂN,Từng người một,"each person, individually",一人一人の意見を聞く。
+855,いちいち,いちいち,,"Từng li từng tí, mọi chuyện","one by one, every single thing",彼の言うことにいちいち文句をつける。
+856,所々,ところどころ,SỞ SỞ,"Đôi chỗ, rải rác vài nơi",here and there,本に所々線が引いてある。
+857,どうか,どうか,,"Xin vui lòng, làm ơn (kính khẩn)","please, somehow",どうかよろしくお願いいたします。
+858,できれば/できたら,できれば/できたら,XUẤT LAI,Nếu có thể được,if possible,できればあしたまでに終わらせてください。
+859,たいして,たいして,ĐỐI,Không... lắm (đi với phủ định),"not so much, not very",たいして難しくない試験だった。
+860,恐らく,おそらく,KHỦNG,"Có lẽ, e rằng (xác suất cao)","probably, perhaps",恐らく雨が降るだろう。
+861,むしろ,むしろ,,"Thà rằng... còn hơn, đúng hơn là","rather, instead",寒さよりむしろ暑さのほうが苦手だ。
+862,果たして,はたして,QUẢ,"Liệu rằng, quả thực là","really, as expected",果たして彼の話は本当だろうか。
+863,かえって,かえって,PHẢN,"Ngược lại, trái lại",on the contrary,薬を飲んだらかえって気分が悪くなった。
+864,必ずしも,かならずしも,TẤT,Không hẳn là (đi với phủ định),not necessarily,高いものが必ずしもいいとは限らない。
+865,単に,たんに,ĐƠN,Chỉ đơn thuần là,"simply, merely",単にミスをしただけだ。
+866,ただ,ただ,,"Chỉ, đơn thuần","just, only",ただ見ていただけです。
+867,ついでに,ついでに,TIỆN,"Nhân tiện, tiện thể","incidentally, on the way",買い物のついでに郵便局へ寄る。
+868,初めは,はじめは,THỦY,"Ban đầu thì, thoạt đầu",at first,初めは難しかったが、だんだん慣れてきた。
+869,たいした,たいした,ĐẠI,"To tát, ghê gớm (thường đi với phủ định)","great, significant",たいしたけがではなくてよかった。
+870,いわゆる,いわゆる,,Cái gọi là...,so-called,彼はいわゆる天才だ。
+871,ある,ある,,"Một... nọ, nào đó","a certain, some",ある日、不思議な手紙が届いた。
+872,あらゆる,あらゆる,,"Tất cả, mọi","all, every",あらゆる方法を試してみた。
+873,大した,たいした,ĐẠI,"To lớn, quan trọng","considerable, great",大した人物だ。
+874,または,または,HOẶC,"Hoặc là, hay là","or, otherwise",黒または青のペンで書いてください。
+875,それとも,それとも,,Hay là (dùng trong câu hỏi lựa chọn),"or, else",コーヒーにしますか、それとも紅茶にしますか。
+876,ならびに,ならびに,TỊNH,"Cũng như, và (văn bản trang trọng)","as well as, and",会長ならびにご来賓の皆様。
+877,および,および,CẬP,Và (văn phong trang trọng),"and, as well as",住所および氏名を記入してください。
+878,ただし,ただし,ĐẢN,"Tuy nhiên, nhưng kèm điều kiện","however, provided that",入場は無料です。ただし整理券が必要です。
+879,なお,なお,THƯỢNG,"Thêm nữa, ngoài ra","furthermore, in addition",次の会議は来週です。なお、場所は追ってお知らせします。
+880,しかも,しかも,NHI,"Hơn nữa, vả lại","moreover, what's more",この料理は安くて、しかもおいしい。

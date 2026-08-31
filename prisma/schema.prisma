@@ -1,0 +1,148 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                     String         @id @default(cuid())
+  name                   String?
+  email                  String?        @unique
+  emailVerified          DateTime?
+  image                  String?
+  passwordHash           String?
+  role                   String         @default("USER")
+  plan                   String         @default("FREE")
+  
+  stripeCustomerId       String?        @unique
+  stripeSubscriptionId   String?        @unique
+  stripePriceId          String?
+  stripeCurrentPeriodEnd DateTime?
+
+  aiUsageToday           Int            @default(0)
+  lastAiResetDate        DateTime       @default(now())
+
+  accounts               Account[]
+  sessions               Session[]
+  decks                  Deck[]
+  reviewLogs             ReviewLog[]
+  aiUsageLogs            AIUsageLog[]
+
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Deck {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  category    String       @default("VOCABULARY") // VOCABULARY, KANJI, GRAMMAR, LISTENING, READING
+  isPublic    Boolean      @default(false)
+  tags        String?
+  
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  cards       Card[]
+  reviewLogs  ReviewLog[]
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Card {
+  id             String     @id @default(cuid())
+  deckId         String
+  deck           Deck       @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  frontText      String
+  frontAudio     String?
+  backText       String
+  backMeaning    String
+  backReading    String?
+  backExamples   String?    // Stored as JSON string
+  kanjiBreakdown String?    // Stored as JSON string
+  frontMedia     String?
+  backMedia      String?
+  tags           String?
+
+  // SRS SM-2 Parameters
+  easeFactor     Float      @default(2.5)
+  interval       Int        @default(0)   // in days
+  repetitions    Int        @default(0)   // consecutive successful reviews
+  dueDate        DateTime   @default(now())
+  status         String     @default("NEW") // NEW, LEARNING, REVIEW, GRADUATED
+
+  reviewLogs     ReviewLog[]
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model ReviewLog {
+  id               String   @id @default(cuid())
+  cardId           String
+  card             Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  deckId           String
+  deck             Deck     @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  rating           String   // AGAIN, HARD, GOOD, EASY
+  stateBefore      String?  // JSON snapshot
+  stateAfter       String?  // JSON snapshot
+  reviewDurationMs Int?
+
+  createdAt        DateTime @default(now())
+}
+
+model AIUsageLog {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  actionType  String
+  tokensUsed  Int      @default(0)
+
+  createdAt   DateTime @default(now())
+}
