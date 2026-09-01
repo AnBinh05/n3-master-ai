@@ -105,12 +105,15 @@ export default function AIStudioPage() {
     }
   };
 
-  const handleSendChatMessage = async () => {
-    if (!chatInput.trim()) return;
-    const newMsg = { role: 'user', content: chatInput };
+  const chatEndRef = (typeof window !== 'undefined') ? ({} as any) : null;
+
+  const handleSendChatMessage = async (customText?: string) => {
+    const textToSend = customText || chatInput;
+    if (!textToSend.trim()) return;
+    const newMsg = { role: 'user', content: textToSend };
     const updatedMessages = [...chatMessages, newMsg];
     setChatMessages(updatedMessages);
-    setChatInput('');
+    if (!customText) setChatInput('');
     setChatLoading(true);
 
     try {
@@ -346,10 +349,52 @@ export default function AIStudioPage() {
 
       {/* Tab 5: AI N3 Tutor Chat */}
       {activeTab === 'tutor' && (
-        <div className="bg-card p-6 rounded-3xl border border-border/60 shadow-sm space-y-4 max-w-3xl flex flex-col h-[550px]">
-          <div className="flex items-center gap-2 pb-3 border-b border-border">
-            <MessageSquare className="w-5 h-5 text-rose-500" />
-            <h2 className="text-base font-bold text-foreground">N3 Sensei - AI Chatbot 24/7</h2>
+        <div className="bg-card p-6 rounded-3xl border border-border/60 shadow-sm space-y-4 max-w-3xl flex flex-col h-[620px]">
+          <div className="flex items-center justify-between pb-3 border-b border-border">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="w-5 h-5 text-rose-500" />
+              <div>
+                <h2 className="text-base font-bold text-foreground">N3 Sensei - AI Chatbot 24/7</h2>
+                <p className="text-[11px] text-muted-foreground">Tự động tra cứu 880 từ Mimikara, ngữ pháp & giải đáp N3</p>
+              </div>
+            </div>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+              Online 24/7
+            </span>
+          </div>
+
+          {/* Quick Suggestion Chips */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+            <button
+              onClick={() => handleSendChatMessage('Giải thích ngữ pháp 〜ことにしている')}
+              className="px-2.5 py-1 rounded-full bg-muted/80 hover:bg-rose-500/10 hover:text-rose-600 border border-border/60 whitespace-nowrap text-[11px] font-medium transition-colors"
+            >
+              📖 Ngữ pháp 〜ことにしている
+            </button>
+            <button
+              onClick={() => handleSendChatMessage('Tra từ vựng 解決')}
+              className="px-2.5 py-1 rounded-full bg-muted/80 hover:bg-rose-500/10 hover:text-rose-600 border border-border/60 whitespace-nowrap text-[11px] font-medium transition-colors"
+            >
+              📇 Tra từ 解決 (Kaiketsu)
+            </button>
+            <button
+              onClick={() => handleSendChatMessage('Đố vui một câu trắc nghiệm N3')}
+              className="px-2.5 py-1 rounded-full bg-muted/80 hover:bg-rose-500/10 hover:text-rose-600 border border-border/60 whitespace-nowrap text-[11px] font-medium transition-colors"
+            >
+              🎯 Đố vui trắc nghiệm
+            </button>
+            <button
+              onClick={() => handleSendChatMessage('Mẹo làm bài đọc hiểu N3')}
+              className="px-2.5 py-1 rounded-full bg-muted/80 hover:bg-rose-500/10 hover:text-rose-600 border border-border/60 whitespace-nowrap text-[11px] font-medium transition-colors"
+            >
+              💡 Mẹo thi đọc hiểu
+            </button>
+            <button
+              onClick={() => handleSendChatMessage('Học từ vựng hay bị quên thì làm sao?')}
+              className="px-2.5 py-1 rounded-full bg-muted/80 hover:bg-rose-500/10 hover:text-rose-600 border border-border/60 whitespace-nowrap text-[11px] font-medium transition-colors"
+            >
+              💪 Hay quên từ vựng
+            </button>
           </div>
 
           <div className="flex-1 overflow-y-auto space-y-3 pr-2">
@@ -359,31 +404,39 @@ export default function AIStudioPage() {
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-md p-4 rounded-2xl text-xs sm:text-sm leading-relaxed ${
+                  className={`max-w-[85%] sm:max-w-md p-4 rounded-2xl text-xs sm:text-sm leading-relaxed whitespace-pre-wrap ${
                     msg.role === 'user'
-                      ? 'bg-rose-500 text-white rounded-br-none'
-                      : 'bg-muted/80 text-foreground rounded-bl-none border border-border/50'
+                      ? 'bg-rose-500 text-white rounded-br-none shadow-sm'
+                      : 'bg-muted/70 text-foreground rounded-bl-none border border-border/60 shadow-sm'
                   }`}
                 >
                   {msg.content}
                 </div>
               </div>
             ))}
+            {chatLoading && (
+              <div className="flex justify-start">
+                <div className="p-3 rounded-2xl bg-muted/70 text-muted-foreground text-xs rounded-bl-none border border-border/50 flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                  Sensei đang soạn câu trả lời...
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="flex gap-2 pt-2 border-t border-border">
             <input
               type="text"
-              placeholder="Đặt câu hỏi cho Sensei N3..."
+              placeholder="Hỏi từ vựng, ngữ pháp, mẹo thi hoặc gõ 'đố vui'..."
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSendChatMessage()}
               className="flex-1 p-3 rounded-2xl bg-muted/60 border border-border text-sm focus:ring-2 focus:ring-rose-500"
             />
             <button
-              onClick={handleSendChatMessage}
-              disabled={chatLoading}
-              className="p-3 rounded-2xl bg-rose-500 text-white hover:bg-rose-600 transition-colors"
+              onClick={() => handleSendChatMessage()}
+              disabled={chatLoading || !chatInput.trim()}
+              className="p-3 rounded-2xl bg-rose-500 text-white hover:bg-rose-600 transition-colors disabled:opacity-50"
             >
               <Send className="w-5 h-5" />
             </button>
@@ -393,3 +446,4 @@ export default function AIStudioPage() {
     </div>
   );
 }
+
