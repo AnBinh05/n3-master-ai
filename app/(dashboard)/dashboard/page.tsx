@@ -188,13 +188,13 @@ export default async function DashboardPage() {
             </p>
           </div>
 
-          <Link
-            href="/public/mimikara_n3_880.csv"
+          <a
+            href="/mimikara_n3_880.csv"
             download="mimikara_n3_880.csv"
             className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-500 bg-rose-500/10 hover:bg-rose-500/20 px-3.5 py-2 rounded-xl transition-colors border border-rose-500/20 w-fit"
           >
             📥 Tải File CSV 880 Từ (Chuẩn Anki)
-          </Link>
+          </a>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
