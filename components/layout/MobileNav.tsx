@@ -2,17 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Layers, Sparkles, Bot, BarChart3, Gamepad2, FileText } from 'lucide-react';
+import { LayoutDashboard, Layers, Sparkles, Bot, BarChart3, Gamepad2, FileText, Compass } from 'lucide-react';
 
 export function MobileNav() {
   const pathname = usePathname();
 
   const navItems = [
     { href: '/dashboard', label: 'Home', icon: LayoutDashboard },
-    { href: '/mock-test', label: 'Thi Thử', icon: FileText },
+    { href: '/dokkai', label: 'Đọc hiểu', icon: Compass },
     { href: '/games', label: 'Trò chơi', icon: Gamepad2, isHighlight: true },
     { href: '/review', label: 'Review', icon: Sparkles },
-    { href: '/decks', label: 'Decks', icon: Layers },
+    { href: '/mock-test', label: 'Thi Thử', icon: FileText },
   ];
 
 

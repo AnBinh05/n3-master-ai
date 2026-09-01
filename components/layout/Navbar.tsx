@@ -19,7 +19,8 @@ import {
   FileText,
   User,
   LogOut,
-  LogIn
+  LogIn,
+  Compass
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { 
@@ -70,6 +71,7 @@ export function Navbar() {
     { href: '/dashboard', label: 'Tổng quan', icon: BookOpen },
     { href: '/decks', label: 'Bộ thẻ', icon: Layers },
     { href: '/review', label: 'Ôn tập', icon: Sparkles },
+    { href: '/dokkai', label: 'Đọc hiểu', icon: Compass },
     { href: '/mock-test', label: 'Thi Thử', icon: FileText },
     { href: '/games', label: 'Trò chơi', icon: Gamepad2 },
     { href: '/ai', label: 'AI Studio', icon: Sparkles },

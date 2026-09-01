@@ -26,7 +26,8 @@ import {
   TrendingUp,
   Calendar,
   Gift,
-  HelpCircle
+  HelpCircle,
+  Compass
 } from 'lucide-react';
 import { MascotWidget } from '@/components/games/MascotWidget';
 import { OmikujiModal } from '@/components/games/OmikujiModal';
@@ -275,14 +276,33 @@ export function DashboardClientView({ initialDecks, totalCards, totalDue }: Dash
         </div>
 
         {/* Fast Action Cards */}
-        <div className="flex flex-col justify-between gap-4">
+        <div className="flex flex-col justify-between gap-3">
+          <Link
+            href="/dokkai"
+            className="p-4 rounded-2xl bg-gradient-to-br from-rose-500/20 via-purple-500/10 to-card border border-rose-500/40 hover:border-rose-500/80 shadow-md hover:shadow-xl transition-all flex items-center justify-between group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-rose-500 to-pink-500 text-white flex items-center justify-center shadow-md shadow-rose-500/30 group-hover:scale-105 transition-transform">
+                <Compass className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <h3 className="text-sm font-black text-foreground">Luyện Đọc Hiểu Dokkai</h3>
+                  <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full bg-rose-500 text-white">Mới</span>
+                </div>
+                <p className="text-xs text-muted-foreground">Furigana • Mổ xẻ câu • Soi manh mối</p>
+              </div>
+            </div>
+            <ChevronRight className="w-5 h-5 text-rose-500 group-hover:translate-x-1 transition-transform" />
+          </Link>
+
           <Link
             href="/mock-test"
-            className="p-5 rounded-3xl bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-card border border-indigo-500/30 hover:border-indigo-500/60 shadow-md hover:shadow-xl transition-all flex items-center justify-between group"
+            className="p-4 rounded-2xl bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-card border border-indigo-500/30 hover:border-indigo-500/60 shadow-md hover:shadow-xl transition-all flex items-center justify-between group"
           >
-            <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-500 text-white flex items-center justify-center shadow-md shadow-indigo-500/30 group-hover:scale-105 transition-transform">
-                <Clock className="w-6 h-6" />
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-xl bg-indigo-500 text-white flex items-center justify-center shadow-md shadow-indigo-500/30 group-hover:scale-105 transition-transform">
+                <Clock className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="text-sm font-black text-foreground">Phòng Thi Thử JLPT N3</h3>
@@ -294,31 +314,15 @@ export function DashboardClientView({ initialDecks, totalCards, totalDue }: Dash
 
           <Link
             href="/games"
-            className="p-5 rounded-3xl bg-gradient-to-br from-amber-500/15 via-rose-500/10 to-card border border-rose-500/30 hover:border-rose-500/60 shadow-md hover:shadow-xl transition-all flex items-center justify-between group"
+            className="p-4 rounded-2xl bg-gradient-to-br from-amber-500/15 via-rose-500/10 to-card border border-rose-500/30 hover:border-rose-500/60 shadow-md hover:shadow-xl transition-all flex items-center justify-between group"
           >
-            <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-rose-500 text-white flex items-center justify-center shadow-md shadow-rose-500/30 group-hover:scale-105 transition-transform">
-                <Gamepad2 className="w-6 h-6" />
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-500 text-white flex items-center justify-center shadow-md shadow-rose-500/30 group-hover:scale-105 transition-transform">
+                <Gamepad2 className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="text-sm font-black text-foreground">Võ Đài Trò Chơi N3</h3>
                 <p className="text-xs text-muted-foreground">Ninja Chém Chữ • Đấu Boss • Shadowing</p>
-              </div>
-            </div>
-            <ChevronRight className="w-5 h-5 text-rose-500 group-hover:translate-x-1 transition-transform" />
-          </Link>
-
-          <Link
-            href="/ai"
-            className="p-5 rounded-3xl bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-card border border-rose-500/30 hover:border-rose-500/60 shadow-md hover:shadow-xl transition-all flex items-center justify-between group"
-          >
-            <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center shadow-md shadow-rose-500/30 group-hover:scale-105 transition-transform">
-                <Bot className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-sm font-black text-foreground">Trợ Lý AI N3 Sensei</h3>
-                <p className="text-xs text-muted-foreground">Giải thích bẫy thi • Chatbot 24/7</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-rose-500 group-hover:translate-x-1 transition-transform" />
