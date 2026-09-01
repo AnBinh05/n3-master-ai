@@ -37,8 +37,26 @@ export default function DeckDetailPage() {
     try {
       const res = await fetch('/api/decks');
       const data = await res.json();
-      const match = (data.decks || []).find((d: any) => d.id === deckId);
-      if (match) setDeck(match);
+      const allDecks = data.decks || [];
+      let match = allDecks.find((d: any) => d.id === deckId);
+      if (!match) {
+        // Try match by unit number
+        const matchNum = deckId.match(/(\d+)/);
+        if (matchNum) {
+          match = allDecks.find((d: any) => d.title.includes(`Unit ${matchNum[1]}`) || d.id.includes(`unit-${matchNum[1]}`));
+        }
+      }
+      if (match) {
+        setDeck(match);
+      } else {
+        setDeck({
+          id: deckId,
+          title: `Bộ Thẻ JLPT N3`,
+          description: `Danh sách từ vựng và ngữ pháp ôn thi JLPT N3`,
+          category: 'VOCABULARY',
+          totalCards: 0,
+        });
+      }
 
       // Fetch cards for deck
       const resCards = await fetch(`/api/cards?deckId=${deckId}`);

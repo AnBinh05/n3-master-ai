@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { getDefaultCardsForDeck, getAllDefaultCards } from '@/lib/default-decks';
 
 // GET /api/cards?deckId=...
 export async function GET(req: Request) {
@@ -10,23 +11,40 @@ export async function GET(req: Request) {
     const deckId = searchParams.get('deckId');
 
     if (!deckId) {
-      // If no deckId provided, fetch all cards for review
-      const allCards = await prisma.card.findMany({
-        take: 50,
-        orderBy: { dueDate: 'asc' },
-      });
-      return NextResponse.json({ cards: allCards });
+      try {
+        const allCards = await prisma.card.findMany({
+          take: 100,
+          orderBy: { dueDate: 'asc' },
+        });
+        if (allCards.length > 0) {
+          return NextResponse.json({ cards: allCards });
+        }
+      } catch (e) {
+        console.warn('Prisma cards query failed, using static default cards:', e);
+      }
+      return NextResponse.json({ cards: getAllDefaultCards().slice(0, 100) });
     }
 
-    const cards = await prisma.card.findMany({
-      where: { deckId },
-      orderBy: { createdAt: 'asc' },
-    });
+    try {
+      const cards = await prisma.card.findMany({
+        where: { deckId },
+        orderBy: { createdAt: 'asc' },
+      });
 
-    return NextResponse.json({ cards });
+      if (cards && cards.length > 0) {
+        return NextResponse.json({ cards });
+      }
+    } catch (e) {
+      console.warn(`Prisma cards query for deck ${deckId} failed:`, e);
+    }
+
+    // Return static default cards for this deck
+    return NextResponse.json({ cards: getDefaultCardsForDeck(deckId) });
   } catch (error: any) {
     console.error('Error fetching cards:', error);
-    return NextResponse.json({ error: 'Failed to fetch cards' }, { status: 500 });
+    const { searchParams } = new URL(req.url);
+    const deckId = searchParams.get('deckId');
+    return NextResponse.json({ cards: deckId ? getDefaultCardsForDeck(deckId) : getAllDefaultCards().slice(0, 100) });
   }
 }
 

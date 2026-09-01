@@ -20,13 +20,15 @@ import {
 } from 'lucide-react';
 import { HeatmapCalendar } from '@/components/stats/HeatmapCalendar';
 
+import { getDefaultDecks } from '@/lib/default-decks';
+
 export const revalidate = 0;
 
 export default async function DashboardPage() {
-  // Fetch all 12 units in chronological order
-  let decks: any[] = [];
+  // Fetch all 12 units in chronological order, with static fallback
+  let rawDecks: any[] = [];
   try {
-    decks = await prisma.deck.findMany({
+    rawDecks = await prisma.deck.findMany({
       include: {
         _count: { select: { cards: true } },
         cards: { select: { id: true, dueDate: true, status: true } },
@@ -34,16 +36,33 @@ export default async function DashboardPage() {
       orderBy: { createdAt: 'asc' },
     });
   } catch (e) {
-    decks = [];
+    rawDecks = [];
   }
+
+  const decks = (rawDecks && rawDecks.length > 0)
+    ? rawDecks.map((d: any) => ({
+        id: d.id,
+        title: d.title,
+        description: d.description,
+        category: d.category,
+        totalCards: d._count?.cards ?? (d.cards?.length || 0),
+        dueCardsCount: d.cards ? d.cards.filter((c: any) => new Date(c.dueDate) <= new Date() || c.status === 'NEW').length : (d._count?.cards || 0),
+      }))
+    : getDefaultDecks().map((d) => ({
+        id: d.id,
+        title: d.title,
+        description: d.description,
+        category: d.category,
+        totalCards: d.totalCards,
+        dueCardsCount: d.dueCardsCount,
+      }));
 
   let totalCards = 0;
   let totalDue = 0;
 
   decks.forEach((deck: any) => {
-    totalCards += deck._count.cards;
-    const now = new Date();
-    totalDue += deck.cards.filter((c: any) => new Date(c.dueDate) <= now || c.status === 'NEW').length;
+    totalCards += deck.totalCards;
+    totalDue += deck.dueCardsCount;
   });
 
   return (
@@ -199,9 +218,7 @@ export default async function DashboardPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {decks.map((deck: any, idx: number) => {
-            const due = deck.cards.filter(
-              (c: any) => new Date(c.dueDate) <= new Date() || c.status === 'NEW'
-            ).length;
+            const due = deck.dueCardsCount;
 
             return (
               <div
@@ -214,7 +231,7 @@ export default async function DashboardPage() {
                       {deck.category === 'GRAMMAR' ? 'NGỮ PHÁP' : `UNIT ${idx + 1}`}
                     </span>
                     <span className="text-xs font-extrabold text-foreground bg-muted px-2.5 py-1 rounded-lg">
-                      {deck._count.cards} Thẻ
+                      {deck.totalCards} Thẻ
                     </span>
                   </div>
 

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { getDefaultDecks } from '@/lib/default-decks';
 
 // GET /api/decks - Fetch all decks for current user (plus public decks)
 export async function GET() {
@@ -9,32 +10,42 @@ export async function GET() {
     const session = await getServerSession(authOptions);
     const userId = (session?.user as any)?.id;
 
-    const decks = await prisma.deck.findMany({
-      where: {
-        OR: [
-          ...(userId ? [{ userId }] : []),
-          { isPublic: true },
-        ],
-      },
-      include: {
-        _count: {
-          select: { cards: true },
+    let decks: any[] = [];
+    try {
+      decks = await prisma.deck.findMany({
+        where: {
+          OR: [
+            ...(userId ? [{ userId }] : []),
+            { isPublic: true },
+          ],
         },
-        cards: {
-          select: {
-            id: true,
-            dueDate: true,
-            status: true,
+        include: {
+          _count: {
+            select: { cards: true },
+          },
+          cards: {
+            select: {
+              id: true,
+              dueDate: true,
+              status: true,
+            },
           },
         },
-      },
-      orderBy: { createdAt: 'asc' },
-    });
+        orderBy: { createdAt: 'asc' },
+      });
+    } catch (dbErr) {
+      console.warn('Prisma query failed, using static default decks:', dbErr);
+      decks = [];
+    }
+
+    if (!decks || decks.length === 0) {
+      return NextResponse.json({ decks: getDefaultDecks() });
+    }
 
     const formattedDecks = decks.map((deck) => {
       const now = new Date();
       const dueCardsCount = deck.cards.filter(
-        (c) => new Date(c.dueDate) <= now || c.status === 'NEW'
+        (c: any) => new Date(c.dueDate) <= now || c.status === 'NEW'
       ).length;
 
       return {
@@ -53,7 +64,7 @@ export async function GET() {
     return NextResponse.json({ decks: formattedDecks });
   } catch (error: any) {
     console.error('Error fetching decks:', error);
-    return NextResponse.json({ error: 'Failed to fetch decks' }, { status: 500 });
+    return NextResponse.json({ decks: getDefaultDecks() });
   }
 }
 
