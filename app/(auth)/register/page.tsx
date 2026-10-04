@@ -13,32 +13,53 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleGoogleSignUp = () => {
     setGoogleLoading(true);
+    setErrorMessage(null);
     signIn('google', { callbackUrl: '/dashboard' });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMessage(null);
+
     try {
-      const res = await signIn('credentials', {
-        name,
+      // 1. Gọi API tạo tài khoản lưu thẳng vào bảng User trên Supabase
+      const registerRes = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await registerRes.json();
+
+      if (!registerRes.ok) {
+        setErrorMessage(data.error || 'Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.');
+        setLoading(false);
+        return;
+      }
+
+      // 2. Tự động đăng nhập sau khi tạo tài khoản thành công
+      const loginRes = await signIn('credentials', {
         email,
         password,
         redirect: false,
       });
-      if (res?.ok) {
+
+      if (loginRes?.error) {
+        setErrorMessage(loginRes.error);
+      } else if (loginRes?.ok) {
         router.push('/dashboard');
       }
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      setErrorMessage('Đã xảy ra sự cố khi kết nối tới máy chủ. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
@@ -50,6 +71,14 @@ export default function RegisterPage() {
           <h1 className="text-2xl font-black text-foreground">Tạo Tài Khoản Mới</h1>
           <p className="text-xs text-muted-foreground">Bắt đầu học 3000+ từ vựng & ngữ pháp JLPT N3 ngay hôm nay</p>
         </div>
+
+        {/* Thông báo lỗi */}
+        {errorMessage && (
+          <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-bold flex items-center gap-2">
+            <span>⚠️</span>
+            <span>{errorMessage}</span>
+          </div>
+        )}
 
         {/* Google Sign In Button */}
         <button
@@ -124,7 +153,8 @@ export default function RegisterPage() {
             <input
               type="password"
               required
-              placeholder="••••••••"
+              minLength={6}
+              placeholder="Tối thiểu 6 ký tự"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full mt-1 p-3 rounded-2xl bg-muted/60 border border-border text-sm focus:ring-2 focus:ring-rose-500"
