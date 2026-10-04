@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client', '.prisma/client', 'pg', '@prisma/adapter-pg'],
+  },
   env: {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'),
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'super-secret-key-n3-master-ai-production-2024',
