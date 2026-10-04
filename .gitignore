@@ -9,6 +9,8 @@
 # next.js
 /.next/
 /out/
+/.open-next/
+.cloudflare
 
 # production
 /build
