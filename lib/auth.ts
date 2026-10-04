@@ -47,6 +47,7 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
+        name: { label: 'Name', type: 'text' },
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
@@ -55,6 +56,7 @@ export const authOptions: NextAuthOptions = {
 
         const email = credentials.email.trim().toLowerCase();
         const password = credentials.password;
+        const name = credentials.name?.trim();
 
         // 1. Kiểm tra Rate Limiting chống tấn công brute-force
         const rateCheck = checkRateLimit(email, 5, 900);
@@ -73,7 +75,7 @@ export const authOptions: NextAuthOptions = {
           user = await prisma.user.create({
             data: {
               email,
-              name: email.split('@')[0],
+              name: name || email.split('@')[0],
               passwordHash: hashedPassword,
               plan: 'PRO',
             },

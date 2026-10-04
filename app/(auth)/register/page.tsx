@@ -24,6 +24,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const res = await signIn('credentials', {
+        name,
         email,
         password,
         redirect: false,
