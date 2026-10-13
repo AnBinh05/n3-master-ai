@@ -8,24 +8,35 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 export function getDatabaseUrl(): string {
-  if (process.env.DATABASE_URL && process.env.DATABASE_URL.trim() !== '') {
-    return process.env.DATABASE_URL;
-  }
+  let url = process.env.DATABASE_URL;
 
   // Đọc từ context Cloudflare Workers qua OpenNext nếu có
-  try {
-    const { getCloudflareContext } = require('@opennextjs/cloudflare');
-    const ctx = getCloudflareContext();
-    if (ctx?.env?.DATABASE_URL) {
-      return ctx.env.DATABASE_URL;
+  if (!url || url.trim() === '') {
+    try {
+      const { getCloudflareContext } = require('@opennextjs/cloudflare');
+      const ctx = getCloudflareContext();
+      if (ctx?.env?.DATABASE_URL) {
+        url = ctx.env.DATABASE_URL;
+      }
+    } catch {
+      // Không chạy trong Cloudflare context hoặc module chưa sẵn sàng
     }
-  } catch {
-    // Không chạy trong Cloudflare context hoặc module chưa sẵn sàng
   }
 
-  throw new Error(
-    'DATABASE_URL chưa được cấu hình. Vui lòng thêm biến môi trường DATABASE_URL trong Cloudflare Dashboard (Settings > Variables and Secrets) hoặc file .env.'
-  );
+  if (!url || url.trim() === '') {
+    throw new Error(
+      'DATABASE_URL chưa được cấu hình. Vui lòng thêm biến môi trường DATABASE_URL trong Cloudflare Dashboard (Settings > Variables and Secrets) hoặc file .env.'
+    );
+  }
+
+  // Supabase Pooler trên cổng 6543 (Transaction Mode) không hỗ trợ prepared statements / extended query protocol của node-postgres,
+  // dẫn đến lỗi "Connection terminated unexpectedly".
+  // Tự động chuyển sang cổng 5432 (Session Mode Pooler) của Supabase để tương thích 100%.
+  if (url.includes('.pooler.supabase.com:6543')) {
+    url = url.replace(':6543', ':5432').replace('?pgbouncer=true', '').replace('&pgbouncer=true', '');
+  }
+
+  return url;
 }
 
 export function getPrismaClient(): PrismaClient {
@@ -35,14 +46,23 @@ export function getPrismaClient(): PrismaClient {
 
   const connectionString = getDatabaseUrl();
 
-  // Khởi tạo Pool với cấu hình SSL dành cho Supabase PostgreSQL trên Serverless / Cloudflare Workers
+  // Khởi tạo Pool tối ưu hóa cho môi trường Serverless / Cloudflare Workers
   const pool =
     globalForPrisma.pgPool ||
     new Pool({
       connectionString,
       ssl: { rejectUnauthorized: false },
-      max: 2,
+      max: 1,
+      idleTimeoutMillis: 1000,
+      connectionTimeoutMillis: 10000,
     });
+
+  pool.on('error', (err) => {
+    console.warn('Postgres pool idle client error:', err?.message);
+    globalForPrisma.pgPool = undefined;
+    globalForPrisma.prisma = undefined;
+  });
+
   globalForPrisma.pgPool = pool;
 
   // Luôn luôn khởi tạo PrismaClient cùng với PrismaPg adapter trên Edge / Cloudflare Workers
