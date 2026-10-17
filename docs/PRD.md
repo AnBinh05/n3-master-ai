@@ -167,6 +167,134 @@ sequenceDiagram
 
 ---
 
+#### 4.1 Bảng Điều Khiển Học Tập Thông Minh (Dashboard — `/dashboard`)
+* **Mục tiêu & Giá trị:** Màn hình trung tâm giúp học viên định hình nhiệm vụ trong ngày, đo lường sự tiến bộ và duy trì tính kỷ luật liên tục.
+* **Các thành phần cốt lõi:**
+  1. **Đồng hồ đếm ngược JLPT:** Tự động tính toán số ngày còn lại đến kỳ thi JLPT N3 gần nhất (Chủ nhật đầu tiên của Tháng 7 hoặc Tháng 12 hàng năm).
+  2. **Thanh chỉ số Gamification:** Hiển thị thời gian thực Cấp bậc (Level), Điểm kinh nghiệm (EXP), Số xu tích lũy (Coins), và Chuỗi ngày học liên tục (Streak 🔥). Tự động đồng bộ bằng Custom Event `gamification_update`.
+  3. **Linh vật đồng hành (Mascot Companion):** Thú cưng tương tác động với biểu cảm thay đổi theo tiến độ và câu khích lệ tiếng Nhật mỗi ngày.
+  4. **Gieo quẻ may mắn Omikuji (Daily Fortune):** Mô phỏng nét văn hóa truyền thống Nhật Bản, mỗi ngày học viên gieo một quẻ may mắn (Đại Cát, Trung Cát...) và nhận thưởng Xu ngẫu nhiên.
+  5. **Bản đồ 12 Unit học tập (Curriculum Navigator):** Phân loại bộ thẻ thông minh theo 5 nhóm từ loại: Danh từ (NOUN), Động từ (VERB), Tính từ / Katakana (ADJ_KATA), Phó từ / Liên từ (ADV_CONJ), và Ngữ pháp (GRAMMAR). Tích hợp tìm kiếm nhanh theo tiêu đề và nội dung.
+  6. **Lịch nhiệt hoạt động (Heatmap Calendar):** Trực quan hóa mức độ siêng năng 365 ngày tương tự phong cách GitHub Contribution Graph.
+* **Luồng dữ liệu:** Next.js Server Component tìm nạp dữ liệu Decks và thẻ đến hạn (`dueDate <= NOW()`) qua Prisma Client với cơ chế fallback tĩnh đảm bảo Dashboard luôn tải tức thì.
+
+---
+
+#### 4.2 Hệ Thống Flashcard & Thuật Toán Lặp Lại Ngắt Quãng SRS SM-2 (`/review`, `/decks`)
+* **Mục tiêu & Giá trị:** Giải quyết tận gốc vấn đề "học trước quên sau" bằng thuật toán Spaced Repetition System chuẩn khoa học (SuperMemo-2 / Anki), chỉ nhắc ôn từ vựng vào đúng thời điểm não bộ sắp quên.
+* **Thuật toán cốt lõi (`lib/srs.ts`):**
+  - Mỗi thẻ sở hữu 3 thông số động: Hệ số dễ nhớ $EF$ (mặc định $2.5$), Khoảng cách lặp lại $I$ (ngày), và Số lần nhớ liên tiếp $R$.
+  - Khi học viên đánh giá độ khó:
+    - **Again (Quên):** $R = 0$, $I = 1$ ngày, $EF = \max(1.3, EF - 0.2)$. Thẻ chuyển về trạng thái `LEARNING` để ôn lại ngay trong chu kỳ ngắn.
+    - **Hard (Nhớ khó khăn):** $EF = \max(1.3, EF - 0.15)$, $I = \max(1, \text{round}(I \times 1.2))$. Thẻ ở trạng thái `REVIEW`.
+    - **Good (Nhớ chuẩn):** $R = R + 1$. Nếu $R = 1 \Rightarrow I = 1$; nếu $R = 2 \Rightarrow I = 6$; nếu $R \ge 3 \Rightarrow I = \text{round}(I \times EF)$. Thẻ đạt trạng thái `GRADUATED`.
+    - **Easy (Nhớ rất rõ):** $EF = \min(3.5, EF + 0.15)$, $R = R + 1$. Nếu $R = 1 \Rightarrow I = 4$; nếu $R = 2 \Rightarrow I = 10$; nếu $R \ge 3 \Rightarrow I = \text{round}(I \times EF \times 1.3)$.
+  - Nhãn dự đoán thời gian ôn tiếp theo hiển thị trực tiếp trên nút bấm: `<10m`, `1d`, `6d`, `15d`.
+* **Trải nghiệm lật thẻ 3D:**
+  - **Mặt trước (Front):** Hiển thị Kanji / Từ vựng lớn, nút phát âm Audio giọng chuẩn bản xứ qua Web Speech API.
+  - **Mặt sau (Back):** Phân tích chi tiết: Cách đọc Hiragana/Katakana, Âm Hán Việt, Ý nghĩa tiếng Việt, Câu ví dụ song ngữ Nhật - Việt, Phân tích từng chữ Kanji cấu thành (Kanji Breakdown).
+  - Tích hợp hiệu ứng pháo hoa cát (`canvas-confetti`) và cộng thưởng EXP/Coins khi hoàn thành chu kỳ học.
+
+---
+
+#### 4.3 Phòng Luyện Đọc Hiểu Chuyên Sâu (Dokkai Room — `/dokkai`)
+* **Mục tiêu & Giá trị:** Đọc hiểu là phần thi khiến học viên JLPT N3 dễ trượt nhất do áp lực từ vựng dài và ngữ pháp phức tạp. Phân hệ Dokkai áp dụng **Phương pháp Giàn giáo (Scaffolding Method)** giúp học viên từ sợ đọc đến làm chủ bài đọc.
+* **Các tính năng nổi bật:**
+  1. **Bộ đọc thông minh (Smart Reader):**
+     - **Bật / Tắt Furigana linh hoạt:** Học viên có thể tắt Furigana để thử thách phản xạ Kanji, hoặc bật Furigana khi cần hỗ trợ.
+     - **Bóc tách cấu trúc câu (Sentence Breakdown):** AI phân tích ngữ pháp từng câu trong bài, chỉ rõ Chủ ngữ, Vị ngữ, Bổ ngữ và các liên từ logic nối câu.
+     - **Tra cứu từ tức thì (Interactive Word Tooltip):** Nhấp chuột hoặc chạm vào bất kỳ từ vựng nào trong bài để xem nghĩa tiếng Việt, Hán Việt, từ loại và cách phát âm ngay trên Popover mà không cần thoát khỏi bài đọc.
+     - **Bản dịch song ngữ Nhật - Việt:** Ẩn/hiện bản dịch tiếng Việt từng câu hoặc toàn bài đối chiếu tư duy dịch thuật.
+  2. **Bộ tạo bài đọc bằng AI (AI Dokkai Generator):** Cho phép học viên tự nhập chủ đề yêu thích (anime, du lịch, trà đạo, công nghệ...), AI tự động biên soạn bài đọc đúng cấu trúc câu và từ vựng chuẩn N3 kèm theo bộ câu hỏi trắc nghiệm kiểm tra độ hiểu.
+  3. **Chiến lược đọc hiểu (Dokkai Strategy Guide):** Tích hợp cẩm nang các kỹ thuật đọc lướt tìm ý chính (Skimming), đọc quét tìm dữ liệu cụ thể (Scanning), và bẫy loại trừ đáp án nhiễu thường gặp trong đề thi N3.
+  4. **Câu hỏi trắc nghiệm & Giải thích:** Mỗi bài đọc đi kèm câu hỏi chuẩn đề thi JLPT N3 kèm phân tích chi tiết vì sao đáp án đúng và vì sao các lựa chọn khác sai.
+
+---
+
+#### 4.4 AI Studio — Trợ Lý Gia Sư Tiếng Nhật 24/7 (`/ai`)
+* **Mục tiêu & Giá trị:** Trải nghiệm học tập 1-kèm-1 với Trí tuệ Nhân tạo thế hệ mới (LLMs) chạy Serverless Streaming tốc độ cao, giải đáp mọi thắc mắc ngữ cảnh thực tế.
+* **5 phân hệ AI chuyên sâu:**
+  1. **AI Card Generator (Tạo thẻ tự động):** Nhập một từ vựng, ngữ pháp hoặc ý niệm -> AI tự trích xuất Kanji, Furigana, Hán Việt, Nghĩa tiếng Việt, Câu ví dụ và tạo ngay Flashcard lưu vào bộ thẻ.
+  2. **AI Grammar & Vocab Explainer (Giải thích chuyên sâu):** Phân tích sắc thái ngôn ngữ, cách dùng trong thực tế và so sánh các mẫu ngữ pháp dễ gây nhầm lẫn (ví dụ: `～わけがない` vs `～はずがない`).
+  3. **AI Quiz Generator (Tự sinh đề thi nhanh):** Sinh tức thời các câu hỏi trắc nghiệm N3 theo chủ đề mong muốn kiểm tra.
+  4. **AI Sentence Correction (Sửa bài viết & Luyện đặt câu):** Học viên nhập câu tiếng Nhật tự viết -> AI phát hiện lỗi sai trợ từ, chia thể động từ, gợi ý câu viết chuẩn tự nhiên của người bản xứ và giải thích cặn kẽ ngữ pháp.
+  5. **AI Sensei Chat (Trò chuyện nhập vai 24/7):** Trợ lý ảo đóng vai người Nhật trò chuyện theo tình huống đời sống (đặt phòng khách sạn, phỏng vấn xin việc, đi siêu thị...), tự động sửa lỗi diễn đạt sau mỗi tin nhắn.
+* **Kiến trúc Serverless AI:** Vercel AI SDK với kỹ thuật **Edge Streaming Response** (Time to First Token < 0.5s), tích hợp bảng `AIUsageLog` kiểm soát hạn mức sử dụng giữa tài khoản Free và Pro.
+
+---
+
+#### 4.5 Phòng Thi Thử Chuẩn JLPT N3 (Mock Test — `/mock-test`)
+* **Mục tiêu & Giá trị:** Giúp học viên làm quen với áp lực thời gian, cấu trúc đề và đánh giá năng lực thực tế trước kỳ thi thật.
+* **Tính năng phòng thi thực tế:**
+  1. **Đúng chuẩn format đề JLPT N3:** Thời lượng 105 phút với đầy đủ 3 phần thi: Kiến thức ngôn ngữ (Từ vựng/Kanji), Ngữ pháp & Đọc hiểu, Nghe hiểu (audio tích hợp).
+  2. **Phiếu làm bài thông minh (Answer Sheet):** Bảng hiển thị danh sách toàn bộ câu hỏi (1..N), thể hiện câu đã làm / chưa làm và chuyển nhanh đến câu bất kỳ.
+  3. **Gắn cờ câu hỏi (Flag for Review):** Cho phép đánh dấu các câu nghi vấn để kiểm tra lại trước khi nộp bài.
+  4. **Chế độ tập trung (Focus Mode):** Khóa toàn màn hình, ẩn các thành phần gây xao nhãng.
+  5. **Đồng hồ đếm ngược:** Cảnh báo khi còn dưới 5 phút và tự động thu bài khi đồng hồ về 00:00.
+  6. **Thuật toán chấm điểm chuẩn JLPT:**
+     - Tổng thang điểm: $180$ điểm. Điểm sàn đậu JLPT N3: $\ge 95 / 180$.
+     - **Cơ chế điểm liệt chuẩn quốc tế:** Mỗi phần thi phải đạt tối thiểu $\ge 19 / 60$ điểm. Nếu tổng điểm $\ge 95$ nhưng có 1 phần thi dưới 19 điểm, hệ thống vẫn đánh giá là **TRƯỢT (FAIL)** do dính điểm liệt.
+  7. **Tải lên đề thi tùy chỉnh (Custom Exam Uploader):** Cho phép nạp đề thi từ file JSON để học viên tự thi thử theo đề thi riêng của trung tâm.
+
+---
+
+#### 4.6 Đấu Trường Trò Chơi Học Tập & Gamification (`/games`)
+* **Mục tiêu & Giá trị:** Biến quá trình học tập ngôn ngữ thành trải nghiệm giải trí tương tác cao (Learn-to-Play), nâng cao tỷ lệ giữ chân người học mỗi ngày.
+* **8 Chế độ Game phong phú:**
+  1. **Speed Match (Ghép thẻ siêu tốc):** Nối thẻ Kanji / Từ vựng và Nghĩa tương ứng trên lưới đa ô trong thời gian giới hạn.
+  2. **Samurai Slash (Chém Kanji phong cách Ninja):** Chém đúng các từ vựng bay trên màn hình theo nghĩa yêu cầu.
+  3. **Boss Battle (Đấu Boss theo lượt):** Nhập vai chiến binh tiêu diệt quái vật bằng cách trả lời đúng câu hỏi tiếng Nhật.
+  4. **Sentence Scramble (Ghép câu ngữ pháp):** Sắp xếp các mảnh từ vựng bị đảo lộn thành câu hoàn chỉnh đúng trật tự N3.
+  5. **Shadowing Studio:** Luyện nói nhại theo giọng đọc bản xứ qua sóng âm trực quan.
+  6. **PvP Arena (Đấu trường 1vs1):** Ghép cặp so tài trắc nghiệm thời gian thực giữa hai người học.
+  7. **Kanji Canvas (Tập viết chữ Hán):** Bảng vẽ cảm ứng tương tác nhận diện nét bút và thứ tự nét viết chuẩn.
+  8. **Story Mode (Vượt ải Visual Novel):** Phiêu lưu khám phá văn hóa Nhật Bản qua từng chương cốt truyện.
+* **Hệ sinh thái Gamification:**
+  - **Hệ thống Cấp bậc (Level) & EXP:** Tính toán bằng công thức lũy tiến $Level = \lfloor \sqrt{EXP / 100} \rfloor + 1$.
+  - **Cửa hàng thú cưng (Pet Shop):** Sử dụng Xu (Coins) kiếm được qua các bài học để mua sắm vật phẩm, trang phục cho linh vật.
+  - **Bộ sưu tập Huy hiệu (Achievements):** Mở khóa hơn 20 danh hiệu danh giá trong suốt quá trình học.
+
+---
+
+#### 4.7 Kiểm Tra Trắc Nghiệm Theo Unit (Unit Quiz — `/quiz/[deckId]`)
+* **Mục tiêu & Giá trị:** Đánh giá nhanh mức độ thấu hiểu của học viên sau khi kết thúc việc lật thẻ của một bộ Unit cụ thể.
+* **Cơ chế sinh câu hỏi tự động (Smart Quiz Engine):**
+  - Tự động phân tích các thẻ trong Deck và tạo ra 3 định dạng câu hỏi:
+    1. `KANJI_TO_MEANING`: Nhìn chữ Hán, chọn nghĩa tiếng Việt đúng.
+    2. `MEANING_TO_KANJI`: Nhìn nghĩa tiếng Việt, chọn cách đọc Hiragana và chữ Hán đúng.
+    3. `FILL_IN_BLANK`: Điền từ vào vị trí còn khuyết trong câu ví dụ ngữ cảnh.
+  - **Danh sách câu sai (Wrong Cards Retention):** Tự động lọc ra những từ vựng học viên trả lời sai để tạo thành danh sách ôn tập riêng, không bỏ sót lỗ hổng kiến thức.
+
+---
+
+#### 4.8 Báo Cáo & Phân Tích Lộ Trình Học Tập (Analytics & Stats — `/stats`)
+* **Mục tiêu & Giá trị:** Cung cấp bức tranh toàn cảnh về hiệu quả học tập thông qua số liệu định lượng, giúp học viên điều chỉnh thời gian học hợp lý.
+* **Các biểu đồ trực quan:**
+  1. **Biểu đồ tỷ lệ duy trì kiến thức (Retention Rate Chart):** Thể hiện phần trăm số từ vựng được ghi nhớ sau các khoảng thời gian 1 ngày, 3 ngày, 7 ngày, 30 ngày.
+  2. **Biểu đồ phân phối trạng thái thẻ (Card Mastery Distribution):** Tỷ lệ các thẻ ở 4 trạng thái: Mới (New), Đang học (Learning), Ôn tập (Review), và Đã thành thạo (Graduated).
+  3. **Lịch sử hoạt động:** Thống kê tổng số lượng thẻ đã lật mỗi ngày và thời gian trung bình dành cho mỗi lượt thẻ.
+
+---
+
+#### 4.9 Hệ Thống Xác Thực & Bảo Mật Phiên Làm Việc (`/login`, `/register`, `lib/auth.ts`)
+* **Mục tiêu & Giá trị:** Quy trình gia nhập không ma sát (Zero-friction Onboarding) và bảo vệ tuyệt đối dữ liệu người dùng.
+* **Cơ chế kỹ thuật:**
+  1. **Đăng nhập Google OAuth 2.0 1-Click:** Tối ưu hóa cho môi trường Serverless với native `fetch()` và tự động liên kết tài khoản an toàn (`allowDangerousEmailAccountLinking: true`).
+  2. **Tài khoản Trải nghiệm Tức thì (Instant Demo Mode):** Nút bấm điền tự động tài khoản Demo (`demo@n3master.ai` / `demo123456`) với cơ chế phòng ngừa lỗi cold start, giúp người dùng và ban giám khảo trải nghiệm toàn bộ tính năng cao cấp ngay lập tức mà không cần tạo tài khoản mới.
+  3. **Tự động chuyển hướng vào Bảng điều khiển (`/dashboard`):** Sau khi xác thực thành công người dùng sẽ được đưa thẳng vào trang học tập chính. Nếu người dùng đã đăng nhập truy cập lại `/login` hoặc `/register`, hệ thống tự động nhận diện và redirect vào `/dashboard`.
+  4. **Bảo mật Brute-Force (`lib/security.ts`):** Khóa tạm thời 15 phút nếu phát hiện hành vi nhập sai mật khẩu quá 5 lần liên tiếp.
+
+---
+
+#### 4.10 Cài Đặt, Hồ Sơ & Cổng Thanh Toán Đám Mây (`/settings`, Stripe)
+* **Mục tiêu & Giá trị:** Cá nhân hóa trải nghiệm học tập và vận hành mô hình kinh doanh Freemium của nền tảng.
+* **Các tính năng chính:**
+  1. **Cá nhân hóa giao diện:** Chuyển đổi mượt mà giữa Dark Mode (chế độ nền tối bảo vệ mắt khi học ban đêm) và Light Mode với thư viện `next-themes`.
+  2. **Quản lý gói tài khoản:** Phân chia rõ ràng giữa gói **FREE** (học từ vựng cơ bản, 5 lượt AI/ngày) và gói **PRO / VIP** (mở khóa không giới hạn AI Sensei, phòng thi thử Mock Test, toàn bộ 8 trò chơi đấu trường).
+  3. **Tích hợp cổng thanh toán Stripe:** Hỗ trợ thanh toán quốc tế an toàn qua thẻ tín dụng/ghi nợ và tự động kích hoạt gói cước qua Stripe Webhooks.
+
+---
+
 ### 5. Thiết Kế Cơ Sở Dữ Liệu (Database Schema)
 
 Dưới đây là các thực thể dữ liệu chính được định nghĩa trong [prisma/schema.prisma](file:///d:/n3-master-ai/prisma/schema.prisma):
