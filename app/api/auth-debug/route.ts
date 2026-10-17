@@ -1,3 +1,4 @@
+import '@/lib/http-polyfill';
 import { NextResponse } from 'next/server';
 import { getAuthOptions } from '@/lib/auth';
 import { Issuer } from 'openid-client';

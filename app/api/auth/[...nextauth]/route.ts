@@ -1,3 +1,4 @@
+import '@/lib/http-polyfill';
 import NextAuth from 'next-auth';
 import { getAuthOptions } from '@/lib/auth';
 
