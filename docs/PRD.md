@@ -1,0 +1,311 @@
+# TÀI LIỆU YÊU CẦU SẢN PHẨM & KIẾN TRÚC ĐÁM MÂY (PRD)
+## N3 Master AI — Nền Tảng Chinh Phục JLPT N3 Cùng Trí Tuệ Nhân Tạo & SRS Anki
+
+---
+
+### Mục Lục
+1. [Giới Thiệu Tổng Quan & Tầm Nhìn Dự Án](#1-giới-thiệu-tổng-quan--tầm-nhìn-dự-án)
+2. [Đối Tượng Người Dùng & Bài Toán Cần Giải Quyết](#2-đối-tượng-người-dùng--bài-toán-cần-giải-quyết)
+3. [Kiến Trúc Điện Toán Đám Mây (Cloud Architecture)](#3-kiến-trúc-điện-toán-đám-mây-cloud-architecture)
+   - [3.1 Mô hình Serverless Edge Computing (Cloudflare Workers + OpenNext)](#31-mô-hình-serverless-edge-computing-cloudflare-workers--opennext)
+   - [3.2 Cơ sở dữ liệu đám mây (Supabase PostgreSQL & Connection Pooler)](#32-cơ-sở-dữ-liệu-đám-mây-supabase-postgresql--connection-pooler)
+   - [3.3 Hệ thống xác thực danh tính phân tán (NextAuth Edge JWT)](#33-hệ-thống-xác-thực-danh-tính-phân-tán-nextauth-edge-jwt)
+   - [3.4 Tích hợp AI Serverless (Vercel AI SDK & LLMs)](#34-tích-hợp-ai-serverless-vercel-ai-sdk--llms)
+   - [3.5 Thanh toán đám mây & Đăng ký gói cước (Stripe Cloud)](#35-thanh-toán-đám-mây--đăng-ký-gói-cước-stripe-cloud)
+   - [3.6 Quy trình CI/CD & Tự động hóa triển khai](#36-quy-trình-cicd--tự-động-hóa-triển-khai)
+4. [Bản Đồ Chức Năng Chi Tiết (Feature Breakdown)](#4-bản-đồ-chức-năng-chi-tiết-feature-breakdown)
+   - [4.1 Bảng điều khiển học tập (Dashboard)](#41-bảng-điều-khiển-học-tập-dashboard)
+   - [4.2 Hệ thống Flashcard & Thuật toán lặp lại ngắt quãng SRS SM-2](#42-hệ-thống-flashcard--thuật-toán-lặp-lại-ngắt-quãng-srs-sm-2)
+   - [4.3 Phòng luyện Đọc hiểu chuyên sâu (Dokkai Room)](#43-phòng-luyện-đọc-hiểu-chuyên-sâu-dokkai-room)
+   - [4.4 AI Studio (Trợ lý gia sư tiếng Nhật 24/7)](#44-ai-studio-trợ-lý-gia-sư-tiếng-nhật-247)
+   - [4.5 Phòng thi thử chuẩn cấu trúc đề JLPT N3 (Mock Test)](#45-phòng-thi-thử-chuẩn-cấu-trúc-đề-jlpt-n3-mock-test)
+   - [4.6 Minigames học tiếng Nhật (Games)](#46-minigames-học-tiếng-nhật-games)
+   - [4.7 Thống kê & Phân tích lộ trình học (Analytics & Stats)](#47-thống-kê--phân-tích-lộ-trình-học-analytics--stats)
+5. [Thiết Kế Cơ Sở Dữ Liệu (Database Schema)](#5-thiết-kế-cơ-sở-dữ-liệu-database-schema)
+6. [Bảo Mật, Hiệu Năng & Khả Năng Mở Rộng](#6-bảo-mật-hiệu-năng--khả-năng-mở-rộng)
+7. [Hướng Dẫn Dành Cho Lập Trình Viên Mới (Developer Onboarding)](#7-hướng-dẫn-dành-cho-lập-trình-viên-mới-developer-onboarding)
+
+---
+
+### 1. Giới Thiệu Tổng Quan & Tầm Nhìn Dự Án
+
+* **Tên dự án:** N3 Master AI
+* **Khẩu hiệu:** Chinh phục JLPT N3 cùng Trí tuệ Nhân tạo & SRS Anki
+* **Production URL:** `https://n3-master-ai.binhn3832.workers.dev`
+* **Mục tiêu:** Xây dựng một nền tảng học tập tiếng Nhật cấp độ JLPT N3 toàn diện, kết hợp phương pháp ghi nhớ khoa học lặp lại ngắt quãng (Spaced Repetition System - SRS) với năng lực phân tích ngôn ngữ tức thời của các mô hình AI tiên tiến, vận hành hoàn toàn trên hạ tầng **Serverless Cloud Computing** hiện đại với chi phí tối ưu và tốc độ tải trang cực nhanh.
+
+---
+
+### 2. Đối Tượng Người Dùng & Bài Toán Cần Giải Quyết
+
+#### 2.1 Đối tượng người dùng
+* Học viên tiếng Nhật đang chuyển tiếp từ N4 lên N3 (cấp độ có lượng từ vựng và kanji tăng gấp 3 lần).
+* Người bận rộn cần tối ưu hóa thời gian học tập bằng phương pháp khoa học (15-20 phút/ngày).
+* Người học gặp khó khăn với phần Đọc hiểu (Dokkai) và ngữ pháp phức tạp cần có trợ lý AI phân tích và dịch câu từng thành phần.
+
+#### 2.2 Các bài toán được giải quyết
+1. **Học trước quên sau:** Ứng dụng thuật toán **SM-2 (SuperMemo-2 / Anki)** tự động tính toán khoảng cách ngày ôn tập theo phản xạ nhớ của học viên (Again, Hard, Good, Easy).
+2. **Đọc hiểu không hiểu ngữ cảnh:** AI Dokkai phân tích ngữ pháp, phân tách thành phần câu, hiển thị Furigana và bản dịch song ngữ chuẩn xác.
+3. **Thiếu phản xạ thi cử:** Hệ thống Mock Test mô phỏng áp lực thời gian thật và cấu trúc đề chuẩn của kỳ thi JLPT N3.
+
+---
+
+### 3. Kiến Trúc Điện Toán Đám Mây (Cloud Architecture)
+
+Hệ thống được thiết kế theo tư duy **Cloud-Native, 100% Serverless**, không sử dụng máy chủ truyền thống (No VPS, No Container EC2), tận dụng tối đa hạ tầng biên (Edge Computing).
+
+```mermaid
+graph TD
+    User([Khách hàng / Trình duyệt]) -->|HTTPS / HTTP3| CF[Cloudflare Global Anycast Edge Network\n300+ PoPs trên toàn cầu]
+    
+    subgraph Cloudflare Edge Layer
+        CF --> Worker[Cloudflare Worker\nOpenNext Runtime - V8 Isolates]
+        Worker --> Cache[Cloudflare Static Cache & Assets\nHTML, CSS, JS, Fonts]
+    end
+
+    subgraph Authentication & API
+        Worker --> NextAuth[NextAuth.js v4\nStateless JWT Session]
+        NextAuth --> GoogleOAuth[Google OAuth 2.0 API\nOpenID Connect]
+        Worker --> OpenAISDK[Vercel AI SDK\nLLM OpenAI / Claude API]
+        Worker --> StripeAPI[Stripe Cloud API\nBilling & Checkout]
+    end
+
+    subgraph Database Layer
+        Worker -->|Driver Adapter: @prisma/adapter-pg\nResilient Proxy Auto-Retry| Supavisor[Supabase Pooler: Port 6543\nTransaction Mode]
+        Supavisor --> Postgres[(Supabase PostgreSQL\nAWS ap-south-1 Mumbai)]
+    end
+```
+
+---
+
+#### 3.1 Mô hình Serverless Edge Computing (Cloudflare Workers + OpenNext)
+* **Công nghệ cốt lõi:** Next.js 14 (App Router) được biên dịch sang worker script thông qua `@opennextjs/cloudflare`.
+* **Cơ chế hoạt động:**
+  - Ứng dụng không chạy trên Node.js server truyền thống (như Express hay PM2) mà chạy trực tiếp trên **V8 Isolates** của Cloudflare Workers.
+  - Phân tán tại hơn **300 thành phố trên toàn cầu**, phản hồi request từ Edge server gần người dùng nhất (tại Việt Nam phản hồi từ trạm Hà Nội / TP.HCM), giảm ping xuống dưới **30ms**.
+  - **Scale-to-Zero:** Khi không có người truy cập, tài nguyên tự động trả về 0, không tốn bất kỳ chi phí duy trì máy chủ nhàn rỗi. Khi có lượt truy cập, thời gian khởi động (cold start) chỉ tính bằng mili-giây (< 50ms).
+
+---
+
+#### 3.2 Cơ sở dữ liệu đám mây (Supabase PostgreSQL & Connection Pooler)
+* **Vị trí cụm Database:** AWS khu vực Mumbai (`aws-0-ap-south-1.pooler.supabase.com`).
+* **Supavisor Connection Pooler (Cổng 6543):**
+  - Trong môi trường Serverless Edge, hàng trăm Worker instance có thể khởi chạy đồng thời. Nếu mở kết nối trực tiếp vào cổng 5432, số lượng socket TCP sẽ bị cạn kiệt (connection exhaustion).
+  - Hệ thống sử dụng kết nối qua **Supabase Transaction Pooler (Cổng 6543)** kết hợp cờ `?pgbouncer=true`.
+* **Resilient Prisma Auto-Retry Proxy (`lib/prisma.ts`):**
+  - Khắc phục triệt để hiện tượng *Dead Socket Trap* khi V8 Isolate của Cloudflare đóng băng (freeze) và rã đông (thaw).
+  - Tự động nhận diện lỗi `Connection terminated unexpectedly`, hủy kết nối cũ và tự động kết nối lại tối đa 3 lần với cơ chế exponential backoff, đảm bảo truy vấn không bao giờ bị đứt quãng.
+
+---
+
+#### 3.3 Hệ thống xác thực danh tính phân tán (NextAuth Edge JWT)
+* **Phiên làm việc phi trạng thái (Stateless JWT):**
+  - Thay vì lưu session trong bảng Session của Database (gây chậm và tiêu tốn kết nối), phiên làm việc được ký số và mã hóa trực tiếp trong cookie bảo mật (`__Secure-next-auth.session-token`).
+  - Hỗ trợ đầy đủ cờ bảo mật cao: `HttpOnly`, `SameSite=Lax`, `Secure`.
+* **Google OAuth 2.0 (OpenID Connect):**
+  - Triển khai custom `token.request` và `userinfo.request` bằng chuẩn Web `fetch()` của Cloudflare Workers, vượt qua giới hạn chưa hỗ trợ `https.request` của runtime `unenv`.
+  - Tự động cấp gói **PRO** và liên kết tài khoản an toàn (`allowDangerousEmailAccountLinking: true`).
+* **Cơ chế Safe Adapter (`createSafePrismaAdapter`):**
+  - Bảo vệ tiến trình đăng nhập: Ngay cả khi Database Supabase có độ trễ khởi động, người dùng vẫn đăng nhập thành công vào `/dashboard` mà không gặp lỗi `OAuthCallback`.
+* **Credentials Provider:**
+  - Đăng nhập bằng Email/Mật khẩu với thuật toán băm bảo mật.
+  - Tích hợp sẵn tài khoản Demo độc lập (`demo@n3master.ai`) với cơ chế dự phòng tức thì.
+
+---
+
+#### 3.4 Tích hợp AI Serverless (Vercel AI SDK & LLMs)
+* Sử dụng bộ thư viện `ai` và `@ai-sdk/openai` chạy streaming trực tiếp từ Edge về trình duyệt.
+* **Các tác vụ AI:**
+  1. Phân tích cấu trúc ngữ pháp và câu tiếng Nhật N3.
+  2. Tự động sinh câu ví dụ song ngữ Nhật - Việt phù hợp với ngữ cảnh thực tế.
+  3. Sửa lỗi diễn đạt trong bài viết của học viên kèm giải thích chi tiết.
+  4. Trợ lý hội thoại nhập vai luyện phản xạ giao tiếp tiếng Nhật.
+* **Quản lý hạn mức (Rate Limiting & Token Quota):** Bảng `AIUsageLog` theo dõi lượng token tiêu thụ mỗi ngày, tự động giới hạn người dùng FREE (5 lượt/ngày) và mở khóa không giới hạn cho người dùng PRO.
+
+---
+
+#### 3.5 Thanh toán đám mây & Đăng ký gói cước (Stripe Cloud)
+* **Stripe Checkout:** Tạo phiên thanh toán nâng cấp tài khoản PRO an toàn qua cổng quốc tế.
+* **Stripe Webhooks (`/api/stripe/webhook`):** Lắng nghe sự kiện `checkout.session.completed` và `customer.subscription.deleted` để tự động nâng cấp hoặc gia hạn gói tài khoản trong cơ sở dữ liệu.
+
+---
+
+#### 3.6 Quy trình CI/CD & Tự động hóa triển khai
+```mermaid
+sequenceDiagram
+    participant Dev as Lập trình viên
+    participant Git as GitHub (main branch)
+    participant CF_Build as Cloudflare Workers CI/CD
+    participant Edge as Cloudflare Edge CDN
+
+    Dev->>Git: git push origin main
+    Git->>CF_Build: Kích hoạt Webhook tự động
+    Note over CF_Build: Chạy Prisma Generate & OpenNext Build
+    CF_Build->>CF_Build: Đóng gói .open-next/worker.js & assets
+    CF_Build->>Edge: Triển khai toàn cầu (Deploy to 300+ PoPs)
+    Edge-->>Dev: Sẵn sàng phục vụ (< 1 phút)
+```
+
+---
+
+### 4. Bản Đồ Chức Năng Chi Tiết (Feature Breakdown)
+
+| Phân Hệ | Đường Dẫn (Route) | Mô Tả Chức Năng Chính | Công Nghệ Sử Dụng |
+| :--- | :--- | :--- | :--- |
+| **Trang chủ & Giới thiệu** | `/` | Giới thiệu tính năng, bảng giá, đánh giá của học viên, CTA đăng ký | Next.js Server Components, Tailwind CSS, Framer Motion |
+| **Xác thực** | `/login`, `/register` | Đăng nhập Google 1-click, Email/Password, tài khoản Demo điền sẵn, tự động chuyển hướng `/dashboard` | NextAuth.js, Web Crypto, Lucide Icons |
+| **Bảng điều khiển** | `/dashboard` | Tổng quan tiến độ học tập, streak liên tục, thẻ cần ôn hôm nay, đề xuất bài học tiếp theo | Client Components, SWR / Server Fetch, Local Storage |
+| **Quản lý Bộ thẻ** | `/decks`, `/decks/[id]` | Danh sách bộ từ vựng, Kanji, Ngữ pháp; tạo bộ thẻ mới, gắn tag, quản lý danh sách thẻ flashcard | Prisma ORM, Dynamic Routes, Modal Form |
+| **Ôn tập SRS** | `/review`, `/review/[deckId]` | Lật thẻ flashcard 2 mặt, phát âm Audio, đánh giá 4 mức (Again, Hard, Good, Easy) theo thuật toán SM-2 | SM-2 Algorithm, Canvas Confetti, IndexedDB offline cache |
+| **Trắc nghiệm** | `/quiz/[deckId]` | Làm bài kiểm tra nhanh nhiều lựa chọn theo bộ thẻ, tính điểm và thời gian phản xạ | React State, Sound FX, Recharts |
+| **Phòng Đọc hiểu** | `/dokkai` | Đọc báo/bài văn N3, nhấn vào từ để tra nghĩa, hiển thị Furigana, dịch từng câu, AI phân tích bài đọc | Text Parser, Tooltip Popover, OpenAI SDK |
+| **AI Studio** | `/ai` | Chatbot gia sư tiếng Nhật, sửa bài viết ngữ pháp, tạo Flashcard tự động từ câu nhập vào | Vercel AI SDK, Streaming Response |
+| **Thi thử N3** | `/mock-test` | Đề thi chuẩn format JLPT N3 gồm Từ vựng, Ngữ pháp, Đọc hiểu, Nghe hiểu; có đồng hồ đếm ngược và chấm điểm | Timer Hook, Audio Player, Score Calculator |
+| **Trò chơi Mini** | `/games` | Minigame lật thẻ Kanji, nối từ vựng tăng cường phản xạ ghi nhớ vui nhộn | Framer Motion Animations, Sound Effects |
+| **Thống kê** | `/stats` | Biểu đồ trực quan hóa số thẻ nhớ được, tỷ lệ duy trì kiến thức, lịch sử ôn tập theo tuần/tháng | Recharts, Date-fns, Aggregation Queries |
+| **Cài đặt & Gói cước** | `/settings` | Quản lý thông tin cá nhân, chuyển đổi giao diện Sáng/Tối (Dark Mode), nâng cấp tài khoản PRO qua Stripe | Next-Themes, Stripe Elements |
+
+---
+
+### 5. Thiết Kế Cơ Sở Dữ Liệu (Database Schema)
+
+Dưới đây là các thực thể dữ liệu chính được định nghĩa trong [prisma/schema.prisma](file:///d:/n3-master-ai/prisma/schema.prisma):
+
+```mermaid
+erDiagram
+    USER ||--o{ ACCOUNT : "liên kết"
+    USER ||--o{ SESSION : "phiên đăng nhập"
+    USER ||--o{ DECK : "sở hữu"
+    USER ||--o{ REVIEW_LOG : "thực hiện"
+    USER ||--o{ AI_USAGE_LOG : "sử dụng"
+    DECK ||--o{ CARD : "chứa"
+    CARD ||--o{ REVIEW_LOG : "ghi nhận"
+
+    USER {
+        string id PK
+        string name
+        string email UK
+        string passwordHash
+        string role "USER | ADMIN"
+        string plan "FREE | PRO"
+        string stripeCustomerId
+        int aiUsageToday
+        datetime lastAiResetDate
+        datetime createdAt
+    }
+
+    ACCOUNT {
+        string id PK
+        string userId FK
+        string provider
+        string providerAccountId
+        string access_token
+    }
+
+    DECK {
+        string id PK
+        string userId FK
+        string title
+        string description
+        string category "VOCABULARY | KANJI | GRAMMAR | READING"
+        boolean isPublic
+    }
+
+    CARD {
+        string id PK
+        string deckId FK
+        string frontText
+        string backText
+        string backMeaning
+        string backReading
+        string backExamples
+        float easeFactor "Mặc định: 2.5"
+        int interval "Số ngày cách quãng"
+        int repetitions "Số lần ôn đúng liên tiếp"
+        datetime dueDate "Hạn ôn tập tiếp theo"
+        string status "NEW | LEARNING | REVIEW | GRADUATED"
+    }
+
+    REVIEW_LOG {
+        string id PK
+        string cardId FK
+        string userId FK
+        string rating "AGAIN | HARD | GOOD | EASY"
+        int reviewDurationMs
+        datetime createdAt
+    }
+
+    AI_USAGE_LOG {
+        string id PK
+        string userId FK
+        string actionType
+        int tokensUsed
+        datetime createdAt
+    }
+```
+
+---
+
+### 6. Bảo Mật, Hiệu Năng & Khả Năng Mở Rộng
+
+#### 6.1 Bảo mật (Security)
+* **Bảo vệ Secret:** Toàn bộ Secret (`GOOGLE_CLIENT_SECRET`, `NEXTAUTH_SECRET`, `DATABASE_URL`) tuyệt đối không đưa vào Git công khai mà được lưu trữ tại Cloudflare Environment Variables & Secrets.
+* **HTTP Security Headers:** Cấu hình chuẩn bảo mật cấp cao tại [next.config.mjs](file:///d:/n3-master-ai/next.config.mjs):
+  - `Strict-Transport-Security`: Ép buộc HTTPS trong 2 năm.
+  - `X-Frame-Options: DENY`: Chống tấn công Clickjacking.
+  - `X-Content-Type-Options: nosniff`: Chống tấn công MIME-type sniffing.
+  - `X-XSS-Protection: 1; mode=block`: Chống tấn công Cross-Site Scripting.
+* **Chống Brute-Force Rate Limiting (`lib/security.ts`):** Khóa tạm thời 15 phút nếu nhập sai mật khẩu quá 5 lần liên tiếp.
+
+#### 6.2 Hiệu năng (Performance)
+* Tự động cache tài nguyên tĩnh (Static Assets, Fonts, Images) trên mạng lưới CDN của Cloudflare.
+* Server-side Rendering (SSR) và Incremental Static Regeneration (ISR) giảm thời gian phản hồi First Contentful Paint (FCP) xuống dưới **0.8 giây**.
+* Tích hợp Offline-first IndexedDB giúp học viên có thể tiếp tục lật thẻ Flashcard ngay cả khi mất kết nối mạng đột ngột.
+
+---
+
+### 7. Hướng Dẫn Dành Cho Lập Trình Viên Mới (Developer Onboarding)
+
+#### 7.1 Yêu cầu môi trường
+* Node.js phiên bản **v20.x** hoặc **v22.x LTS**
+* Quản lý gói: `npm`
+* Cơ sở dữ liệu: PostgreSQL (Supabase hoặc Docker PostgreSQL local)
+
+#### 7.2 Cài đặt cục bộ
+```bash
+# 1. Clone mã nguồn
+git clone https://github.com/AnBinh05/n3-master-ai.git
+cd n3-master-ai
+
+# 2. Cài đặt thư viện phụ thuộc
+npm install
+
+# 3. Tạo file cấu hình môi trường (.env)
+cp .env.example .env
+# Điền các biến DATABASE_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXTAUTH_SECRET
+
+# 4. Đồng bộ Schema Prisma vào Database
+npm run prisma:push
+
+# 5. Nạp dữ liệu mẫu ban đầu (Kanji, Từ vựng, Ngữ pháp N3)
+npm run seed
+
+# 6. Khởi chạy máy chủ phát triển cục bộ
+npm run dev
+# Mở trình duyệt tại http://localhost:3000
+```
+
+#### 7.3 Quy trình kiểm tra bản dựng trước khi đẩy mã nguồn (Git Workflow)
+```bash
+# Kiểm tra biên dịch đầy đủ của OpenNext
+npm run build
+
+# Thêm thay đổi và cam kết (commit)
+git add .
+git commit -m "feat: mô tả tính năng mới"
+git push origin main
+# Cloudflare Workers sẽ tự động nhận diện commit và deploy trong ~60 giây!
+```
+
+---
+*Tài liệu này được biên soạn cho toàn bộ đội ngũ kỹ thuật và thành viên dự án N3 Master AI. Mọi thay đổi về kiến trúc hoặc tính năng cần được cập nhật trực tiếp vào file này.*
