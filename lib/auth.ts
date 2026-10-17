@@ -120,7 +120,7 @@ export function getAuthOptions(): NextAuthOptions {
     },
     pages: {
       signIn: '/login',
-      newUser: '/register',
+      newUser: '/dashboard',
     },
     logger: {
       error(code, metadata) {
@@ -334,6 +334,11 @@ export function getAuthOptions(): NextAuthOptions {
 
   ],
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      else if (new URL(url).origin === baseUrl) return url;
+      return `${baseUrl}/dashboard`;
+    },
     async session({ session, token }) {
       if (token && session.user) {
         (session.user as any).id = token.sub;
