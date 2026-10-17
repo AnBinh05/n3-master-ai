@@ -24,11 +24,26 @@ function getAuthEnv(key: string): string | undefined {
       return ctx.env[key];
     }
   } catch {}
+  if (key === 'GOOGLE_CLIENT_ID') {
+    return '294686325387-h8foh5s8o18uu3i09gtju67bpsoi1opq.apps.googleusercontent.com';
+  }
   return undefined;
 }
 
 export function getAuthOptions(): NextAuthOptions {
-  const googleClientId = getAuthEnv('GOOGLE_CLIENT_ID');
+  if (!process.env.NEXTAUTH_URL) {
+    process.env.NEXTAUTH_URL = process.env.NODE_ENV === 'production'
+      ? 'https://n3-master-ai.binhn3832.workers.dev'
+      : 'http://localhost:3000';
+  }
+  if (!process.env.NEXTAUTH_TRUST_HOST) {
+    process.env.NEXTAUTH_TRUST_HOST = 'true';
+  }
+  if (!process.env.AUTH_TRUST_HOST) {
+    process.env.AUTH_TRUST_HOST = 'true';
+  }
+
+  const googleClientId = getAuthEnv('GOOGLE_CLIENT_ID') || '294686325387-h8foh5s8o18uu3i09gtju67bpsoi1opq.apps.googleusercontent.com';
   const googleClientSecret = getAuthEnv('GOOGLE_CLIENT_SECRET');
   const discordClientId = getAuthEnv('DISCORD_CLIENT_ID');
   const discordClientSecret = getAuthEnv('DISCORD_CLIENT_SECRET');
@@ -43,15 +58,39 @@ export function getAuthOptions(): NextAuthOptions {
       signIn: '/login',
       newUser: '/register',
     },
+    logger: {
+      error(code, metadata) {
+        console.error('[NextAuth Error]', code, metadata);
+      },
+      warn(code) {
+        console.warn('[NextAuth Warn]', code);
+      },
+    },
 
   providers: [
     ...(googleClientId && googleClientSecret
       ? [
-          GoogleProvider({
-            clientId: googleClientId,
-            clientSecret: googleClientSecret,
-            allowDangerousEmailAccountLinking: true,
-          }),
+          {
+            ...GoogleProvider({
+              clientId: googleClientId,
+              clientSecret: googleClientSecret,
+              allowDangerousEmailAccountLinking: true,
+            }),
+            wellKnown: undefined,
+            issuer: 'https://accounts.google.com',
+            authorization: {
+              url: 'https://accounts.google.com/o/oauth2/v2/auth',
+              params: {
+                scope: 'openid email profile',
+                response_type: 'code',
+                prompt: 'select_account',
+                access_type: 'offline',
+              },
+            },
+            token: 'https://oauth2.googleapis.com/token',
+            userinfo: 'https://openidconnect.googleapis.com/v1/userinfo',
+            jwks_endpoint: 'https://www.googleapis.com/oauth2/v3/certs',
+          } as any,
         ]
       : []),
     ...(discordClientId && discordClientSecret

@@ -7,5 +7,13 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
+  },
+  "vars": {
+    "NEXTAUTH_URL": "https://n3-master-ai.binhn3832.workers.dev",
+    "NEXTAUTH_SECRET": "super-secret-key-n3-master-ai-production-2024",
+    "NEXT_PUBLIC_APP_URL": "https://n3-master-ai.binhn3832.workers.dev",
+    "NEXTAUTH_TRUST_HOST": "true",
+    "AUTH_TRUST_HOST": "true",
+    "GOOGLE_CLIENT_ID": "294686325387-h8foh5s8o18uu3i09gtju67bpsoi1opq.apps.googleusercontent.com"
   }
 }
