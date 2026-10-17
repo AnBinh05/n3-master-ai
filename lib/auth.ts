@@ -13,9 +13,28 @@ import {
 } from '@/lib/security';
 
 
+function getAuthEnv(key: string): string | undefined {
+  if (process.env[key] && process.env[key]!.trim() !== '') {
+    return process.env[key];
+  }
+  try {
+    const { getCloudflareContext } = require('@opennextjs/cloudflare');
+    const ctx = getCloudflareContext();
+    if (ctx?.env?.[key]) {
+      return ctx.env[key];
+    }
+  } catch {}
+  return undefined;
+}
+
+const googleClientId = getAuthEnv('GOOGLE_CLIENT_ID');
+const googleClientSecret = getAuthEnv('GOOGLE_CLIENT_SECRET');
+const discordClientId = getAuthEnv('DISCORD_CLIENT_ID');
+const discordClientSecret = getAuthEnv('DISCORD_CLIENT_SECRET');
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
-  secret: process.env.NEXTAUTH_SECRET || 'super-secret-key-n3-master-ai-production-2024',
+  secret: getAuthEnv('NEXTAUTH_SECRET') || 'super-secret-key-n3-master-ai-production-2024',
   session: {
     strategy: 'jwt',
   },
@@ -24,23 +43,21 @@ export const authOptions: NextAuthOptions = {
     newUser: '/register',
   },
 
-
-
   providers: [
-    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+    ...(googleClientId && googleClientSecret
       ? [
           GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            clientId: googleClientId,
+            clientSecret: googleClientSecret,
             allowDangerousEmailAccountLinking: true,
           }),
         ]
       : []),
-    ...(process.env.DISCORD_CLIENT_ID && process.env.DISCORD_CLIENT_SECRET
+    ...(discordClientId && discordClientSecret
       ? [
           DiscordProvider({
-            clientId: process.env.DISCORD_CLIENT_ID,
-            clientSecret: process.env.DISCORD_CLIENT_SECRET,
+            clientId: discordClientId,
+            clientSecret: discordClientSecret,
           }),
         ]
       : []),
@@ -179,6 +196,19 @@ export const authOptions: NextAuthOptions = {
         token.plan = (user as any).plan || 'FREE';
       }
       return token;
+    },
+  },
+  events: {
+    async createUser({ user }) {
+      try {
+        // Tự động gán gói PRO cho thành viên mới đăng nhập bằng Google
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { plan: 'PRO' },
+        });
+      } catch (err) {
+        console.warn('[Auth] Không thể cập nhật gói PRO cho user mới:', err);
+      }
     },
   },
 };

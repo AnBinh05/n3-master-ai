@@ -1,18 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Sparkles, ArrowRight, Lock, Mail } from 'lucide-react';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const urlError = searchParams.get('error');
+
   const [email, setEmail] = useState('demo@n3master.ai');
   const [password, setPassword] = useState('password123');
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (urlError) {
+      if (urlError === 'OAuthSignin' || urlError === 'OAuthCallback') {
+        setErrorMessage('Không thể hoàn tất xác thực Google. Vui lòng thử lại.');
+      } else if (urlError === 'OAuthAccountNotLinked') {
+        setErrorMessage('Email này đã được dùng cho tài khoản khác. Vui lòng đăng nhập bằng mật khẩu.');
+      } else if (urlError === 'Configuration') {
+        setErrorMessage('Chưa thiết lập GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET.');
+      } else if (urlError === 'AccessDenied') {
+        setErrorMessage('Bạn đã hủy yêu cầu đăng nhập bằng Google.');
+      } else {
+        setErrorMessage(`Lỗi xác thực: ${urlError}`);
+      }
+    }
+  }, [urlError]);
 
   const handleGoogleSignIn = () => {
     setGoogleLoading(true);
@@ -171,5 +190,19 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[85vh] flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500"></div>
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }

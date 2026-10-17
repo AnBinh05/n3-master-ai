@@ -1,19 +1,38 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { ArrowRight, Lock, Mail, User } from 'lucide-react';
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const urlError = searchParams.get('error');
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (urlError) {
+      if (urlError === 'OAuthSignin' || urlError === 'OAuthCallback') {
+        setErrorMessage('Không thể hoàn tất xác thực Google. Vui lòng thử lại.');
+      } else if (urlError === 'OAuthAccountNotLinked') {
+        setErrorMessage('Email này đã được dùng cho tài khoản khác. Vui lòng đăng nhập.');
+      } else if (urlError === 'Configuration') {
+        setErrorMessage('Chưa thiết lập GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET.');
+      } else if (urlError === 'AccessDenied') {
+        setErrorMessage('Bạn đã hủy yêu cầu đăng nhập bằng Google.');
+      } else {
+        setErrorMessage(`Lỗi xác thực: ${urlError}`);
+      }
+    }
+  }, [urlError]);
 
   const handleGoogleSignUp = () => {
     setGoogleLoading(true);
@@ -180,5 +199,19 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[85vh] flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500"></div>
+        </div>
+      }
+    >
+      <RegisterForm />
+    </Suspense>
   );
 }
