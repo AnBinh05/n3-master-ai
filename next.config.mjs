@@ -1,16 +1,19 @@
-/** @type {import('next').NextConfig} */
+const defaultProductionUrl = 'https://n3-master-ai.binhn3832.workers.dev';
+const appUrl = process.env.NEXTAUTH_URL || (process.env.NODE_ENV === 'production' ? defaultProductionUrl : 'http://localhost:3000');
+
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
     serverComponentsExternalPackages: ['@prisma/client', '.prisma/client', 'pg', '@prisma/adapter-pg'],
   },
   env: {
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'),
+    NEXTAUTH_URL: appUrl,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'super-secret-key-n3-master-ai-production-2024',
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    NEXT_PUBLIC_APP_URL: appUrl,
   },
   images: {
     remotePatterns: [
