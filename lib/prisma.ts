@@ -29,11 +29,9 @@ export function getDatabaseUrl(): string {
     );
   }
 
-  // Supabase Pooler trên cổng 6543 (Transaction Mode) không hỗ trợ prepared statements / extended query protocol của node-postgres,
-  // dẫn đến lỗi "Connection terminated unexpectedly".
-  // Tự động chuyển sang cổng 5432 (Session Mode Pooler) của Supabase để tương thích 100%.
-  if (url.includes('.pooler.supabase.com:6543')) {
-    url = url.replace(':6543', ':5432').replace('?pgbouncer=true', '').replace('&pgbouncer=true', '');
+  // Supabase Pooler trên cổng 6543 (Transaction Mode) yêu cầu cờ pgbouncer=true để Prisma hoạt động tối ưu
+  if (url.includes(':6543') && !url.includes('pgbouncer=true')) {
+    url += (url.includes('?') ? '&' : '?') + 'pgbouncer=true';
   }
 
   return url;
@@ -46,21 +44,21 @@ export function getPrismaClient(): PrismaClient {
 
   const connectionString = getDatabaseUrl();
 
-  // Khởi tạo Pool tối ưu hóa cho môi trường Serverless / Cloudflare Workers
+  // Khởi tạo Pool tối ưu hóa với kết nối ổn định cho Supabase
   const pool =
     globalForPrisma.pgPool ||
     new Pool({
       connectionString,
       ssl: { rejectUnauthorized: false },
-      max: 1,
-      idleTimeoutMillis: 1000,
+      max: 10,
+      idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 10000,
+      keepAlive: true,
+      keepAliveInitialDelayMillis: 10000,
     });
 
   pool.on('error', (err) => {
-    console.warn('Postgres pool idle client error:', err?.message);
-    globalForPrisma.pgPool = undefined;
-    globalForPrisma.prisma = undefined;
+    console.warn('Postgres pool idle client warning:', err?.message);
   });
 
   globalForPrisma.pgPool = pool;

@@ -33,9 +33,14 @@ export default function LoginPage() {
       });
 
       if (res?.error) {
-        setErrorMessage(res.error);
+        if (res.error.includes('Connection terminated') || res.error.includes('connect')) {
+          setErrorMessage('Kết nối máy chủ bị gián đoạn do khởi động nguội. Vui lòng bấm Đăng Nhập lại.');
+        } else {
+          setErrorMessage(res.error);
+        }
       } else if (res?.ok) {
         router.push('/dashboard');
+        router.refresh();
       }
     } catch (err: any) {
       setErrorMessage('Đã xảy ra sự cố khi đăng nhập. Vui lòng thử lại.');
@@ -101,6 +106,24 @@ export default function LoginPage() {
           <div className="border-t border-border w-full"></div>
         </div>
 
+
+        {/* Quick Demo Helper */}
+        <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-amber-800 dark:text-amber-200 text-xs flex items-center justify-between shadow-sm">
+          <span className="flex items-center gap-1.5 font-bold">
+            <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
+            Tài khoản Demo đã được điền sẵn!
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              setEmail('demo@n3master.ai');
+              setPassword('password123');
+            }}
+            className="text-[11px] font-black text-rose-500 hover:underline shrink-0 bg-white/60 dark:bg-black/30 px-2 py-1 rounded-lg border border-amber-500/20"
+          >
+            Điền lại
+          </button>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
