@@ -27,21 +27,22 @@ function getAuthEnv(key: string): string | undefined {
   return undefined;
 }
 
-const googleClientId = getAuthEnv('GOOGLE_CLIENT_ID');
-const googleClientSecret = getAuthEnv('GOOGLE_CLIENT_SECRET');
-const discordClientId = getAuthEnv('DISCORD_CLIENT_ID');
-const discordClientSecret = getAuthEnv('DISCORD_CLIENT_SECRET');
+export function getAuthOptions(): NextAuthOptions {
+  const googleClientId = getAuthEnv('GOOGLE_CLIENT_ID');
+  const googleClientSecret = getAuthEnv('GOOGLE_CLIENT_SECRET');
+  const discordClientId = getAuthEnv('DISCORD_CLIENT_ID');
+  const discordClientSecret = getAuthEnv('DISCORD_CLIENT_SECRET');
 
-export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
-  secret: getAuthEnv('NEXTAUTH_SECRET') || 'super-secret-key-n3-master-ai-production-2024',
-  session: {
-    strategy: 'jwt',
-  },
-  pages: {
-    signIn: '/login',
-    newUser: '/register',
-  },
+  return {
+    adapter: PrismaAdapter(prisma),
+    secret: getAuthEnv('NEXTAUTH_SECRET') || 'super-secret-key-n3-master-ai-production-2024',
+    session: {
+      strategy: 'jwt',
+    },
+    pages: {
+      signIn: '/login',
+      newUser: '/register',
+    },
 
   providers: [
     ...(googleClientId && googleClientSecret
@@ -211,4 +212,12 @@ export const authOptions: NextAuthOptions = {
       }
     },
   },
-};
+  };
+}
+
+export const authOptions: NextAuthOptions = new Proxy({} as NextAuthOptions, {
+  get(_target, prop) {
+    const opts = getAuthOptions() as any;
+    return opts[prop];
+  },
+});
