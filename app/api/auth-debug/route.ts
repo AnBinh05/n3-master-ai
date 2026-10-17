@@ -72,6 +72,39 @@ export async function GET() {
     dbStatus = { success: false, error: e?.message || String(e) };
   }
 
+  let rawClientTest: any = {};
+  try {
+    const { Client } = require('pg');
+    const client = new Client({
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+      connectionTimeoutMillis: 5000,
+    });
+    await client.connect();
+    const res = await client.query('SELECT 1 as val');
+    await client.end();
+    rawClientTest = { success: true, val: res.rows[0].val };
+  } catch (e: any) {
+    rawClientTest = { success: false, error: e?.message || String(e) };
+  }
+
+  let directPortTest: any = {};
+  try {
+    const directUrl = (process.env.DATABASE_URL || '').replace(':6543', ':5432').replace('?pgbouncer=true', '').replace('&pgbouncer=true', '');
+    const { Client } = require('pg');
+    const directClient = new Client({
+      connectionString: directUrl,
+      ssl: { rejectUnauthorized: false },
+      connectionTimeoutMillis: 5000,
+    });
+    await directClient.connect();
+    const res = await directClient.query('SELECT 1 as val');
+    await directClient.end();
+    directPortTest = { success: true, val: res.rows[0].val };
+  } catch (e: any) {
+    directPortTest = { success: false, error: e?.message || String(e) };
+  }
+
   let discoverStatus: any = {};
   try {
     const t0 = Date.now();
@@ -96,6 +129,8 @@ export async function GET() {
     envStatus,
     authOptionsStatus,
     dbStatus,
+    rawClientTest,
+    directPortTest,
     discoverStatus,
   });
 }
