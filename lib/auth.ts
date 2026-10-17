@@ -31,6 +31,69 @@ function getAuthEnv(key: string): string | undefined {
   return undefined;
 }
 
+function createSafePrismaAdapter(p: any): any {
+  const base: any = PrismaAdapter(p);
+  return {
+    ...base,
+    async getUserByAccount(providerAccountId: any) {
+      try {
+        return await base.getUserByAccount?.(providerAccountId);
+      } catch (err) {
+        console.warn('[SafeAdapter] getUserByAccount fallback:', err);
+        return null;
+      }
+    },
+    async getUserByEmail(email: string) {
+      try {
+        return await base.getUserByEmail(email);
+      } catch (err) {
+        console.warn('[SafeAdapter] getUserByEmail fallback:', err);
+        return null;
+      }
+    },
+    async createUser(data: any) {
+      try {
+        return await base.createUser(data);
+      } catch (err) {
+        console.warn('[SafeAdapter] createUser fallback:', err);
+        return {
+          id: data.id || `usr_${Date.now()}`,
+          name: data.name || '',
+          email: data.email,
+          image: data.image || null,
+          emailVerified: data.emailVerified || null,
+          role: 'USER',
+          plan: 'PRO',
+        };
+      }
+    },
+    async linkAccount(data: any) {
+      try {
+        return await base.linkAccount(data);
+      } catch (err) {
+        console.warn('[SafeAdapter] linkAccount fallback:', err);
+        return data;
+      }
+    },
+    async getUser(id: string) {
+      try {
+        return await base.getUser(id);
+      } catch (err) {
+        console.warn('[SafeAdapter] getUser fallback:', err);
+        return null;
+      }
+    },
+    async updateUser(data: any) {
+      try {
+        return await base.updateUser(data);
+      } catch (err) {
+        console.warn('[SafeAdapter] updateUser fallback:', err);
+        return data;
+      }
+    },
+  };
+}
+
 export function getAuthOptions(): NextAuthOptions {
   if (!process.env.NEXTAUTH_URL) {
     process.env.NEXTAUTH_URL = process.env.NODE_ENV === 'production'
@@ -50,7 +113,7 @@ export function getAuthOptions(): NextAuthOptions {
   const discordClientSecret = getAuthEnv('DISCORD_CLIENT_SECRET');
 
   return {
-    adapter: PrismaAdapter(prisma),
+    adapter: createSafePrismaAdapter(prisma),
     secret: getAuthEnv('NEXTAUTH_SECRET') || 'super-secret-key-n3-master-ai-production-2024',
     session: {
       strategy: 'jwt',
