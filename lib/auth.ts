@@ -88,8 +88,55 @@ export function getAuthOptions(): NextAuthOptions {
                 access_type: 'offline',
               },
             },
-            token: 'https://oauth2.googleapis.com/token',
-            userinfo: 'https://openidconnect.googleapis.com/v1/userinfo',
+            token: {
+              url: 'https://oauth2.googleapis.com/token',
+              async request({ provider, params, checks }: any) {
+                const body = new URLSearchParams({
+                  client_id: provider.clientId,
+                  client_secret: provider.clientSecret,
+                  code: params.code,
+                  grant_type: 'authorization_code',
+                  redirect_uri: provider.callbackUrl,
+                });
+
+                if (checks?.code_verifier) {
+                  body.set('code_verifier', checks.code_verifier);
+                }
+
+                const res = await fetch('https://oauth2.googleapis.com/token', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                  },
+                  body: body.toString(),
+                });
+
+                const tokens = await res.json();
+                if (!res.ok) {
+                  console.error('[NextAuth Google token error]', tokens);
+                  throw new Error(tokens?.error_description || tokens?.error || 'Failed to exchange Google token');
+                }
+
+                return { tokens };
+              },
+            },
+            userinfo: {
+              url: 'https://openidconnect.googleapis.com/v1/userinfo',
+              async request({ tokens }: any) {
+                if (tokens.id_token) {
+                  try {
+                    const claims = typeof tokens.claims === 'function' ? tokens.claims() : null;
+                    if (claims?.sub) return claims;
+                  } catch {}
+                }
+                const res = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
+                  headers: {
+                    Authorization: `Bearer ${tokens.access_token}`,
+                  },
+                });
+                return await res.json();
+              },
+            },
             jwks_endpoint: 'https://www.googleapis.com/oauth2/v3/certs',
           } as any,
         ]

@@ -19,7 +19,7 @@ function LoginForm() {
 
   useEffect(() => {
     if (urlError) {
-      if (urlError === 'OAuthSignin' || urlError === 'OAuthCallback') {
+      if (urlError === 'OAuthSignin' || urlError === 'OAuthCallback' || urlError === 'Callback') {
         setErrorMessage('Không thể hoàn tất xác thực Google. Vui lòng thử lại.');
       } else if (urlError === 'OAuthAccountNotLinked') {
         setErrorMessage('Email này đã được dùng cho tài khoản khác. Vui lòng đăng nhập bằng mật khẩu.');

@@ -1,6 +1,7 @@
 import '@/lib/http-polyfill';
 import { NextResponse } from 'next/server';
 import { getAuthOptions } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 import { Issuer } from 'openid-client';
 
 export const dynamic = 'force-dynamic';
@@ -63,6 +64,14 @@ export async function GET() {
     authOptionsStatus = { error: e?.message || String(e) };
   }
 
+  let dbStatus: any = {};
+  try {
+    const userCount = await prisma.user.count();
+    dbStatus = { success: true, userCount };
+  } catch (e: any) {
+    dbStatus = { success: false, error: e?.message || String(e) };
+  }
+
   let discoverStatus: any = {};
   try {
     const t0 = Date.now();
@@ -86,6 +95,7 @@ export async function GET() {
     cfEnvKeys,
     envStatus,
     authOptionsStatus,
+    dbStatus,
     discoverStatus,
   });
 }
