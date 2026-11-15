@@ -63,21 +63,23 @@ if (!globalForPrisma.failoverHistory) {
 }
 
 function getEnv(key: string): string {
+  let val = '';
   // 1. Thử lấy từ context Cloudflare Workers
   try {
     const { getCloudflareContext } = require('@opennextjs/cloudflare');
     const ctx = getCloudflareContext();
     if (ctx?.env?.[key] && typeof ctx.env[key] === 'string' && ctx.env[key].trim() !== '') {
-      return ctx.env[key];
+      val = ctx.env[key];
     }
   } catch {}
 
   // 2. Thử lấy từ process.env
-  if (process.env[key] && process.env[key]!.trim() !== '') {
-    return process.env[key]!;
+  if (!val && process.env[key] && process.env[key]!.trim() !== '') {
+    val = process.env[key]!;
   }
 
-  return '';
+  // Tự động gỡ bỏ dấu ngoặc kép hoặc khoảng trắng thừa nếu người dùng vô tình dán cả dấu "..." từ .env
+  return val.trim().replace(/^["']|["']$/g, '');
 }
 
 export function getDatabaseUrl(dc: DatacenterId): string {
@@ -86,7 +88,16 @@ export function getDatabaseUrl(dc: DatacenterId): string {
   if (dc === 'DC1_MUMBAI') {
     url = getEnv('PRIMARY_DATABASE_URL') || getEnv('DATABASE_URL');
   } else {
-    url = getEnv('SECONDARY_DATABASE_URL') || getEnv('DATABASE_URL');
+    url = getEnv('SECONDARY_DATABASE_URL');
+    // Nếu chưa có SECONDARY_DATABASE_URL thì không fallback bừa về DC1
+    if (!url) {
+      return '';
+    }
+  }
+
+  // Bắt buộc SSL cho Supabase & Neon trên Cloudflare để tránh lỗi Connection terminated unexpectedly
+  if (!url.includes('sslmode=')) {
+    url += (url.includes('?') ? '&' : '?') + 'sslmode=require';
   }
 
   // Supabase Pooler cổng 6543 yêu cầu pgbouncer=true
@@ -134,9 +145,13 @@ export function resetPrismaClients() {
 }
 
 export function getClientFor(dc: DatacenterId): PrismaClient {
+  const url = getDatabaseUrl(dc);
+  if (!url) {
+    throw new Error(`Chưa cấu hình biến môi trường kết nối cho ${dc}`);
+  }
+
   if (dc === 'DC1_MUMBAI') {
     if (globalForPrisma.prismaDC1) return globalForPrisma.prismaDC1;
-    const url = getDatabaseUrl('DC1_MUMBAI');
     const pool = createPoolFor(url);
     pool.on('error', (err) => {
       console.warn('[DC1 Mumbai Pool Error]:', err?.message);
@@ -148,7 +163,6 @@ export function getClientFor(dc: DatacenterId): PrismaClient {
     return globalForPrisma.prismaDC1;
   } else {
     if (globalForPrisma.prismaDC2) return globalForPrisma.prismaDC2;
-    const url = getDatabaseUrl('DC2_SINGAPORE');
     const pool = createPoolFor(url);
     pool.on('error', (err) => {
       console.warn('[DC2 Singapore Pool Error]:', err?.message);
@@ -377,15 +391,21 @@ export async function getDatacenterStatus(): Promise<DatacenterStatusReport> {
   let dc2Status: DatacenterNode['status'] = 'HEALTHY';
   let dc2Error: string | undefined;
 
-  try {
-    const start = Date.now();
-    await queryWithRetry('DC2_SINGAPORE', async (client) => {
-      await client.deck.findFirst({ select: { id: true } });
-    });
-    dc2Latency = Math.max(1, Date.now() - start);
-  } catch (err: any) {
+  const dc2Url = getDatabaseUrl('DC2_SINGAPORE');
+  if (!dc2Url) {
     dc2Status = 'DOWN';
-    dc2Error = sanitizeError(err);
+    dc2Error = 'Chưa lưu biến SECONDARY_DATABASE_URL trên Cloudflare Dashboard (Vui lòng bấm Save and Deploy)';
+  } else {
+    try {
+      const start = Date.now();
+      await queryWithRetry('DC2_SINGAPORE', async (client) => {
+        await client.deck.findFirst({ select: { id: true } });
+      });
+      dc2Latency = Math.max(1, Date.now() - start);
+    } catch (err: any) {
+      dc2Status = 'DOWN';
+      dc2Error = sanitizeError(err);
+    }
   }
 
   nodes.push({
