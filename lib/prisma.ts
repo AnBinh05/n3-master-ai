@@ -82,14 +82,17 @@ function getEnv(key: string): string {
   return val.trim().replace(/^["']|["']$/g, '');
 }
 
-export function getDatabaseUrl(dc: DatacenterId): string {
+export function getDatabaseUrl(dc: DatacenterId, forceSessionPort = false): string {
   let url = '';
 
   if (dc === 'DC1_MUMBAI') {
-    url = getEnv('PRIMARY_DATABASE_URL') || getEnv('DATABASE_URL');
+    url = getEnv('PRIMARY_DATABASE_URL') || getEnv('DIRECT_URL') || getEnv('DATABASE_URL');
+    // Nếu forceSessionPort hoặc gặp lỗi transaction pooler thì chuyển sang cổng 5432 (Session Mode Pooler)
+    if (forceSessionPort && url.includes(':6543')) {
+      url = url.replace(':6543', ':5432').replace('?pgbouncer=true', '').replace('&pgbouncer=true', '');
+    }
   } else {
     url = getEnv('SECONDARY_DATABASE_URL');
-    // Nếu chưa có SECONDARY_DATABASE_URL thì không fallback bừa về DC1
     if (!url) {
       return '';
     }
@@ -144,14 +147,14 @@ export function resetPrismaClients() {
   resetPrismaClient();
 }
 
-export function getClientFor(dc: DatacenterId): PrismaClient {
-  const url = getDatabaseUrl(dc);
+export function getClientFor(dc: DatacenterId, forceSessionPort = false): PrismaClient {
+  const url = getDatabaseUrl(dc, forceSessionPort);
   if (!url) {
     throw new Error(`Chưa cấu hình biến môi trường kết nối cho ${dc}`);
   }
 
   if (dc === 'DC1_MUMBAI') {
-    if (globalForPrisma.prismaDC1) return globalForPrisma.prismaDC1;
+    if (!forceSessionPort && globalForPrisma.prismaDC1) return globalForPrisma.prismaDC1;
     const pool = createPoolFor(url);
     pool.on('error', (err) => {
       console.warn('[DC1 Mumbai Pool Error]:', err?.message);
@@ -159,8 +162,9 @@ export function getClientFor(dc: DatacenterId): PrismaClient {
     });
     globalForPrisma.pgPoolDC1 = pool;
     const adapter = new PrismaPg(pool);
-    globalForPrisma.prismaDC1 = new PrismaClient({ adapter });
-    return globalForPrisma.prismaDC1;
+    const client = new PrismaClient({ adapter });
+    if (!forceSessionPort) globalForPrisma.prismaDC1 = client;
+    return client;
   } else {
     if (globalForPrisma.prismaDC2) return globalForPrisma.prismaDC2;
     const pool = createPoolFor(url);
@@ -258,7 +262,10 @@ export async function queryWithRetry<T>(
   let lastError: any = null;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
-      const client = getClientFor(dc);
+      // Lần 1: kết nối mặc định
+      // Lần 2 & 3: nếu là DC1 Mumbai và cổng 6543 bị ngắt bởi PgBouncer, tự động fallback sang cổng 5432 (Session Mode Pooler)
+      const forceSession = dc === 'DC1_MUMBAI' && attempt >= 2;
+      const client = getClientFor(dc, forceSession);
       return await fn(client);
     } catch (err: any) {
       lastError = err;
