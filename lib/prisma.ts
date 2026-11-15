@@ -62,42 +62,40 @@ if (!globalForPrisma.failoverHistory) {
   globalForPrisma.failoverHistory = [];
 }
 
-export function getDatabaseUrl(dc: DatacenterId): string {
-  let url = '';
-
-  // 1. Thử lấy từ Cloudflare context trước (Production Edge Worker)
+function getEnv(key: string): string {
+  // 1. Thử lấy từ context Cloudflare Workers
   try {
     const { getCloudflareContext } = require('@opennextjs/cloudflare');
     const ctx = getCloudflareContext();
-    if (ctx?.env) {
-      if (dc === 'DC1_MUMBAI') {
-        url = ctx.env.PRIMARY_DATABASE_URL || ctx.env.DATABASE_URL || '';
-      } else {
-        url = ctx.env.SECONDARY_DATABASE_URL || '';
-      }
+    if (ctx?.env?.[key] && typeof ctx.env[key] === 'string' && ctx.env[key].trim() !== '') {
+      return ctx.env[key];
     }
-  } catch {
-    // Không chạy trong Cloudflare context
+  } catch {}
+
+  // 2. Thử lấy từ process.env
+  if (process.env[key] && process.env[key]!.trim() !== '') {
+    return process.env[key]!;
   }
 
-  // 2. Nếu chưa có, lấy từ process.env (Localhost/Node.js)
-  if (!url || url.trim() === '') {
-    if (dc === 'DC1_MUMBAI') {
-      url = process.env.PRIMARY_DATABASE_URL || process.env.DATABASE_URL || '';
-    } else {
-      url = process.env.SECONDARY_DATABASE_URL || '';
-    }
-  }
+  return '';
+}
 
-  // 3. Fallback cuối cùng nếu DC2 chưa cấu hình thì dùng DATABASE_URL mặc định
-  if (!url || url.trim() === '') {
-    url = process.env.DATABASE_URL || '';
+export function getDatabaseUrl(dc: DatacenterId): string {
+  let url = '';
+
+  if (dc === 'DC1_MUMBAI') {
+    url = getEnv('PRIMARY_DATABASE_URL') || getEnv('DATABASE_URL');
+  } else {
+    url = getEnv('SECONDARY_DATABASE_URL') || getEnv('DATABASE_URL');
   }
 
   // Supabase Pooler cổng 6543 yêu cầu pgbouncer=true
   if (url.includes(':6543') && !url.includes('pgbouncer=true')) {
     url += (url.includes('?') ? '&' : '?') + 'pgbouncer=true';
   }
+
+  // Loại bỏ channel_binding vì Cloudflare workerd TCP socket không hỗ trợ SCRAM channel-binding
+  url = url.replace(/&channel_binding=[^&]+/gi, '').replace(/\?channel_binding=[^&]+&?/gi, '?').replace(/\?$/, '');
 
   return url;
 }
@@ -106,20 +104,44 @@ function createPoolFor(connectionString: string): Pool {
   return new Pool({
     connectionString,
     ssl: { rejectUnauthorized: false },
-    max: 2,
-    idleTimeoutMillis: 10000,
-    connectionTimeoutMillis: 8000,
+    max: 1, // Trên Serverless Edge Isolate, 1 client cho mỗi pool là tối ưu nhất tránh dead socket
+    idleTimeoutMillis: 3000,
+    connectionTimeoutMillis: 10000,
     keepAlive: true,
-    keepAliveInitialDelayMillis: 5000,
+    keepAliveInitialDelayMillis: 2000,
   });
+}
+
+export function resetPrismaClient(dc?: DatacenterId) {
+  if (!dc || dc === 'DC1_MUMBAI') {
+    if (globalForPrisma.pgPoolDC1) {
+      try { globalForPrisma.pgPoolDC1.end().catch(() => {}); } catch {}
+    }
+    globalForPrisma.pgPoolDC1 = undefined;
+    globalForPrisma.prismaDC1 = undefined;
+  }
+  if (!dc || dc === 'DC2_SINGAPORE') {
+    if (globalForPrisma.pgPoolDC2) {
+      try { globalForPrisma.pgPoolDC2.end().catch(() => {}); } catch {}
+    }
+    globalForPrisma.pgPoolDC2 = undefined;
+    globalForPrisma.prismaDC2 = undefined;
+  }
+}
+
+export function resetPrismaClients() {
+  resetPrismaClient();
 }
 
 export function getClientFor(dc: DatacenterId): PrismaClient {
   if (dc === 'DC1_MUMBAI') {
     if (globalForPrisma.prismaDC1) return globalForPrisma.prismaDC1;
     const url = getDatabaseUrl('DC1_MUMBAI');
-    const pool = globalForPrisma.pgPoolDC1 || createPoolFor(url);
-    pool.on('error', (err) => console.warn('[DC1 Mumbai Pool Warning]:', err?.message));
+    const pool = createPoolFor(url);
+    pool.on('error', (err) => {
+      console.warn('[DC1 Mumbai Pool Error]:', err?.message);
+      resetPrismaClient('DC1_MUMBAI');
+    });
     globalForPrisma.pgPoolDC1 = pool;
     const adapter = new PrismaPg(pool);
     globalForPrisma.prismaDC1 = new PrismaClient({ adapter });
@@ -127,26 +149,16 @@ export function getClientFor(dc: DatacenterId): PrismaClient {
   } else {
     if (globalForPrisma.prismaDC2) return globalForPrisma.prismaDC2;
     const url = getDatabaseUrl('DC2_SINGAPORE');
-    const pool = globalForPrisma.pgPoolDC2 || createPoolFor(url);
-    pool.on('error', (err) => console.warn('[DC2 Singapore Pool Warning]:', err?.message));
+    const pool = createPoolFor(url);
+    pool.on('error', (err) => {
+      console.warn('[DC2 Singapore Pool Error]:', err?.message);
+      resetPrismaClient('DC2_SINGAPORE');
+    });
     globalForPrisma.pgPoolDC2 = pool;
     const adapter = new PrismaPg(pool);
     globalForPrisma.prismaDC2 = new PrismaClient({ adapter });
     return globalForPrisma.prismaDC2;
   }
-}
-
-export function resetPrismaClients() {
-  if (globalForPrisma.pgPoolDC1) {
-    try { globalForPrisma.pgPoolDC1.end().catch(() => {}); } catch {}
-  }
-  if (globalForPrisma.pgPoolDC2) {
-    try { globalForPrisma.pgPoolDC2.end().catch(() => {}); } catch {}
-  }
-  globalForPrisma.pgPoolDC1 = undefined;
-  globalForPrisma.pgPoolDC2 = undefined;
-  globalForPrisma.prismaDC1 = undefined;
-  globalForPrisma.prismaDC2 = undefined;
 }
 
 export function getActiveDatacenter(): DatacenterId {
@@ -224,6 +236,30 @@ function recordFailover(from: DatacenterId, to: DatacenterId, reason: string) {
   }
 }
 
+// Hàm thực thi truy vấn có retry tự động làm mới socket khi bị đóng băng (Cold start / Idle socket)
+export async function queryWithRetry<T>(
+  dc: DatacenterId,
+  fn: (client: PrismaClient) => Promise<T>
+): Promise<T> {
+  let lastError: any = null;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const client = getClientFor(dc);
+      return await fn(client);
+    } catch (err: any) {
+      lastError = err;
+      if (isConnectionError(err) && attempt < 3) {
+        console.warn(`[DC ${dc} AutoRetry] Socket lỗi "${err?.message}", đang làm mới kết nối (lần ${attempt + 1}/3)...`);
+        resetPrismaClient(dc);
+        await new Promise((r) => setTimeout(r, 150 * attempt));
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastError;
+}
+
 // Thực thi câu lệnh qua proxy hỗ trợ Multi-Datacenter Failover
 async function executeWithFailover<T>(
   operation: (client: PrismaClient) => Promise<T>
@@ -233,23 +269,20 @@ async function executeWithFailover<T>(
 
   // Nếu đang bật mô phỏng sự cố DC1, trực tiếp dùng DC2
   if (globalForPrisma.simulateFailure && currentDc === 'DC1_MUMBAI') {
-    const clientDC2 = getClientFor('DC2_SINGAPORE');
-    return await operation(clientDC2);
+    return await queryWithRetry('DC2_SINGAPORE', operation);
   }
 
   try {
-    const primaryClient = getClientFor(currentDc);
-    return await operation(primaryClient);
+    return await queryWithRetry(currentDc, operation);
   } catch (err: any) {
     if (isConnectionError(err)) {
       recordFailover(
         currentDc,
         backupDc,
-        `Mất kết nối tới Datacenter ${currentDc} (${err?.message})`
+        `Mất kết nối tới Datacenter ${currentDc} sau 3 lần thử (${err?.message})`
       );
-      resetPrismaClients();
-      const backupClient = getClientFor(backupDc);
-      return await operation(backupClient);
+      resetPrismaClient(currentDc);
+      return await queryWithRetry(backupDc, operation);
     }
     throw err;
   }
@@ -296,7 +329,6 @@ export const prisma = new Proxy({} as PrismaClient, {
 function sanitizeError(msg: any): string {
   if (!msg) return 'Không thể kết nối';
   let str = String(msg?.message || msg);
-  // Loại bỏ mật khẩu hoặc thông tin nhạy cảm nếu có trong chuỗi lỗi
   str = str.replace(/:\/\/([^:@]+):([^@]+)@/g, '://$1:***@');
   str = str.replace(/password=[^\s;]+/gi, 'password=***');
   return str.length > 150 ? str.substring(0, 150) + '...' : str;
@@ -317,9 +349,10 @@ export async function getDatacenterStatus(): Promise<DatacenterStatusReport> {
   } else {
     try {
       const start = Date.now();
-      const client = getClientFor('DC1_MUMBAI');
-      await client.deck.findFirst({ select: { id: true } });
-      dc1Latency = Date.now() - start;
+      await queryWithRetry('DC1_MUMBAI', async (client) => {
+        await client.deck.findFirst({ select: { id: true } });
+      });
+      dc1Latency = Math.max(1, Date.now() - start);
     } catch (err: any) {
       dc1Status = 'DOWN';
       dc1Error = sanitizeError(err);
@@ -346,9 +379,10 @@ export async function getDatacenterStatus(): Promise<DatacenterStatusReport> {
 
   try {
     const start = Date.now();
-    const client = getClientFor('DC2_SINGAPORE');
-    await client.deck.findFirst({ select: { id: true } });
-    dc2Latency = Date.now() - start;
+    await queryWithRetry('DC2_SINGAPORE', async (client) => {
+      await client.deck.findFirst({ select: { id: true } });
+    });
+    dc2Latency = Math.max(1, Date.now() - start);
   } catch (err: any) {
     dc2Status = 'DOWN';
     dc2Error = sanitizeError(err);

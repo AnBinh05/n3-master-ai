@@ -12,11 +12,22 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     const status = await getDatacenterStatus();
-    return NextResponse.json(status);
+    return NextResponse.json(status, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
+    });
   } catch (error: any) {
     return NextResponse.json(
       { error: error?.message || 'Lỗi kiểm tra trạng thái Datacenter' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+        },
+      }
     );
   }
 }
