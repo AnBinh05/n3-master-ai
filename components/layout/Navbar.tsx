@@ -20,7 +20,8 @@ import {
   User,
   LogOut,
   LogIn,
-  Compass
+  Compass,
+  Globe
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { 
@@ -76,6 +77,7 @@ export function Navbar() {
     { href: '/games', label: 'Trò chơi', icon: Gamepad2 },
     { href: '/ai', label: 'AI Studio', icon: Sparkles },
     { href: '/stats', label: 'Thống kê', icon: BarChart3 },
+    { href: '/datacenter', label: 'Datacenter', icon: Globe },
     { href: '/settings', label: 'Cài đặt', icon: Settings },
   ];
 

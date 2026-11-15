@@ -50,29 +50,34 @@
 
 ---
 
-### 3. Kiến Trúc Điện Toán Đám Mây (Cloud Architecture)
+### 3. Kiến Trúc Điện Toán Đa Đám Mây (Multi-Cloud Architecture)
 
-Hệ thống được thiết kế theo tư duy **Cloud-Native, 100% Serverless**, không sử dụng máy chủ truyền thống (No VPS, No Container EC2), tận dụng tối đa hạ tầng biên (Edge Computing).
+Hệ thống được thiết kế theo tư duy **Multi-Cloud Serverless**, không sử dụng máy chủ truyền thống (No VPS, No Container EC2), tận dụng tối đa thế mạnh chuyên biệt của 3 nhà cung cấp đám mây hàng đầu thế giới:
+* 🌐 **Cloudflare:** Hạ tầng Serverless Edge Computing, CDN toàn cầu & V8 Isolates (300+ PoPs).
+* ☁️ **Google Cloud (GCP):** Dịch vụ xác thực danh tính phân tán (Google Cloud Identity OAuth 2.0) & Trí tuệ nhân tạo (Google AI / Gemini Flash API).
+* 🐘 **Supabase Cloud (AWS):** Cơ sở dữ liệu quan hệ PostgreSQL trên AWS ap-south-1 & Supavisor Connection Pooler.
 
 ```mermaid
 graph TD
-    User([Khách hàng / Trình duyệt]) -->|HTTPS / HTTP3| CF[Cloudflare Global Anycast Edge Network\n300+ PoPs trên toàn cầu]
+    User([Khách hàng / Trình duyệt]) -->|HTTPS / HTTP3| CF[🌐 Cloudflare Anycast Edge Network\n300+ PoPs trên toàn cầu]
     
-    subgraph Cloudflare Edge Layer
+    subgraph CLOUD_1["🌐 CLOUD 1: CLOUDFLARE EDGE COMPUTING"]
         CF --> Worker[Cloudflare Worker\nOpenNext Runtime - V8 Isolates]
-        Worker --> Cache[Cloudflare Static Cache & Assets\nHTML, CSS, JS, Fonts]
+        Worker --> Cache[Cloudflare Static Cache & Assets\nHTML, CSS, JS, Fonts, Images]
     end
 
-    subgraph Authentication & API
-        Worker --> NextAuth[NextAuth.js v4\nStateless JWT Session]
-        NextAuth --> GoogleOAuth[Google OAuth 2.0 API\nOpenID Connect]
-        Worker --> OpenAISDK[Vercel AI SDK\nLLM OpenAI / Claude API]
-        Worker --> StripeAPI[Stripe Cloud API\nBilling & Checkout]
+    subgraph CLOUD_2["☁️ CLOUD 2: GOOGLE CLOUD PLATFORM (GCP)"]
+        Worker --> GoogleOAuth[Google Cloud Identity & OAuth 2.0\nXác thực 1-Click an toàn]
+        Worker --> GoogleAI[Google Cloud AI / Gemini 1.5 Flash\nPhân tích ngôn ngữ & Sinh câu hỏi N3]
     end
 
-    subgraph Database Layer
-        Worker -->|Driver Adapter: @prisma/adapter-pg\nResilient Proxy Auto-Retry| Supavisor[Supabase Pooler: Port 6543\nTransaction Mode]
-        Supavisor --> Postgres[(Supabase PostgreSQL\nAWS ap-south-1 Mumbai)]
+    subgraph CLOUD_3["🐘 CLOUD 3: SUPABASE CLOUD (AWS INFRASTRUCTURE)"]
+        Worker -->|Resilient Prisma Auto-Retry Proxy| Supavisor[Supabase Pooler: Port 6543\nTransaction Mode]
+        Supavisor --> Postgres[(Supabase PostgreSQL Database\nAWS ap-south-1 Mumbai)]
+    end
+
+    subgraph CLOUD_PAYMENT["💳 CLOUD BILLING: STRIPE CLOUD"]
+        Worker --> StripeAPI[Stripe Cloud Checkout & Webhooks\nNâng cấp tài khoản PRO tự động]
     end
 ```
 

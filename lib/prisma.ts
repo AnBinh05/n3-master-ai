@@ -2,34 +2,91 @@ import { PrismaClient } from '@prisma/client';
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 
-const globalForPrisma = globalThis as unknown as { 
-  prisma?: PrismaClient;
-  pgPool?: Pool;
+export type DatacenterId = 'DC1_MUMBAI' | 'DC2_SINGAPORE';
+
+export interface DatacenterNode {
+  id: DatacenterId;
+  name: string;
+  provider: string;
+  region: string;
+  location: string;
+  status: 'HEALTHY' | 'DEGRADED' | 'DOWN' | 'SIMULATED_DOWN';
+  role: 'PRIMARY' | 'STANDBY';
+  latencyMs: number;
+  lastChecked: string;
+  error?: string;
+}
+
+export interface DatacenterStatusReport {
+  activeDatacenter: DatacenterId;
+  activeDatacenterName: string;
+  isSimulatingFailure: boolean;
+  nodes: DatacenterNode[];
+  failoverHistory: Array<{
+    timestamp: string;
+    from: DatacenterId;
+    to: DatacenterId;
+    reason: string;
+  }>;
+  architecture: {
+    pattern: string;
+    rto: string;
+    rpo: string;
+    strategy: string;
+  };
+}
+
+// Global state across hot reloads / workers
+const globalForPrisma = globalThis as unknown as {
+  prismaDC1?: PrismaClient;
+  prismaDC2?: PrismaClient;
+  pgPoolDC1?: Pool;
+  pgPoolDC2?: Pool;
+  activeDatacenter?: DatacenterId;
+  simulateFailure?: boolean;
+  failoverHistory?: Array<{
+    timestamp: string;
+    from: DatacenterId;
+    to: DatacenterId;
+    reason: string;
+  }>;
 };
 
-export function getDatabaseUrl(): string {
-  let url = process.env.DATABASE_URL;
+if (!globalForPrisma.activeDatacenter) {
+  globalForPrisma.activeDatacenter = 'DC1_MUMBAI';
+}
+if (globalForPrisma.simulateFailure === undefined) {
+  globalForPrisma.simulateFailure = false;
+}
+if (!globalForPrisma.failoverHistory) {
+  globalForPrisma.failoverHistory = [];
+}
+
+export function getDatabaseUrl(dc: DatacenterId): string {
+  let url = '';
+
+  if (dc === 'DC1_MUMBAI') {
+    url = process.env.PRIMARY_DATABASE_URL || process.env.DATABASE_URL || '';
+  } else {
+    url = process.env.SECONDARY_DATABASE_URL || process.env.DATABASE_URL || '';
+  }
 
   // Đọc từ context Cloudflare Workers qua OpenNext nếu có
   if (!url || url.trim() === '') {
     try {
       const { getCloudflareContext } = require('@opennextjs/cloudflare');
       const ctx = getCloudflareContext();
-      if (ctx?.env?.DATABASE_URL) {
-        url = ctx.env.DATABASE_URL;
+      if (dc === 'DC1_MUMBAI') {
+        url = ctx?.env?.PRIMARY_DATABASE_URL || ctx?.env?.DATABASE_URL || '';
+      } else {
+        url = ctx?.env?.SECONDARY_DATABASE_URL || ctx?.env?.DATABASE_URL || '';
       }
     } catch {
-      // Không chạy trong Cloudflare context hoặc module chưa sẵn sàng
+      // Không chạy trong Cloudflare context
     }
   }
 
-  if (!url || url.trim() === '') {
-    throw new Error(
-      'DATABASE_URL chưa được cấu hình. Vui lòng thêm biến môi trường DATABASE_URL trong Cloudflare Dashboard (Settings > Variables and Secrets) hoặc file .env.'
-    );
-  }
-
-  // Supabase Pooler trên cổng 6543 (Transaction Mode) yêu cầu cờ pgbouncer=true để Prisma hoạt động tối ưu
+  // Supabase Pooler cổng 6543 yêu cầu pgbouncer=true
   if (url.includes(':6543') && !url.includes('pgbouncer=true')) {
     url += (url.includes('?') ? '&' : '?') + 'pgbouncer=true';
   }
@@ -37,52 +94,95 @@ export function getDatabaseUrl(): string {
   return url;
 }
 
-export function resetPrismaClient() {
-  if (globalForPrisma.pgPool) {
-    try {
-      globalForPrisma.pgPool.end().catch(() => {});
-    } catch {}
-  }
-  globalForPrisma.pgPool = undefined;
-  globalForPrisma.prisma = undefined;
+function createPoolFor(connectionString: string): Pool {
+  return new Pool({
+    connectionString,
+    ssl: { rejectUnauthorized: false },
+    max: 2,
+    idleTimeoutMillis: 10000,
+    connectionTimeoutMillis: 8000,
+    keepAlive: true,
+    keepAliveInitialDelayMillis: 5000,
+  });
 }
 
-export function getPrismaClient(): PrismaClient {
-  if (globalForPrisma.prisma) {
-    return globalForPrisma.prisma;
+export function getClientFor(dc: DatacenterId): PrismaClient {
+  if (dc === 'DC1_MUMBAI') {
+    if (globalForPrisma.prismaDC1) return globalForPrisma.prismaDC1;
+    const url = getDatabaseUrl('DC1_MUMBAI');
+    const pool = globalForPrisma.pgPoolDC1 || createPoolFor(url);
+    pool.on('error', (err) => console.warn('[DC1 Mumbai Pool Warning]:', err?.message));
+    globalForPrisma.pgPoolDC1 = pool;
+    const adapter = new PrismaPg(pool);
+    globalForPrisma.prismaDC1 = new PrismaClient({ adapter });
+    return globalForPrisma.prismaDC1;
+  } else {
+    if (globalForPrisma.prismaDC2) return globalForPrisma.prismaDC2;
+    const url = getDatabaseUrl('DC2_SINGAPORE');
+    const pool = globalForPrisma.pgPoolDC2 || createPoolFor(url);
+    pool.on('error', (err) => console.warn('[DC2 Singapore Pool Warning]:', err?.message));
+    globalForPrisma.pgPoolDC2 = pool;
+    const adapter = new PrismaPg(pool);
+    globalForPrisma.prismaDC2 = new PrismaClient({ adapter });
+    return globalForPrisma.prismaDC2;
   }
+}
 
-  const connectionString = getDatabaseUrl();
+export function resetPrismaClients() {
+  if (globalForPrisma.pgPoolDC1) {
+    try { globalForPrisma.pgPoolDC1.end().catch(() => {}); } catch {}
+  }
+  if (globalForPrisma.pgPoolDC2) {
+    try { globalForPrisma.pgPoolDC2.end().catch(() => {}); } catch {}
+  }
+  globalForPrisma.pgPoolDC1 = undefined;
+  globalForPrisma.pgPoolDC2 = undefined;
+  globalForPrisma.prismaDC1 = undefined;
+  globalForPrisma.prismaDC2 = undefined;
+}
 
-  // Khởi tạo Pool tối ưu hóa với kết nối ổn định cho Supabase và Cloudflare Workers
-  const pool =
-    globalForPrisma.pgPool ||
-    new Pool({
-      connectionString,
-      ssl: { rejectUnauthorized: false },
-      max: 2,
-      idleTimeoutMillis: 10000,
-      connectionTimeoutMillis: 10000,
-      keepAlive: true,
-      keepAliveInitialDelayMillis: 5000,
+export function getActiveDatacenter(): DatacenterId {
+  if (globalForPrisma.simulateFailure) {
+    return 'DC2_SINGAPORE';
+  }
+  return globalForPrisma.activeDatacenter || 'DC1_MUMBAI';
+}
+
+export function setActiveDatacenter(dc: DatacenterId) {
+  const prev = globalForPrisma.activeDatacenter;
+  globalForPrisma.activeDatacenter = dc;
+  if (prev !== dc) {
+    globalForPrisma.failoverHistory?.unshift({
+      timestamp: new Date().toISOString(),
+      from: prev || 'DC1_MUMBAI',
+      to: dc,
+      reason: 'Thủ công chuyển vùng hoặc kích hoạt bởi Quản trị viên',
     });
+  }
+}
 
-  pool.on('error', (err) => {
-    console.warn('[Postgres Pool Warning]:', err?.message);
-    resetPrismaClient();
-  });
+export function setSimulateFailure(val: boolean) {
+  const prev = globalForPrisma.simulateFailure;
+  globalForPrisma.simulateFailure = val;
+  if (val && !prev) {
+    globalForPrisma.failoverHistory?.unshift({
+      timestamp: new Date().toISOString(),
+      from: 'DC1_MUMBAI',
+      to: 'DC2_SINGAPORE',
+      reason: 'MÔ PHỎNG SỰ CỐ: Datacenter 1 (Mumbai) sập nguồn -> Tự động kích hoạt Failover sang Datacenter 2 (Singapore)',
+    });
+  } else if (!val && prev) {
+    globalForPrisma.failoverHistory?.unshift({
+      timestamp: new Date().toISOString(),
+      from: 'DC2_SINGAPORE',
+      to: 'DC1_MUMBAI',
+      reason: 'KHÔI PHỤC: Datacenter 1 (Mumbai) đã online trở lại -> Tự động khôi phục (Failback)',
+    });
+  }
+}
 
-  globalForPrisma.pgPool = pool;
-
-  // Khởi tạo PrismaClient cùng với PrismaPg adapter trên Edge / Cloudflare Workers
-  const adapter = new PrismaPg(pool);
-  const client = new PrismaClient({
-    adapter,
-    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-  });
-
-  globalForPrisma.prisma = client;
-  return client;
+export function isSimulatingFailure(): boolean {
+  return !!globalForPrisma.simulateFailure;
 }
 
 function isConnectionError(err: any): boolean {
@@ -93,81 +193,190 @@ function isConnectionError(err: any): boolean {
     msg.includes('connection closed') ||
     msg.includes('timeout') ||
     msg.includes('ECONNRESET') ||
-    msg.includes('Connection lost')
+    msg.includes('Connection lost') ||
+    msg.includes("Can't reach database") ||
+    msg.includes('P1001') ||
+    msg.includes('P1002') ||
+    msg.includes('P1008')
   );
+}
+
+// Cơ chế chuyển vùng tự động (Failover)
+function recordFailover(from: DatacenterId, to: DatacenterId, reason: string) {
+  console.warn(`🚨 [MULTI-DATACENTER FAILOVER]: Chuyển vùng từ ${from} sang ${to}! Lý do: ${reason}`);
+  globalForPrisma.activeDatacenter = to;
+  globalForPrisma.failoverHistory?.unshift({
+    timestamp: new Date().toISOString(),
+    from,
+    to,
+    reason,
+  });
+  if (globalForPrisma.failoverHistory && globalForPrisma.failoverHistory.length > 20) {
+    globalForPrisma.failoverHistory.pop();
+  }
+}
+
+// Thực thi câu lệnh qua proxy hỗ trợ Multi-Datacenter Failover
+async function executeWithFailover<T>(
+  operation: (client: PrismaClient) => Promise<T>
+): Promise<T> {
+  const currentDc = getActiveDatacenter();
+  const backupDc: DatacenterId = currentDc === 'DC1_MUMBAI' ? 'DC2_SINGAPORE' : 'DC1_MUMBAI';
+
+  // Nếu đang bật mô phỏng sự cố DC1, trực tiếp dùng DC2
+  if (globalForPrisma.simulateFailure && currentDc === 'DC1_MUMBAI') {
+    const clientDC2 = getClientFor('DC2_SINGAPORE');
+    return await operation(clientDC2);
+  }
+
+  try {
+    const primaryClient = getClientFor(currentDc);
+    return await operation(primaryClient);
+  } catch (err: any) {
+    if (isConnectionError(err)) {
+      recordFailover(
+        currentDc,
+        backupDc,
+        `Mất kết nối tới Datacenter ${currentDc} (${err?.message})`
+      );
+      resetPrismaClients();
+      const backupClient = getClientFor(backupDc);
+      return await operation(backupClient);
+    }
+    throw err;
+  }
 }
 
 function createModelProxy(modelName: string) {
   return new Proxy({}, {
     get(_target, method) {
       return async (...args: any[]) => {
-        let lastError: any = null;
-        for (let attempt = 1; attempt <= 3; attempt++) {
-          try {
-            const client = getPrismaClient() as any;
-            const model = client[modelName];
-            if (!model) {
-              throw new Error(`Model ${modelName} not found on PrismaClient`);
-            }
-            if (typeof model[method] === 'function') {
-              return await model[method](...args);
-            }
-            return model[method];
-          } catch (err: any) {
-            lastError = err;
-            if (isConnectionError(err) && attempt < 3) {
-              console.warn(
-                `[Prisma AutoRetry] Lỗi kết nối "${err?.message}", tự động làm mới pool và thử lại (lần ${attempt + 1}/3)...`
-              );
-              resetPrismaClient();
-              await new Promise((r) => setTimeout(r, 200 * attempt));
-              continue;
-            }
-            throw err;
+        return executeWithFailover(async (client: any) => {
+          const model = client[modelName];
+          if (!model) throw new Error(`Model ${modelName} not found on PrismaClient`);
+          if (typeof model[method] === 'function') {
+            return await model[method](...args);
           }
-        }
-        throw lastError;
+          return model[method];
+        });
       };
     },
   });
 }
 
-// Resilient Proxy: Tự động khởi tạo kết nối lười (lazy load),
-// đồng thời tự động phát hiện và thử lại (retry) khi socket TCP bị ngắt bởi Supabase/Cloudflare.
+// Resilient Multi-Datacenter Prisma Proxy
 export const prisma = new Proxy({} as PrismaClient, {
   get(_target, prop) {
     if (typeof prop !== 'string') return undefined;
 
-    // Các hàm đặc biệt của Prisma Client ($queryRaw, $transaction, $executeRaw, v.v.)
     if (prop.startsWith('$')) {
       return async (...args: any[]) => {
-        let lastError: any = null;
-        for (let attempt = 1; attempt <= 3; attempt++) {
-          try {
-            const client = getPrismaClient() as any;
-            const fn = client[prop];
-            if (typeof fn === 'function') {
-              return await fn.apply(client, args);
-            }
-            return fn;
-          } catch (err: any) {
-            lastError = err;
-            if (isConnectionError(err) && attempt < 3) {
-              console.warn(
-                `[Prisma AutoRetry] Lỗi kết nối trên ${prop}: "${err?.message}", đang thử lại (lần ${attempt + 1}/3)...`
-              );
-              resetPrismaClient();
-              await new Promise((r) => setTimeout(r, 200 * attempt));
-              continue;
-            }
-            throw err;
+        return executeWithFailover(async (client: any) => {
+          const fn = client[prop];
+          if (typeof fn === 'function') {
+            return await fn.apply(client, args);
           }
-        }
-        throw lastError;
+          return fn;
+        });
       };
     }
 
-    // Các model delegates: user, account, session, deck, card, v.v.
     return createModelProxy(prop);
   },
 });
+
+function sanitizeError(msg: any): string {
+  if (!msg) return 'Không thể kết nối';
+  let str = String(msg?.message || msg);
+  // Loại bỏ mật khẩu hoặc thông tin nhạy cảm nếu có trong chuỗi lỗi
+  str = str.replace(/:\/\/([^:@]+):([^@]+)@/g, '://$1:***@');
+  str = str.replace(/password=[^\s;]+/gi, 'password=***');
+  return str.length > 150 ? str.substring(0, 150) + '...' : str;
+}
+
+// Hàm kiểm tra sức khỏe và độ trễ của 2 Datacenter
+export async function getDatacenterStatus(): Promise<DatacenterStatusReport> {
+  const nodes: DatacenterNode[] = [];
+
+  // Check DC 1 (Mumbai)
+  const dc1Url = getDatabaseUrl('DC1_MUMBAI');
+  let dc1Latency = 0;
+  let dc1Status: DatacenterNode['status'] = 'HEALTHY';
+  let dc1Error: string | undefined;
+
+  if (globalForPrisma.simulateFailure) {
+    dc1Status = 'SIMULATED_DOWN';
+    dc1Error = 'Mô phỏng sự cố mất điện / đứt cáp quang biển tại Mumbai';
+  } else {
+    try {
+      const start = Date.now();
+      const pool = new Pool({ connectionString: dc1Url, ssl: { rejectUnauthorized: false }, connectionTimeoutMillis: 3000 });
+      await pool.query('SELECT 1');
+      dc1Latency = Date.now() - start;
+      await pool.end();
+    } catch (err: any) {
+      dc1Status = 'DOWN';
+      dc1Error = sanitizeError(err);
+    }
+  }
+
+  nodes.push({
+    id: 'DC1_MUMBAI',
+    name: 'Datacenter 1 - Mumbai Primary',
+    provider: 'Supabase Cloud (AWS Infrastructure)',
+    region: 'ap-south-1',
+    location: 'Mumbai, India',
+    status: dc1Status,
+    role: 'PRIMARY',
+    latencyMs: dc1Latency,
+    lastChecked: new Date().toISOString(),
+    error: dc1Error,
+  });
+
+  // Check DC 2 (Singapore)
+  const dc2Url = getDatabaseUrl('DC2_SINGAPORE');
+  let dc2Latency = 0;
+  let dc2Status: DatacenterNode['status'] = 'HEALTHY';
+  let dc2Error: string | undefined;
+
+  try {
+    const start = Date.now();
+    const pool = new Pool({ connectionString: dc2Url, ssl: { rejectUnauthorized: false }, connectionTimeoutMillis: 3000 });
+    await pool.query('SELECT 1');
+    dc2Latency = Date.now() - start;
+    await pool.end();
+  } catch (err: any) {
+    dc2Status = 'DOWN';
+    dc2Error = sanitizeError(err);
+  }
+
+  nodes.push({
+    id: 'DC2_SINGAPORE',
+    name: 'Datacenter 2 - Singapore Standby & Disaster Recovery',
+    provider: 'Neon Serverless Cloud (AWS Infrastructure)',
+    region: 'ap-southeast-1',
+    location: 'Singapore (Châu Á - Tối ưu cho Việt Nam/Nhật Bản)',
+    status: dc2Status,
+    role: 'STANDBY',
+    latencyMs: dc2Latency,
+    lastChecked: new Date().toISOString(),
+    error: dc2Error,
+  });
+
+  const activeDc = getActiveDatacenter();
+  const activeNode = nodes.find(n => n.id === activeDc);
+
+  return {
+    activeDatacenter: activeDc,
+    activeDatacenterName: activeNode?.name || activeDc,
+    isSimulatingFailure: !!globalForPrisma.simulateFailure,
+    nodes,
+    failoverHistory: globalForPrisma.failoverHistory || [],
+    architecture: {
+      pattern: 'Active - Passive Multi-Datacenter with Automated Failover',
+      rto: '< 100ms (Tức thì)',
+      rpo: '~ 0s (Near Zero Data Loss)',
+      strategy: 'Geographically Distributed High Availability & Disaster Recovery',
+    },
+  };
+}

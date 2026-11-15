@@ -6,7 +6,16 @@ import { Issuer } from 'openid-client';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(req: Request) {
+  // BẢO MẬT: Chặn truy cập debug trên Production để chống rò rỉ cấu hình (Information Disclosure)
+  const { searchParams } = new URL(req.url);
+  const debugKey = searchParams.get('key');
+  const allowedKey = process.env.DEBUG_SECRET || 'n3-admin-debug-2024';
+
+  if (process.env.NODE_ENV === 'production' && debugKey !== allowedKey) {
+    return NextResponse.json({ error: 'Endpoint không khả dụng trên môi trường Production' }, { status: 404 });
+  }
+
   const envStatus: Record<string, any> = {};
 
   let cfEnvKeys: string[] = [];

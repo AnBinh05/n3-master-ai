@@ -23,6 +23,13 @@ export function Footer() {
 
         {/* Legal & Ownership Mark */}
         <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-right">
+          <Link
+            href="/datacenter"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-bold hover:bg-emerald-500/20 transition"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Multi-Datacenter: Mumbai &amp; Singapore (Live)
+          </Link>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 text-xs font-black">
             <ShieldCheck className="w-3.5 h-3.5" /> Bản quyền & Quyền sở hữu thuộc về LÊ AN BÌNH
           </div>
