@@ -65,25 +65,33 @@ if (!globalForPrisma.failoverHistory) {
 export function getDatabaseUrl(dc: DatacenterId): string {
   let url = '';
 
-  if (dc === 'DC1_MUMBAI') {
-    url = process.env.PRIMARY_DATABASE_URL || process.env.DATABASE_URL || '';
-  } else {
-    url = process.env.SECONDARY_DATABASE_URL || process.env.DATABASE_URL || '';
+  // 1. Thử lấy từ Cloudflare context trước (Production Edge Worker)
+  try {
+    const { getCloudflareContext } = require('@opennextjs/cloudflare');
+    const ctx = getCloudflareContext();
+    if (ctx?.env) {
+      if (dc === 'DC1_MUMBAI') {
+        url = ctx.env.PRIMARY_DATABASE_URL || ctx.env.DATABASE_URL || '';
+      } else {
+        url = ctx.env.SECONDARY_DATABASE_URL || '';
+      }
+    }
+  } catch {
+    // Không chạy trong Cloudflare context
   }
 
-  // Đọc từ context Cloudflare Workers qua OpenNext nếu có
+  // 2. Nếu chưa có, lấy từ process.env (Localhost/Node.js)
   if (!url || url.trim() === '') {
-    try {
-      const { getCloudflareContext } = require('@opennextjs/cloudflare');
-      const ctx = getCloudflareContext();
-      if (dc === 'DC1_MUMBAI') {
-        url = ctx?.env?.PRIMARY_DATABASE_URL || ctx?.env?.DATABASE_URL || '';
-      } else {
-        url = ctx?.env?.SECONDARY_DATABASE_URL || ctx?.env?.DATABASE_URL || '';
-      }
-    } catch {
-      // Không chạy trong Cloudflare context
+    if (dc === 'DC1_MUMBAI') {
+      url = process.env.PRIMARY_DATABASE_URL || process.env.DATABASE_URL || '';
+    } else {
+      url = process.env.SECONDARY_DATABASE_URL || '';
     }
+  }
+
+  // 3. Fallback cuối cùng nếu DC2 chưa cấu hình thì dùng DATABASE_URL mặc định
+  if (!url || url.trim() === '') {
+    url = process.env.DATABASE_URL || '';
   }
 
   // Supabase Pooler cổng 6543 yêu cầu pgbouncer=true
@@ -299,7 +307,6 @@ export async function getDatacenterStatus(): Promise<DatacenterStatusReport> {
   const nodes: DatacenterNode[] = [];
 
   // Check DC 1 (Mumbai)
-  const dc1Url = getDatabaseUrl('DC1_MUMBAI');
   let dc1Latency = 0;
   let dc1Status: DatacenterNode['status'] = 'HEALTHY';
   let dc1Error: string | undefined;
@@ -310,10 +317,9 @@ export async function getDatacenterStatus(): Promise<DatacenterStatusReport> {
   } else {
     try {
       const start = Date.now();
-      const pool = new Pool({ connectionString: dc1Url, ssl: { rejectUnauthorized: false }, connectionTimeoutMillis: 3000 });
-      await pool.query('SELECT 1');
+      const client = getClientFor('DC1_MUMBAI');
+      await client.deck.findFirst({ select: { id: true } });
       dc1Latency = Date.now() - start;
-      await pool.end();
     } catch (err: any) {
       dc1Status = 'DOWN';
       dc1Error = sanitizeError(err);
@@ -334,17 +340,15 @@ export async function getDatacenterStatus(): Promise<DatacenterStatusReport> {
   });
 
   // Check DC 2 (Singapore)
-  const dc2Url = getDatabaseUrl('DC2_SINGAPORE');
   let dc2Latency = 0;
   let dc2Status: DatacenterNode['status'] = 'HEALTHY';
   let dc2Error: string | undefined;
 
   try {
     const start = Date.now();
-    const pool = new Pool({ connectionString: dc2Url, ssl: { rejectUnauthorized: false }, connectionTimeoutMillis: 3000 });
-    await pool.query('SELECT 1');
+    const client = getClientFor('DC2_SINGAPORE');
+    await client.deck.findFirst({ select: { id: true } });
     dc2Latency = Date.now() - start;
-    await pool.end();
   } catch (err: any) {
     dc2Status = 'DOWN';
     dc2Error = sanitizeError(err);
