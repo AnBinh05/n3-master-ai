@@ -82,21 +82,39 @@ function getEnv(key: string): string {
   return val.trim().replace(/^["']|["']$/g, '');
 }
 
-export function getDatabaseUrl(dc: DatacenterId, forceSessionPort = false): string {
+export type SupabaseConnectionMode = 'direct' | 'pooler' | 'session';
+
+export function getDatabaseUrl(dc: DatacenterId, mode: SupabaseConnectionMode = 'direct'): string {
   let url = '';
 
   if (dc === 'DC1_MUMBAI') {
-    // Ưu tiên: PRIMARY_DATABASE_URL -> DATABASE_URL (Supabase Pooler) -> DIRECT_URL
     url = getEnv('PRIMARY_DATABASE_URL') || getEnv('DATABASE_URL') || getEnv('DIRECT_URL');
+    url = url.trim().replace(/^["']|["']$/g, '');
 
-    // Nếu vô tình chứa host direct db.<ref>.supabase.co, tự động chuyển về pooler host để chạy được trên Serverless Edge
-    if (url.includes('.supabase.co') && !url.includes('.pooler.supabase.com')) {
-      url = url.replace(/db\.[^.]+\.supabase\.co/gi, 'aws-0-ap-south-1.pooler.supabase.com');
-    }
+    // Phân tích và chuyển đổi chế độ kết nối tối ưu cho Supabase
+    if (url.includes('supabase.co') || url.includes('pooler.supabase.com')) {
+      const match = url.match(/postgresql:\/\/([^:]+):([^@]+)@([^:/]+)(?::(\d+))?\/([^?]+)/);
+      if (match) {
+        const [, user, pass, host, _port, db] = match;
+        let projectRef = '';
+        if (user.includes('.')) {
+          projectRef = user.split('.')[1];
+        } else if (host.includes('.supabase.co')) {
+          const hostParts = host.split('.');
+          if (hostParts[0] === 'db') projectRef = hostParts[1];
+        }
 
-    // Nếu forceSessionPort hoặc gặp lỗi transaction pooler thì chuyển sang cổng 5432 (Session Mode Pooler)
-    if (forceSessionPort && url.includes(':6543')) {
-      url = url.replace(':6543', ':5432').replace('?pgbouncer=true', '').replace('&pgbouncer=true', '');
+        if (projectRef) {
+          if (mode === 'direct') {
+            // Chế độ Direct IPv6: Port 5432, user: postgres -> Không qua PgBouncer, chạy mượt mà trên Cloudflare Workers Edge
+            return `postgresql://postgres:${pass}@db.${projectRef}.supabase.co:5432/${db}?sslmode=no-verify`;
+          } else if (mode === 'session') {
+            return `postgresql://postgres.${projectRef}:${pass}@aws-0-ap-south-1.pooler.supabase.com:5432/${db}?sslmode=no-verify`;
+          } else {
+            return `postgresql://postgres.${projectRef}:${pass}@aws-0-ap-south-1.pooler.supabase.com:6543/${db}?sslmode=no-verify&pgbouncer=true`;
+          }
+        }
+      }
     }
   } else {
     url = getEnv('SECONDARY_DATABASE_URL');
@@ -107,22 +125,15 @@ export function getDatabaseUrl(dc: DatacenterId, forceSessionPort = false): stri
 
   // Chuẩn hóa và làm sạch chuỗi kết nối
   url = url.trim().replace(/^["']|["']$/g, '');
-
-  // Loại bỏ channel_binding vì Cloudflare workerd TCP socket không hỗ trợ SCRAM channel-binding
   url = url.replace(/&channel_binding=[^&]+/gi, '').replace(/\?channel_binding=[^&]+&?/gi, '?').replace(/\?$/, '');
 
-  // Bắt buộc dùng sslmode=no-verify:
-  // QUAN TRỌNG: pg-connection-string biến `sslmode=require` thành `rejectUnauthorized: true`.
-  // Supabase pooler certificate trên AWS Mumbai không vượt qua được kiểm tra chứng chỉ nghiêm ngặt của Node/workerd,
-  // dẫn tới lỗi "self-signed certificate in certificate chain" hoặc socket bị ngắt đột ngột (Connection terminated unexpectedly).
-  // Vì vậy ta chuẩn hóa sslmode thành no-verify để mã hóa SSL hoạt động mà không bị từ chối chứng chỉ.
+  // Bắt buộc dùng sslmode=no-verify để tránh lỗi self-signed cert của pooler AWS
   if (url.includes('sslmode=')) {
     url = url.replace(/sslmode=[^&]+/gi, 'sslmode=no-verify');
   } else {
     url += (url.includes('?') ? '&' : '?') + 'sslmode=no-verify';
   }
 
-  // Supabase Pooler cổng 6543 yêu cầu pgbouncer=true
   if (url.includes(':6543') && !url.includes('pgbouncer=true')) {
     url += (url.includes('?') ? '&' : '?') + 'pgbouncer=true';
   }
@@ -137,8 +148,6 @@ function createPoolFor(connectionString: string): Pool {
     max: 1, // Trên Serverless Edge Isolate, 1 client cho mỗi pool là tối ưu nhất tránh dead socket
     idleTimeoutMillis: 10000,
     connectionTimeoutMillis: 10000,
-    keepAlive: true,
-    keepAliveInitialDelayMillis: 2000,
   });
 }
 
@@ -163,14 +172,17 @@ export function resetPrismaClients() {
   resetPrismaClient();
 }
 
-export function getClientFor(dc: DatacenterId, forceSessionPort = false): PrismaClient {
-  const url = getDatabaseUrl(dc, forceSessionPort);
+export function getClientFor(dc: DatacenterId, mode: SupabaseConnectionMode = 'direct'): PrismaClient {
+  const url = getDatabaseUrl(dc, mode);
   if (!url) {
     throw new Error(`Chưa cấu hình biến môi trường kết nối cho ${dc}`);
   }
 
   if (dc === 'DC1_MUMBAI') {
-    if (!forceSessionPort && globalForPrisma.prismaDC1) return globalForPrisma.prismaDC1;
+    if (mode === 'direct' && globalForPrisma.prismaDC1) return globalForPrisma.prismaDC1;
+    if (globalForPrisma.pgPoolDC1) {
+      try { globalForPrisma.pgPoolDC1.end().catch(() => {}); } catch {}
+    }
     const pool = createPoolFor(url);
     pool.on('error', (err) => {
       console.warn('[DC1 Mumbai Pool Error]:', err?.message);
@@ -179,7 +191,7 @@ export function getClientFor(dc: DatacenterId, forceSessionPort = false): Prisma
     globalForPrisma.pgPoolDC1 = pool;
     const adapter = new PrismaPg(pool);
     const client = new PrismaClient({ adapter });
-    if (!forceSessionPort) globalForPrisma.prismaDC1 = client;
+    if (mode === 'direct') globalForPrisma.prismaDC1 = client;
     return client;
   } else {
     if (globalForPrisma.prismaDC2) return globalForPrisma.prismaDC2;
@@ -270,23 +282,23 @@ function recordFailover(from: DatacenterId, to: DatacenterId, reason: string) {
   }
 }
 
-// Hàm thực thi truy vấn có retry tự động làm mới socket khi bị đóng băng (Cold start / Idle socket)
+// Hàm thực thi truy vấn có retry tự động luân chuyển phương thức kết nối (Direct IPv6 -> Pooler -> Session)
 export async function queryWithRetry<T>(
   dc: DatacenterId,
   fn: (client: PrismaClient) => Promise<T>
 ): Promise<T> {
   let lastError: any = null;
+  const modes: SupabaseConnectionMode[] = ['direct', 'pooler', 'session'];
+
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
-      // Lần 1: kết nối mặc định
-      // Lần 2 & 3: nếu là DC1 Mumbai và cổng 6543 bị ngắt bởi PgBouncer, tự động fallback sang cổng 5432 (Session Mode Pooler)
-      const forceSession = dc === 'DC1_MUMBAI' && attempt >= 2;
-      const client = getClientFor(dc, forceSession);
+      const mode = modes[attempt - 1];
+      const client = getClientFor(dc, mode);
       return await fn(client);
     } catch (err: any) {
       lastError = err;
       if (isConnectionError(err) && attempt < 3) {
-        console.warn(`[DC ${dc} AutoRetry] Socket lỗi "${err?.message}", đang làm mới kết nối (lần ${attempt + 1}/3)...`);
+        console.warn(`[DC ${dc} AutoRetry] Socket lỗi "${err?.message}", đang thử phương thức kết nối khác (lần ${attempt + 1}/3)...`);
         resetPrismaClient(dc);
         await new Promise((r) => setTimeout(r, 150 * attempt));
         continue;

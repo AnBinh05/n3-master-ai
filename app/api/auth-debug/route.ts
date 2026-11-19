@@ -37,15 +37,42 @@ export async function GET(req: Request) {
     'GOOGLE_CLIENT_ID',
     'GOOGLE_CLIENT_SECRET',
     'DATABASE_URL',
+    'SECONDARY_DATABASE_URL',
   ];
 
   for (const k of keysToCheck) {
-    const val = process.env[k];
+    let val = process.env[k];
+    if (!val) {
+      try {
+        const { getCloudflareContext } = require('@opennextjs/cloudflare');
+        const ctx = getCloudflareContext();
+        val = ctx?.env?.[k];
+      } catch {}
+    }
+
     const isSecret = k.includes('SECRET') || k.includes('DATABASE') || k.includes('URL');
+    let parsedInfo: any = null;
+    if (k.includes('DATABASE') && val) {
+      try {
+        const parsed = new URL(val);
+        parsedInfo = {
+          protocol: parsed.protocol,
+          username: parsed.username,
+          host: parsed.host,
+          port: parsed.port,
+          pathname: parsed.pathname,
+          search: parsed.search,
+        };
+      } catch (err: any) {
+        parsedInfo = { parseError: err.message };
+      }
+    }
+
     envStatus[k] = {
       inProcessEnv: typeof val === 'string' && val.length > 0,
       length: val ? val.length : 0,
       preview: isSecret ? (val ? 'SET (hidden)' : 'MISSING') : (val ? `${val.substring(0, 12)}...` : null),
+      parsedInfo,
     };
   }
 
