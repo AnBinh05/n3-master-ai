@@ -185,7 +185,9 @@ export default function DatacenterPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {data?.nodes.map((node) => {
           const isCurrentActive = data.activeDatacenter === node.id;
-          const isDown = node.status === 'DOWN' || node.status === 'SIMULATED_DOWN';
+          const isDown = node.status === 'DOWN';
+          const isSimulated = node.status === 'SIMULATED_DOWN';
+          const isUnavailable = isDown || isSimulated;
 
           return (
             <div
@@ -205,7 +207,9 @@ export default function DatacenterPage() {
               <div className="flex items-center gap-3 mb-4">
                 <div
                   className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black ${
-                    isDown
+                    isSimulated
+                      ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
+                      : isDown
                       ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20'
                       : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
                   }`}
@@ -244,14 +248,18 @@ export default function DatacenterPage() {
                 <div className="flex justify-between border-b border-border/40 pb-2">
                   <span className="text-muted-foreground">Độ trễ phản hồi (Latency):</span>
                   <span className="font-bold text-foreground">
-                    {isDown ? '---' : `${node.latencyMs} ms`}
+                    {isUnavailable ? '---' : `${node.latencyMs} ms`}
                   </span>
                 </div>
                 <div className="flex justify-between pt-1">
                   <span className="text-muted-foreground">Trạng thái sức khỏe:</span>
-                  {isDown ? (
+                  {isSimulated ? (
+                    <span className="inline-flex items-center gap-1 text-amber-500 font-bold text-xs">
+                      <AlertTriangle className="w-3.5 h-3.5" /> ĐANG MÔ PHỎNG SỰ CỐ (SIMULATED DOWN)
+                    </span>
+                  ) : isDown ? (
                     <span className="inline-flex items-center gap-1 text-rose-500 font-bold text-xs">
-                      <AlertTriangle className="w-3.5 h-3.5" /> SỰ CỐ / SIMULATED DOWN
+                      <AlertTriangle className="w-3.5 h-3.5" /> SỰ CỐ / MẤT KẾT NỐI (DOWN)
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 text-emerald-500 font-bold text-xs">
@@ -262,7 +270,13 @@ export default function DatacenterPage() {
               </div>
 
               {node.error && (
-                <div className="mt-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-medium">
+                <div
+                  className={`mt-4 p-3 rounded-xl border text-xs font-medium ${
+                    isSimulated
+                      ? 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400'
+                      : 'bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-400'
+                  }`}
+                >
                   {node.error}
                 </div>
               )}

@@ -86,7 +86,14 @@ export function getDatabaseUrl(dc: DatacenterId, forceSessionPort = false): stri
   let url = '';
 
   if (dc === 'DC1_MUMBAI') {
-    url = getEnv('PRIMARY_DATABASE_URL') || getEnv('DIRECT_URL') || getEnv('DATABASE_URL');
+    // Ưu tiên: PRIMARY_DATABASE_URL -> DATABASE_URL (Supabase Pooler) -> DIRECT_URL
+    url = getEnv('PRIMARY_DATABASE_URL') || getEnv('DATABASE_URL') || getEnv('DIRECT_URL');
+
+    // Nếu vô tình chứa host direct db.<ref>.supabase.co, tự động chuyển về pooler host để chạy được trên Serverless Edge
+    if (url.includes('.supabase.co') && !url.includes('.pooler.supabase.com')) {
+      url = url.replace(/db\.[^.]+\.supabase\.co/gi, 'aws-0-ap-south-1.pooler.supabase.com');
+    }
+
     // Nếu forceSessionPort hoặc gặp lỗi transaction pooler thì chuyển sang cổng 5432 (Session Mode Pooler)
     if (forceSessionPort && url.includes(':6543')) {
       url = url.replace(':6543', ':5432').replace('?pgbouncer=true', '').replace('&pgbouncer=true', '');
@@ -98,9 +105,21 @@ export function getDatabaseUrl(dc: DatacenterId, forceSessionPort = false): stri
     }
   }
 
-  // Bắt buộc SSL cho Supabase & Neon trên Cloudflare để tránh lỗi Connection terminated unexpectedly
-  if (!url.includes('sslmode=')) {
-    url += (url.includes('?') ? '&' : '?') + 'sslmode=require';
+  // Chuẩn hóa và làm sạch chuỗi kết nối
+  url = url.trim().replace(/^["']|["']$/g, '');
+
+  // Loại bỏ channel_binding vì Cloudflare workerd TCP socket không hỗ trợ SCRAM channel-binding
+  url = url.replace(/&channel_binding=[^&]+/gi, '').replace(/\?channel_binding=[^&]+&?/gi, '?').replace(/\?$/, '');
+
+  // Bắt buộc dùng sslmode=no-verify:
+  // QUAN TRỌNG: pg-connection-string biến `sslmode=require` thành `rejectUnauthorized: true`.
+  // Supabase pooler certificate trên AWS Mumbai không vượt qua được kiểm tra chứng chỉ nghiêm ngặt của Node/workerd,
+  // dẫn tới lỗi "self-signed certificate in certificate chain" hoặc socket bị ngắt đột ngột (Connection terminated unexpectedly).
+  // Vì vậy ta chuẩn hóa sslmode thành no-verify để mã hóa SSL hoạt động mà không bị từ chối chứng chỉ.
+  if (url.includes('sslmode=')) {
+    url = url.replace(/sslmode=[^&]+/gi, 'sslmode=no-verify');
+  } else {
+    url += (url.includes('?') ? '&' : '?') + 'sslmode=no-verify';
   }
 
   // Supabase Pooler cổng 6543 yêu cầu pgbouncer=true
@@ -108,10 +127,7 @@ export function getDatabaseUrl(dc: DatacenterId, forceSessionPort = false): stri
     url += (url.includes('?') ? '&' : '?') + 'pgbouncer=true';
   }
 
-  // Loại bỏ channel_binding vì Cloudflare workerd TCP socket không hỗ trợ SCRAM channel-binding
-  url = url.replace(/&channel_binding=[^&]+/gi, '').replace(/\?channel_binding=[^&]+&?/gi, '?').replace(/\?$/, '');
-
-  return url;
+  return url.replace(/[?&]$/, '');
 }
 
 function createPoolFor(connectionString: string): Pool {
@@ -119,7 +135,7 @@ function createPoolFor(connectionString: string): Pool {
     connectionString,
     ssl: { rejectUnauthorized: false },
     max: 1, // Trên Serverless Edge Isolate, 1 client cho mỗi pool là tối ưu nhất tránh dead socket
-    idleTimeoutMillis: 3000,
+    idleTimeoutMillis: 10000,
     connectionTimeoutMillis: 10000,
     keepAlive: true,
     keepAliveInitialDelayMillis: 2000,
@@ -427,6 +443,17 @@ export async function getDatacenterStatus(): Promise<DatacenterStatusReport> {
     lastChecked: new Date().toISOString(),
     error: dc2Error,
   });
+
+  // Tự động kích hoạt chuyển hướng (Failover) nếu DC1 gặp sự cố thật sự và DC2 khỏe mạnh
+  if (dc1Status === 'DOWN' && dc2Status === 'HEALTHY' && !globalForPrisma.simulateFailure) {
+    if (globalForPrisma.activeDatacenter !== 'DC2_SINGAPORE') {
+      recordFailover('DC1_MUMBAI', 'DC2_SINGAPORE', 'Tự động kích hoạt Failover: Datacenter 1 (Mumbai) mất kết nối');
+    }
+  } else if (dc1Status === 'HEALTHY' && !globalForPrisma.simulateFailure) {
+    if (globalForPrisma.activeDatacenter === 'DC2_SINGAPORE' && globalForPrisma.failoverHistory?.length) {
+      recordFailover('DC2_SINGAPORE', 'DC1_MUMBAI', 'Tự động kích hoạt Failback: Datacenter 1 (Mumbai) đã kết nối lại thành công');
+    }
+  }
 
   const activeDc = getActiveDatacenter();
   const activeNode = nodes.find(n => n.id === activeDc);
